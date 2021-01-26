@@ -3,8 +3,16 @@ package com.example.chatwithfirebase.di.module
 import android.content.Context
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.chatwithfirebase.base.constants.Constants
+import com.example.chatwithfirebase.data.remote.FirebaseAuthSource
+import com.example.chatwithfirebase.data.repository.FirebaseAuthRepository
+import com.example.chatwithfirebase.data.repository.FirebaseAuthRepositoryImp
 import com.example.chatwithfirebase.di.ChatWithFirebase
 import com.example.chatwithfirebase.di.rx.SchedulerProvider
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.storage.FirebaseStorage
 import dagger.Module
 import dagger.Provides
 import io.reactivex.Scheduler
@@ -19,8 +27,7 @@ class AppModule {
     @Singleton
     @Provides
     fun provideScheduler(): Scheduler {
-        return AndroidSchedulers.mainThread()
-    }
+        return AndroidSchedulers.mainThread() }
 
     @Provides
     @Singleton
@@ -30,7 +37,7 @@ class AppModule {
     @Singleton
     fun provideContext(app: ChatWithFirebase): Context = app
 
-    //for list
+
     @Provides
     @Named("vertical")
     fun provideVerticalLinearLayoutManager(context: Context) =
@@ -40,5 +47,40 @@ class AppModule {
     @Named("horizontal")
     fun provideHorizontalLinearLayoutManager(context: Context) =
             LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
+
+    @Provides
+    @Singleton
+    fun provideFirebaseAuthRepository(
+            firebaseAuthRepositoryImp: FirebaseAuthRepositoryImp):FirebaseAuthRepository = firebaseAuthRepositoryImp
+
+    /**
+    Provide Firebase
+     */
+
+    @Singleton
+    @Provides
+    fun provideFirebaseAuth() = FirebaseAuth.getInstance()
+
+    //    @Singleton
+    //    @Provides
+    //    fun provideFirebaseUser() = FirebaseAuth.getInstance().currentUser!!
+
+    @Singleton
+    @Provides
+    fun provideFirebaseDatabase() = FirebaseDatabase.getInstance(Constants.FIREBASE_DATABASE_URL)
+
+    //    @Singleton
+    //    @Provides
+    //    fun provideFirebaseStorage() = FirebaseStorage.getInstance()
+
+    @Singleton
+    @Provides
+    fun provideStorageReference() = FirebaseStorage.getInstance().reference
+
+    @Singleton
+    @Provides
+    fun provideFirebaseAuthSource(firebaseAuth: FirebaseAuth, firebaseDatabase: FirebaseDatabase)
+                                               = FirebaseAuthSource(firebaseAuth, firebaseDatabase)
+
 
 }

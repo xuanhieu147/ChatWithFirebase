@@ -1,6 +1,6 @@
 package com.example.chatwithfirebase.di.module
 
-import com.example.chatwithfirebase.MainActivity
+import com.example.chatwithfirebase.ui.MainActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
