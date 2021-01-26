@@ -20,4 +20,32 @@
         <item name="android:windowBackground">@android:color/transparent</item>
     </style>
 
+    <style name="Sen_Bold" parent="android:TextAppearance">
+        <item name="android:fontFamily">@font/sen_bold</item>
+        <item name="android:textSize">@dimen/_26sdp</item>
+    </style>
+
+    <style name="Louis_George_Cafe" parent="android:TextAppearance">
+        <item name="android:fontFamily">@font/louis_george_cafe</item>
+    </style>
+
+    <style name="Louis_George_Cafe_Bold" parent="android:TextAppearance">
+        <item name="android:fontFamily">@font/louis_george_cafe_bold</item>
+    </style>
+
+    <style name="Louis_George_Cafe_Light" parent="android:TextAppearance">
+        <item name="android:fontFamily">@font/louis_george_cafe_light</item>
+    </style>
+
+    <style name="Product_Sans_Bold" parent="android:TextAppearance">
+        <item name="android:fontFamily">@font/product_sans_bold</item>
+    </style>
+
+    <style name="Product_Sans_Regular" parent="android:TextAppearance">
+        <item name="android:fontFamily">@font/product_sans_regular</item>
+    </style>
+
+    <style name="Sen_Regular" parent="android:TextAppearance">
+        <item name="android:fontFamily">@font/sen_regular</item>
+    </style>
 </resources>
