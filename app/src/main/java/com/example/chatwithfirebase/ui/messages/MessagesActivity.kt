@@ -2,10 +2,12 @@ package com.example.chatwithfirebase.ui.messages
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log.e
 import androidx.lifecycle.ViewModelProvider
 import com.example.chatwithfirebase.BR
 import com.example.chatwithfirebase.R
 import com.example.chatwithfirebase.base.BaseActivityBlack
+import com.example.chatwithfirebase.data.model.User
 import com.example.chatwithfirebase.databinding.ActivityMessagesBinding
 import com.example.chatwithfirebase.di.ViewModelFactory
 import com.example.chatwithfirebase.ui.welcome.WelcomeActivity
@@ -18,6 +20,8 @@ class MessagesActivity : BaseActivityBlack<ActivityMessagesBinding, MessagesView
     lateinit var factory: ViewModelFactory
 
     private lateinit var messagesViewModel: MessagesViewModel
+
+    val userList = ArrayList<User>()
 
     override fun getViewModel(): MessagesViewModel {
         messagesViewModel = ViewModelProvider(this, factory).get(MessagesViewModel::class.java)
@@ -39,6 +43,7 @@ class MessagesActivity : BaseActivityBlack<ActivityMessagesBinding, MessagesView
                 R.anim.slide_out_left
             )
         }
+
     }
 
 }

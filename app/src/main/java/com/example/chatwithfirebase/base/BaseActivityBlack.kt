@@ -16,7 +16,9 @@ import com.example.chatwithfirebase.R
 import dagger.android.AndroidInjection
 import dagger.android.support.DaggerAppCompatActivity
 
-
+/**
+  Status bar color black :v
+ */
 abstract class BaseActivityBlack<T : ViewDataBinding, V : BaseViewModel> :
     DaggerAppCompatActivity() {
 

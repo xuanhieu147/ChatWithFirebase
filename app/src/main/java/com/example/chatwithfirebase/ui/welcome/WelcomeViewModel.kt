@@ -16,12 +16,13 @@ class WelcomeViewModel @Inject constructor() : BaseViewModel() {
         const val LOGIN_SUCCESS = 9
     }
 
-    fun login() {
+    fun saveUserAndAutoLogin() {
         setLoading(true)
         if (firebaseAuthRepository.getCurrentUser() != null) {
             uiEventLiveData.value = LOGIN_SUCCESS
         }
         else{
+            setLoading(false)
             uiEventLiveData.value = ERROR_LOGIN
         }
     }

@@ -48,7 +48,6 @@ class WelcomeActivity : BaseActivityBlack<ActivityWelcomeBinding, WelcomeViewMod
         welcomeViewModel.uiEventLiveData.observe(this, {
             if (it == WelcomeViewModel.LOGIN_SUCCESS) {
                 Handler().postDelayed({
-                    welcomeViewModel.setLoading(false)
                     autoLogin()
                 }, 2000)
             }
@@ -65,6 +64,6 @@ class WelcomeActivity : BaseActivityBlack<ActivityWelcomeBinding, WelcomeViewMod
 
     override fun onStart() {
         super.onStart()
-        welcomeViewModel.login()
+        welcomeViewModel.saveUserAndAutoLogin()
     }
 }
