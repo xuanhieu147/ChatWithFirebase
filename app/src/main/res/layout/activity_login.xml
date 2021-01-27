@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -10,9 +12,7 @@
     </data>
 
 
-    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true"
@@ -27,7 +27,6 @@
             android:background="@color/white"
             android:fitsSystemWindows="true"
             >
-
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/imgBack"
                 android:layout_width="@dimen/_24sdp"
@@ -82,6 +81,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_36sdp"
                 android:layout_margin="@dimen/_16sdp"
+                android:text="@={loginViewModel.email}"
                 android:hint="@string/type_email"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -107,6 +107,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_36sdp"
                 android:layout_margin="@dimen/_16sdp"
+                android:text="@={loginViewModel.password}"
                 android:hint="@string/type_password"
                 app:layout_constraintEnd_toEndOf="@+id/edtEmail"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -120,6 +121,7 @@
                 android:layout_height="@dimen/_40sdp"
                 android:layout_margin="@dimen/_24sdp"
                 android:text="@string/login"
+                android:onClick="@{() -> loginViewModel.loginUser()}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/edtPassword"
                 app:layout_constraintHorizontal_bias="0.476"
