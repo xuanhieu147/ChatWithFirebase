@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout>
+
+    <data>
+
+        <variable
+            name="loginViewModel"
+            type="com.example.chatwithfirebase.ui.login.LoginViewModel" />
+    </data>
+
+
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:scrollbars="none"
+        android:layout_marginTop="@dimen/_16sdp"
+        tools:context=".ui.login.LoginActivity">
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:fitsSystemWindows="true"
+            >
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/imgBack"
+                android:layout_width="@dimen/_24sdp"
+                android:layout_height="@dimen/_24sdp"
+                android:src="@drawable/back"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.044"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/imgLogo"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_100sdp"
+                android:layout_marginTop="@dimen/_16sdp"
+                android:src="@drawable/logo_no_text"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imgBack" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvLogin"
+                style="@style/SenBold.TextColorBlack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_16sdp"
+                android:layout_marginTop="@dimen/_16sdp"
+                android:text="@string/login"
+                android:textSize="@dimen/_24sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/imgLogo"
+                app:layout_constraintTop_toBottomOf="@+id/imgLogo" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvEmail"
+                style="@style/SenRegular.TextColorBlack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_24sdp"
+                android:text="@string/email"
+                android:textSize="@dimen/_14sdp"
+                app:layout_constraintEnd_toEndOf="@+id/tvLogin"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/tvLogin"
+                app:layout_constraintTop_toBottomOf="@+id/tvLogin" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/edtEmail"
+                style="@style/SenRegular.TextColorBlack.EditTextComponents"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_36sdp"
+                android:layout_margin="@dimen/_16sdp"
+                android:hint="@string/type_email"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvEmail" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvPassword"
+                style="@style/SenRegular.TextColorBlack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_16sdp"
+                android:text="@string/password"
+                android:textSize="@dimen/_14sdp"
+                app:layout_constraintEnd_toEndOf="@+id/edtEmail"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/edtEmail"
+                app:layout_constraintTop_toBottomOf="@+id/edtEmail" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/edtPassword"
+                style="@style/SenRegular.TextColorBlack.EditTextComponents"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_36sdp"
+                android:layout_margin="@dimen/_16sdp"
+                android:hint="@string/type_password"
+                app:layout_constraintEnd_toEndOf="@+id/edtEmail"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/edtEmail"
+                app:layout_constraintTop_toBottomOf="@+id/tvPassword" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnLogin"
+                style="@style/SenBold.TextColorWhite.Components"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_margin="@dimen/_24sdp"
+                android:text="@string/login"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/edtPassword"
+                app:layout_constraintHorizontal_bias="0.476"
+                app:layout_constraintStart_toStartOf="@+id/edtPassword"
+                app:layout_constraintTop_toBottomOf="@+id/edtPassword"
+                app:layout_constraintVertical_bias="0.066" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</layout>

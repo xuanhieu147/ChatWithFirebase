@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <variable
+            name="welcomeViewModel"
+            type="com.example.chatwithfirebase.ui.welcome.WelcomeViewModel" />
+    </data>
+
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:scrollbars="none"
+        tools:context=".ui.welcome.WelcomeActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:fitsSystemWindows="true"
+        >
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imgLogo"
+            android:layout_marginTop="@dimen/_16sdp"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_200sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/logo" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvWelcomeToChatApp"
+            style="@style/SenBold.TextColorBlue85"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_40sdp"
+            android:text="@string/welcome_to_chat_app"
+            android:textSize="@dimen/_24sdp"
+            app:layout_constraintEnd_toEndOf="@+id/imgLogo"
+            app:layout_constraintStart_toStartOf="@+id/imgLogo"
+            app:layout_constraintTop_toBottomOf="@+id/imgLogo" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvIntroduce1"
+            style="@style/SenRegular.TextColorBlack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_16sdp"
+            android:text="@string/introduce_1"
+            android:textSize="@dimen/_11sdp"
+            app:layout_constraintEnd_toEndOf="@+id/tvWelcomeToChatApp"
+            app:layout_constraintHorizontal_bias="0.448"
+            app:layout_constraintStart_toStartOf="@+id/tvWelcomeToChatApp"
+            app:layout_constraintTop_toBottomOf="@+id/tvWelcomeToChatApp" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvIntroduce2"
+            style="@style/SenRegular.TextColorBlack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_4sdp"
+            android:text="@string/introduce_2"
+            android:textSize="@dimen/_11sdp"
+            app:layout_constraintEnd_toEndOf="@+id/tvIntroduce1"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="@+id/tvIntroduce1"
+            app:layout_constraintTop_toBottomOf="@+id/tvIntroduce1" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnLogin"
+            style="@style/SenBold.TextColorWhite.Components"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_marginLeft="@dimen/_24sdp"
+            android:layout_marginTop="@dimen/_32sdp"
+            android:layout_marginRight="@dimen/_24sdp"
+            android:text="@string/login"
+            app:layout_constraintEnd_toEndOf="@+id/tvIntroduce2"
+            app:layout_constraintHorizontal_bias="0.457"
+            app:layout_constraintStart_toStartOf="@+id/tvIntroduce2"
+            app:layout_constraintTop_toBottomOf="@+id/tvIntroduce2" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnCreateAccount"
+            style="@style/SenBold.TextColorBlue85.Components"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_marginLeft="@dimen/_24sdp"
+            android:layout_marginTop="@dimen/_16sdp"
+            android:layout_marginRight="@dimen/_24sdp"
+            android:text="@string/register"
+            app:layout_constraintEnd_toEndOf="@+id/btnLogin"
+            app:layout_constraintStart_toStartOf="@+id/btnLogin"
+            app:layout_constraintTop_toBottomOf="@+id/btnLogin" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</layout>

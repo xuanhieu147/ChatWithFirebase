@@ -11,10 +11,8 @@ import io.reactivex.disposables.Disposable
 import javax.inject.Inject
 
 abstract class BaseViewModel() : ViewModel() {
+
     companion object{
-        const val SHOW_TOAST = -2
-        const val FINISH_ACTIVITY = -1
-        const val BACK = 0
         const val SHOW_ERROR = 1
     }
 
@@ -28,7 +26,6 @@ abstract class BaseViewModel() : ViewModel() {
     private val mIsLoading = SingleLiveData<Boolean>()
     val uiEventLiveData = SingleLiveData<Int>()
     var errorMessage: Any = "Unknown error"
-    var toastMessage: Any = "Unknown message"
 
     override fun onCleared() {
         compositeDisposable.dispose()
@@ -51,8 +48,9 @@ abstract class BaseViewModel() : ViewModel() {
         mIsLoading.value = isLoading
     }
 
-    fun performBack() {
-        uiEventLiveData.value = BACK
+    fun showError(message: Any){
+        errorMessage = message
+        uiEventLiveData.value = SHOW_ERROR
     }
 
     open fun onStart(){}

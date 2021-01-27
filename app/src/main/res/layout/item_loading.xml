@@ -13,6 +13,8 @@
         android:id="@+id/spin_kit"
         style="@style/SpinKitView.Large.DoubleBounce"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        app:SpinKit_Color="@color/blue_85" />
+
 
 </androidx.appcompat.widget.LinearLayoutCompat>

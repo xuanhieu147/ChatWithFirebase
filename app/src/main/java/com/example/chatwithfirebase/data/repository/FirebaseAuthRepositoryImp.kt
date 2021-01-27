@@ -5,13 +5,17 @@ import io.reactivex.Completable
 import javax.inject.Inject
 
 class FirebaseAuthRepositoryImp @Inject constructor(
-        private val firebaseAuthSource: FirebaseAuthSource) : FirebaseAuthRepository {
+    private val firebaseAuthSource: FirebaseAuthSource
+     ) : FirebaseAuthRepository {
 
-    override fun registerUser(email: String, password: String, linkImage: String, username: String) : Completable {
-        return firebaseAuthSource.registerUser(email, password, linkImage, username)
+    override fun registerUser(
+        email: String,
+        password: String,
+        fullName: String): Completable {
+        return firebaseAuthSource.registerUser(email, password, fullName)
     }
 
-    override fun login(email: String, password: String) : Completable {
+    override fun login(email: String, password: String): Completable {
         return firebaseAuthSource.login(email, password)
     }
 

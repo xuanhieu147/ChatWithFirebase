@@ -1,5 +1,6 @@
 package com.example.chatwithfirebase.data.remote
 
+import com.example.chatwithfirebase.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
@@ -19,7 +20,7 @@ class FirebaseAuthSource @Inject constructor(
     fun getCurrentUserId() = firebaseAuth.currentUser!!.uid
 
     // Completable notify status success or fall
-    fun registerUser(email: String, password: String, linkImage: String, username: String): Completable {
+    fun registerUser(email: String, password: String, fullName: String): Completable {
         return Completable.create { emitter ->
             firebaseAuth.createUserWithEmailAndPassword(email, password)
                     .addOnCompleteListener {
@@ -27,8 +28,8 @@ class FirebaseAuthSource @Inject constructor(
                         hashMap["userId"] = getCurrentUserId()
                         hashMap["email"] = email
                         hashMap["password"] = password
-                        hashMap["link_image"] = linkImage
-                        hashMap["username"] = username
+                        hashMap["linkImage"] = R.string.firebase_database_url
+                        hashMap["fullName"] = fullName
                         hashMap["online"] = true
 
                         // add user

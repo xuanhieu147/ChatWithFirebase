@@ -1,6 +1,8 @@
 package com.example.chatwithfirebase.di.module
 
-import com.example.chatwithfirebase.ui.MainActivity
+import com.example.chatwithfirebase.ui.login.LoginActivity
+import com.example.chatwithfirebase.ui.register.RegisterActivity
+import com.example.chatwithfirebase.ui.welcome.WelcomeActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -8,6 +10,12 @@ import dagger.android.ContributesAndroidInjector
 abstract class ActivityModule {
 
     @ContributesAndroidInjector
-    abstract fun contributeMainActivity(): MainActivity
+    abstract fun contributeRegisterActivity(): RegisterActivity
+
+    @ContributesAndroidInjector
+    abstract fun contributeWelcomeActivity(): WelcomeActivity
+
+    @ContributesAndroidInjector
+    abstract fun contributeLoginActivity(): LoginActivity
 
 }

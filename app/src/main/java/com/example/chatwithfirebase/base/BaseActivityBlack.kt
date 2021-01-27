@@ -4,6 +4,7 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.annotation.LayoutRes
@@ -16,7 +17,8 @@ import dagger.android.AndroidInjection
 import dagger.android.support.DaggerAppCompatActivity
 
 
-abstract class BaseActivity<T : ViewDataBinding, V : BaseViewModel> : DaggerAppCompatActivity() {
+abstract class BaseActivityBlack<T : ViewDataBinding, V : BaseViewModel> :
+    DaggerAppCompatActivity() {
 
     lateinit var binding: T
     lateinit var loading: AlertDialog
@@ -39,7 +41,7 @@ abstract class BaseActivity<T : ViewDataBinding, V : BaseViewModel> : DaggerAppC
     override fun onCreate(savedInstanceState: Bundle?) {
         performDI()
         super.onCreate(savedInstanceState)
-        noStatusBar()
+        noStatusBarAndColorBlack()
         performDataBinding()
         updateUI(savedInstanceState)
         initDialog()
@@ -85,20 +87,20 @@ abstract class BaseActivity<T : ViewDataBinding, V : BaseViewModel> : DaggerAppC
 
     @Throws
     open fun openFragment(
-            resId: Int,
-            fragmentClazz: Class<*>,
-            args: Bundle?,
-            addBackStack: Boolean
+        resId: Int,
+        fragmentClazz: Class<*>,
+        args: Bundle?,
+        addBackStack: Boolean
     ) {
         val tag = fragmentClazz.simpleName
         try {
             val isExisted =
-                    supportFragmentManager.findFragmentByTag(tag) != null   // IllegalStateException
+                supportFragmentManager.findFragmentByTag(tag) != null   // IllegalStateException
             if (!isExisted) {
                 val fragment: Fragment
                 try {
                     fragment =
-                            (fragmentClazz as Class<Fragment>).newInstance().apply { arguments = args }
+                        (fragmentClazz as Class<Fragment>).newInstance().apply { arguments = args }
                     val transaction = supportFragmentManager.beginTransaction()
                     transaction.add(resId, fragment, tag)
 
@@ -194,7 +196,12 @@ abstract class BaseActivity<T : ViewDataBinding, V : BaseViewModel> : DaggerAppC
         builder.show()
     }
 
-    fun showActionDialog(title: String?, message: Any, positiveAction: String, positiveListener: DialogInterface.OnClickListener) {
+    fun showActionDialog(
+        title: String?,
+        message: Any,
+        positiveAction: String,
+        positiveListener: DialogInterface.OnClickListener
+    ) {
         val builder = AlertDialog.Builder(this)
         builder.setTitle(title)
         if (message is Int) {
@@ -221,16 +228,17 @@ abstract class BaseActivity<T : ViewDataBinding, V : BaseViewModel> : DaggerAppC
     }
 
 
-    private fun noStatusBar() {
+    private fun noStatusBarAndColorBlack() {
         window.apply {
-            setDecorFitsSystemWindows(false)
-            addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-                statusBarColor = Color.TRANSPARENT
-
+            setDecorFitsSystemWindows(true)
+            // addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+            // View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR: make the text of status bar to black
+            statusBarColor = Color.TRANSPARENT
+            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
         }
     }
 
-    private fun loadingViewModel(){
+    private fun loadingViewModel() {
         getViewModel().getLoading()?.observe(this, {
             if (it) {
                 showLoadingDialog()

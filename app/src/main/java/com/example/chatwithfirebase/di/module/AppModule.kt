@@ -48,11 +48,6 @@ class AppModule {
     fun provideHorizontalLinearLayoutManager(context: Context) =
             LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
 
-    @Provides
-    @Singleton
-    fun provideFirebaseAuthRepository(
-            firebaseAuthRepositoryImp: FirebaseAuthRepositoryImp):FirebaseAuthRepository = firebaseAuthRepositoryImp
-
     /**
     Provide Firebase
      */
@@ -82,5 +77,9 @@ class AppModule {
     fun provideFirebaseAuthSource(firebaseAuth: FirebaseAuth, firebaseDatabase: FirebaseDatabase)
                                                = FirebaseAuthSource(firebaseAuth, firebaseDatabase)
 
+    @Provides
+    @Singleton
+    fun provideFirebaseAuthRepository(
+        firebaseAuthRepositoryImp: FirebaseAuthRepositoryImp):FirebaseAuthRepository = firebaseAuthRepositoryImp
 
 }

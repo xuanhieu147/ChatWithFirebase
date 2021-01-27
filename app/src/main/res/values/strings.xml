@@ -1,3 +1,25 @@
 <resources>
     <string name="app_name">ChatWithFirebase</string>
+    <string name="welcome_to_chat_app">Welcome to chat app!</string>
+    <string name="introduce_1">This is the first version of our laundry app.</string>
+    <string name="introduce_2">Please sign in or create an account below.</string>
+    <string name="register">Create An Account</string>
+    <string name="login">Login</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="re_password">Re Password</string>
+    <string name="username">UserName</string>
+    <string name="full_name">Full Name</string>
+
+    // error
+    <string name="error">error</string>
+    <string name="type_email">Please enter your email</string>
+    <string name="wrong_email_format">Wrong email format</string>
+    <string name="type_password">Please enter your password</string>
+    <string name="re_type_password">Please enter your re password</string>
+    <string name="type_full_name">Please enter your full name</string>
+    <string name="re_password_not_same_password">re-enter password is not the same as password</string>
+
+    // success
+    <string name="success">Success</string>
 </resources>
