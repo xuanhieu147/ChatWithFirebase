@@ -230,7 +230,7 @@ abstract class BaseActivityBlack<T : ViewDataBinding, V : BaseViewModel> :
 
     private fun noStatusBarAndColorBlack() {
         window.apply {
-            setDecorFitsSystemWindows(true)
+            // setDecorFitsSystemWindows(true)
             // addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
             // View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR: make the text of status bar to black
             statusBarColor = Color.TRANSPARENT

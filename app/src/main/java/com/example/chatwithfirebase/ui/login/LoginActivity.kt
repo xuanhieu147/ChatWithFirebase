@@ -1,6 +1,8 @@
 package com.example.chatwithfirebase.ui.login
 
 import android.os.Bundle
+import android.util.Log.e
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.chatwithfirebase.BR
 import com.example.chatwithfirebase.R
@@ -26,7 +28,7 @@ class LoginActivity : BaseActivityBlack<ActivityLoginBinding, LoginViewModel>() 
     override fun getBindingVariable(): Int = BR.loginViewModel
 
     override fun updateUI(savedInstanceState: Bundle?) {
-        binding.imgBack.setOnClickListener{
+        binding.imgBack.setOnClickListener {
             onBackPressed()
         }
     }

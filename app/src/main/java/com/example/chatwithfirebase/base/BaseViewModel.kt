@@ -1,10 +1,8 @@
 package com.example.chatwithfirebase.base
 
 import androidx.lifecycle.ViewModel
-import com.example.chatwithfirebase.data.remote.FirebaseAuthSource
-import com.example.chatwithfirebase.data.remote.FirebaseDataSource
-import com.example.chatwithfirebase.data.repository.FirebaseAuthRepository
-import com.example.chatwithfirebase.data.repository.FirebaseAuthRepositoryImp
+import com.example.chatwithfirebase.data.repository.auth.FirebaseAuthRepository
+import com.example.chatwithfirebase.data.repository.data.FirebaseDataRepository
 import com.example.chatwithfirebase.di.rx.SchedulerProvider
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
@@ -20,7 +18,10 @@ abstract class BaseViewModel() : ViewModel() {
     lateinit var schedulerProvider: SchedulerProvider
 
     @Inject
-    lateinit var firebaseRepository: FirebaseAuthRepository
+    lateinit var firebaseAuthRepository: FirebaseAuthRepository
+
+    @Inject
+    lateinit var firebaseDataRepository: FirebaseDataRepository
 
     var compositeDisposable: CompositeDisposable = CompositeDisposable()
     private val mIsLoading = SingleLiveData<Boolean>()

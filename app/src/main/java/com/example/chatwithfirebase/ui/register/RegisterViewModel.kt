@@ -60,7 +60,7 @@ class RegisterViewModel @Inject constructor() : BaseViewModel() {
 
             else -> {
                 compositeDisposable.add(
-                    firebaseRepository.registerUser(email.value!!,password.value!!,fullName.value!!)
+                    firebaseAuthRepository.registerUser(email.value!!,password.value!!,fullName.value!!)
                     .compose(schedulerProvider.ioToMainCompletableScheduler())
                     .subscribe(this::onRegisterSuccessful, this::onRegisterFailed))
             }

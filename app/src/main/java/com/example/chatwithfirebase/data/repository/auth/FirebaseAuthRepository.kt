@@ -1,4 +1,4 @@
-package com.example.chatwithfirebase.data.repository
+package com.example.chatwithfirebase.data.repository.auth
 
 import io.reactivex.Completable
 
