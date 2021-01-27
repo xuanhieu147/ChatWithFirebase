@@ -8,6 +8,7 @@ import com.example.chatwithfirebase.base.BaseActivityBlack
 import com.example.chatwithfirebase.base.BaseViewModel
 import com.example.chatwithfirebase.databinding.ActivityLoginBinding
 import com.example.chatwithfirebase.di.ViewModelFactory
+import com.example.chatwithfirebase.ui.messages.MessagesActivity
 import com.example.chatwithfirebase.ui.register.RegisterViewModel
 import com.example.chatwithfirebase.ui.welcome.WelcomeActivity
 import com.example.chatwithfirebase.utils.ToastUtils
@@ -48,7 +49,7 @@ class LoginActivity : BaseActivityBlack<ActivityLoginBinding, LoginViewModel>() 
                 LoginViewModel.LOGIN_SUCCESS-> {
                     ToastUtils.toastSuccess(this, R.string.login, R.string.success)
                     goScreen(
-                        WelcomeActivity::class.java,
+                        MessagesActivity::class.java,
                         false, R.anim.slide_in_right, R.anim.slide_out_left
                     )
                 }

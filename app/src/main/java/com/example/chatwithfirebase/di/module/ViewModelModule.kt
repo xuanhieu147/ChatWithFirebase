@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.chatwithfirebase.di.ViewModelFactory
 import com.example.chatwithfirebase.di.ViewModelKey
 import com.example.chatwithfirebase.ui.login.LoginViewModel
+import com.example.chatwithfirebase.ui.messages.MessagesViewModel
 import com.example.chatwithfirebase.ui.register.RegisterViewModel
 import com.example.chatwithfirebase.ui.welcome.WelcomeViewModel
 import dagger.Binds
@@ -32,6 +33,11 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(LoginViewModel::class)
     abstract fun loginViewModel(viewModel: LoginViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(MessagesViewModel::class)
+    abstract fun messagesViewModel(viewModel: MessagesViewModel): ViewModel
 
 }
 

@@ -10,12 +10,14 @@
     <string name="re_password">Re Password</string>
     <string name="username">UserName</string>
     <string name="full_name">Full Name</string>
+    <string name="title_messages">Messages</string>
+    <string name="time">Time</string>
 
     // error
     <string name="error">error</string>
     <string name="type_email">Please enter your email</string>
     <string name="wrong_email_format">Wrong email format</string>
-    <string name="wrong_email_password">Wrong email and password</string>
+    <string name="wrong_email_password">Email and password are incorrect</string>
     <string name="type_password">Please enter your password</string>
     <string name="re_type_password">Please enter your re password</string>
     <string name="type_full_name">Please enter your full name</string>
