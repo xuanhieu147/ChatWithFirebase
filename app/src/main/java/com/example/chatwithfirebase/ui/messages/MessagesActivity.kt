@@ -8,9 +8,11 @@ import com.example.chatwithfirebase.R
 import com.example.chatwithfirebase.base.BaseActivityBlack
 import com.example.chatwithfirebase.databinding.ActivityMessagesBinding
 import com.example.chatwithfirebase.di.ViewModelFactory
+import com.example.chatwithfirebase.ui.welcome.WelcomeActivity
+import com.google.firebase.auth.FirebaseAuth
 import javax.inject.Inject
 
-class MessagesActivity : BaseActivityBlack<ActivityMessagesBinding,MessagesViewModel>() {
+class MessagesActivity : BaseActivityBlack<ActivityMessagesBinding, MessagesViewModel>() {
 
     @Inject
     lateinit var factory: ViewModelFactory
@@ -27,7 +29,16 @@ class MessagesActivity : BaseActivityBlack<ActivityMessagesBinding,MessagesViewM
     override fun getBindingVariable(): Int = BR.messageViewModel
 
     override fun updateUI(savedInstanceState: Bundle?) {
-
+        binding.imgSetting.setOnClickListener {
+            FirebaseAuth.getInstance().signOut()
+            finish()
+            goScreen(
+                WelcomeActivity::class.java,
+                false,
+                R.anim.slide_in_right,
+                R.anim.slide_out_left
+            )
+        }
     }
 
 }

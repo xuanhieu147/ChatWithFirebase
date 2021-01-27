@@ -8,7 +8,10 @@ import com.example.chatwithfirebase.base.BaseActivityBlack
 import com.example.chatwithfirebase.databinding.ActivityWelcomeBinding
 import com.example.chatwithfirebase.di.ViewModelFactory
 import com.example.chatwithfirebase.ui.login.LoginActivity
+import com.example.chatwithfirebase.ui.messages.MessagesActivity
 import com.example.chatwithfirebase.ui.register.RegisterActivity
+import com.example.chatwithfirebase.ui.register.RegisterViewModel
+import com.example.chatwithfirebase.utils.ToastUtils
 import javax.inject.Inject
 
 class WelcomeActivity : BaseActivityBlack<ActivityWelcomeBinding, WelcomeViewModel>() {
@@ -17,6 +20,7 @@ class WelcomeActivity : BaseActivityBlack<ActivityWelcomeBinding, WelcomeViewMod
     lateinit var factory: ViewModelFactory
 
     private lateinit var welcomeViewModel: WelcomeViewModel
+
 
     override fun getViewModel(): WelcomeViewModel {
         welcomeViewModel = ViewModelProvider(this, factory).get(WelcomeViewModel::class.java)
@@ -30,13 +34,33 @@ class WelcomeActivity : BaseActivityBlack<ActivityWelcomeBinding, WelcomeViewMod
     override fun updateUI(savedInstanceState: Bundle?) {
 
         binding.btnCreateAccount.setOnClickListener {
-            goScreen(RegisterActivity::class.java, false, R.anim.slide_in_right, R.anim.slide_out_left)
+            goScreen(
+                RegisterActivity::class.java,
+                false,
+                R.anim.slide_in_right,
+                R.anim.slide_out_left
+            )
         }
 
         binding.btnLogin.setOnClickListener {
             goScreen(LoginActivity::class.java, false, R.anim.slide_in_right, R.anim.slide_out_left)
         }
 
+        welcomeViewModel.uiEventLiveData.observe(this, {
+            if (it == WelcomeViewModel.LOGIN_SUCCESS) {
+
+                goScreen(
+                    MessagesActivity::class.java,
+                    false, R.anim.slide_in_right, R.anim.slide_out_left
+                )
+
+            }
+        })
+
     }
 
+    override fun onStart() {
+        super.onStart()
+        welcomeViewModel.login()
+    }
 }
