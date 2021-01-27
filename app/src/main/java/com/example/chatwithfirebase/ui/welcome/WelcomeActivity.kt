@@ -1,6 +1,7 @@
 package com.example.chatwithfirebase.ui.welcome
 
 import android.os.Bundle
+import android.os.Handler
 import androidx.lifecycle.ViewModelProvider
 import com.example.chatwithfirebase.BR
 import com.example.chatwithfirebase.R
@@ -10,8 +11,6 @@ import com.example.chatwithfirebase.di.ViewModelFactory
 import com.example.chatwithfirebase.ui.login.LoginActivity
 import com.example.chatwithfirebase.ui.messages.MessagesActivity
 import com.example.chatwithfirebase.ui.register.RegisterActivity
-import com.example.chatwithfirebase.ui.register.RegisterViewModel
-import com.example.chatwithfirebase.utils.ToastUtils
 import javax.inject.Inject
 
 class WelcomeActivity : BaseActivityBlack<ActivityWelcomeBinding, WelcomeViewModel>() {
@@ -48,15 +47,20 @@ class WelcomeActivity : BaseActivityBlack<ActivityWelcomeBinding, WelcomeViewMod
 
         welcomeViewModel.uiEventLiveData.observe(this, {
             if (it == WelcomeViewModel.LOGIN_SUCCESS) {
-
-                goScreen(
-                    MessagesActivity::class.java,
-                    false, R.anim.slide_in_right, R.anim.slide_out_left
-                )
-
+                Handler().postDelayed({
+                    welcomeViewModel.setLoading(false)
+                    autoLogin()
+                }, 2000)
             }
         })
 
+    }
+
+    private fun autoLogin() {
+        goScreen(
+            MessagesActivity::class.java,
+            false, R.anim.slide_in_right, R.anim.slide_out_left
+        )
     }
 
     override fun onStart() {

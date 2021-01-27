@@ -7,7 +7,6 @@ import com.google.firebase.auth.FirebaseUser
 import javax.inject.Inject
 
 class WelcomeViewModel @Inject constructor() : BaseViewModel() {
-    var firebaseUser: FirebaseUser? = null
 
     companion object {
         // error
@@ -18,8 +17,8 @@ class WelcomeViewModel @Inject constructor() : BaseViewModel() {
     }
 
     fun login() {
-        firebaseUser = FirebaseAuth.getInstance().currentUser
-        if (firebaseUser != null) {
+        setLoading(true)
+        if (firebaseAuthRepository.getCurrentUser() != null) {
             uiEventLiveData.value = LOGIN_SUCCESS
         }
         else{

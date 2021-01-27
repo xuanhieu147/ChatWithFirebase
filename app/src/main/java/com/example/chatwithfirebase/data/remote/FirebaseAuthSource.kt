@@ -3,6 +3,7 @@ package com.example.chatwithfirebase.data.remote
 import com.example.chatwithfirebase.R
 import com.example.chatwithfirebase.base.constants.Constants
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import io.reactivex.Completable
@@ -15,7 +16,7 @@ class FirebaseAuthSource @Inject constructor(
     private val firebaseDatabase: FirebaseDatabase) {
 
     // get current user
-    private fun getCurrentUser() = firebaseAuth.currentUser
+     fun getCurrentUser() : FirebaseUser? = firebaseAuth.currentUser
 
     // get current userId
     private fun getCurrentUserId() = firebaseAuth.currentUser!!.uid

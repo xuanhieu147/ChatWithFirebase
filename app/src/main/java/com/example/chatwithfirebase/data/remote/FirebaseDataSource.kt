@@ -21,10 +21,10 @@ class FirebaseDataSource @Inject constructor(
     private val userList = ArrayList<User>()
 
     // get current user
-    private fun getCurrentUser() = firebaseAuth.currentUser
+     fun getCurrentUser() = firebaseAuth.currentUser
 
     // get current userId
-    private fun getCurrentUserId() = firebaseAuth.currentUser!!.uid
+     fun getCurrentUserId() = firebaseAuth.currentUser!!.uid
 
     // get all list user
     fun getAllUserList(): Observable<List<User>> {
