@@ -1,6 +1,7 @@
 package com.example.chatwithfirebase.base
 
 import androidx.lifecycle.ViewModel
+import com.example.chatwithfirebase.base.manager.SharedPreferencesManager
 import com.example.chatwithfirebase.data.repository.auth.FirebaseAuthRepository
 import com.example.chatwithfirebase.data.repository.data.FirebaseDataRepository
 import com.example.chatwithfirebase.di.rx.SchedulerProvider
@@ -22,6 +23,9 @@ abstract class BaseViewModel() : ViewModel() {
 
     @Inject
     lateinit var firebaseDataRepository: FirebaseDataRepository
+
+    @Inject
+    lateinit var sharedPreferencesManager: SharedPreferencesManager
 
     var compositeDisposable: CompositeDisposable = CompositeDisposable()
     private val mIsLoading = SingleLiveData<Boolean>()

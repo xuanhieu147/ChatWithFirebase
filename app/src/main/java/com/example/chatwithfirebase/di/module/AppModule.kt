@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.chatwithfirebase.base.constants.Constants
+import com.example.chatwithfirebase.base.manager.SharedPreferencesManager
 import com.example.chatwithfirebase.data.remote.FirebaseAuthSource
 import com.example.chatwithfirebase.data.remote.FirebaseDataSource
 import com.example.chatwithfirebase.data.repository.auth.FirebaseAuthRepository
@@ -49,6 +50,10 @@ class AppModule {
     @Named("horizontal")
     fun provideHorizontalLinearLayoutManager(context: Context) =
             LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
+
+    @Singleton
+    @Provides
+    fun provideSharedPreferencesManager(context: Context) = SharedPreferencesManager(context)
 
     /**
     Provide Firebase

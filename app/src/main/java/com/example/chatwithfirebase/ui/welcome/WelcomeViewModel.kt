@@ -9,21 +9,14 @@ import javax.inject.Inject
 class WelcomeViewModel @Inject constructor() : BaseViewModel() {
 
     companion object {
-        // error
-        const val ERROR_LOGIN = 10
-
         // success
-        const val LOGIN_SUCCESS = 9
+        const val AUTO_LOGIN = 9
     }
 
-    fun saveUserAndAutoLogin() {
-        setLoading(true)
-        if (firebaseAuthRepository.getCurrentUser() != null) {
-            uiEventLiveData.value = LOGIN_SUCCESS
-        }
-        else{
-            setLoading(false)
-            uiEventLiveData.value = ERROR_LOGIN
+    fun checkUserAndAutoLogin() {
+        if (!sharedPreferencesManager.getUser().isNullOrEmpty()) {
+            setLoading(true)
+            uiEventLiveData.value = AUTO_LOGIN
         }
     }
 }

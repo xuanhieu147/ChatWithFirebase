@@ -21,8 +21,6 @@ class MessagesActivity : BaseActivityBlack<ActivityMessagesBinding, MessagesView
 
     private lateinit var messagesViewModel: MessagesViewModel
 
-    val userList = ArrayList<User>()
-
     override fun getViewModel(): MessagesViewModel {
         messagesViewModel = ViewModelProvider(this, factory).get(MessagesViewModel::class.java)
         return messagesViewModel
@@ -43,11 +41,6 @@ class MessagesActivity : BaseActivityBlack<ActivityMessagesBinding, MessagesView
                 R.anim.slide_out_left
             )
         }
-
-        messagesViewModel.getData()
-        messagesViewModel.getUserList().observe(this,{
-            print(it)
-        })
 
     }
 

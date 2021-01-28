@@ -46,7 +46,7 @@ class WelcomeActivity : BaseActivityBlack<ActivityWelcomeBinding, WelcomeViewMod
         }
 
         welcomeViewModel.uiEventLiveData.observe(this, {
-            if (it == WelcomeViewModel.LOGIN_SUCCESS) {
+            if (it == WelcomeViewModel.AUTO_LOGIN) {
                 Handler().postDelayed({
                     autoLogin()
                 }, 2000)
@@ -56,6 +56,7 @@ class WelcomeActivity : BaseActivityBlack<ActivityWelcomeBinding, WelcomeViewMod
     }
 
     private fun autoLogin() {
+        welcomeViewModel.setLoading(false)
         goScreen(
             MessagesActivity::class.java,
             true, R.anim.slide_in_right, R.anim.slide_out_left
@@ -64,6 +65,6 @@ class WelcomeActivity : BaseActivityBlack<ActivityWelcomeBinding, WelcomeViewMod
 
     override fun onStart() {
         super.onStart()
-        welcomeViewModel.saveUserAndAutoLogin()
+        welcomeViewModel.checkUserAndAutoLogin()
     }
 }

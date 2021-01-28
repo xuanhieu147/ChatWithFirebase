@@ -5,6 +5,8 @@ import io.reactivex.Completable
 
 interface FirebaseAuthRepository {
 
+    fun getCurrentUserId(): String
+
     fun getCurrentUser() : FirebaseUser?
 
     fun registerUser(email: String, password: String, fullName: String) : Completable
