@@ -12,6 +12,9 @@
     <string name="full_name">Full Name</string>
     <string name="title_messages">Messages</string>
     <string name="time">Time</string>
+    <string name="status_online">Online</string>
+    <string name="type_message">Type Your Message</string>
+
 
     // error
     <string name="error">error</string>
