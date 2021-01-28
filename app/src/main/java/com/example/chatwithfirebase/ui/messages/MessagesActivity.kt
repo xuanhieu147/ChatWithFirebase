@@ -44,6 +44,11 @@ class MessagesActivity : BaseActivityBlack<ActivityMessagesBinding, MessagesView
             )
         }
 
+        messagesViewModel.getData()
+        messagesViewModel.getUserList().observe(this,{
+            print(it)
+        })
+
     }
 
 }

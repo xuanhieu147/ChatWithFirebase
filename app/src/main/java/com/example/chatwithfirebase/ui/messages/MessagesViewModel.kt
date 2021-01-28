@@ -7,28 +7,23 @@ import com.google.firebase.database.DataSnapshot
 import javax.inject.Inject
 
 class MessagesViewModel @Inject constructor() : BaseViewModel() {
+    private val liveDataUserList = MutableLiveData<List<User>>()
 
-    fun getDataSnapshot() {
+    fun getUserList(): MutableLiveData<List<User>> = liveDataUserList
+
+    fun getData() {
         compositeDisposable.add(
             firebaseDataRepository.getAllUser()
                 .compose(schedulerProvider.ioToMainObservableScheduler())
-                .subscribe(this::getDataSnapshotSuccess, this::errorDataSnapshot)
+                .subscribe(this::getListUserSuccess, this::errorGetDataListUser)
         )
     }
 
-    private fun getDataSnapshotSuccess(snapshot: DataSnapshot) {
-        for (dataSnapshot: DataSnapshot in snapshot.children) {
-            val user = snapshot.getValue(User::class.java)
-            user?.let {
-                if (user.userId != firebaseDataRepository.getCurrentUserId()) {
-
-                }
-            }
-
-        }
+    private fun getListUserSuccess(userList: List<User>) {
+            liveDataUserList.value = userList
     }
 
-    private fun errorDataSnapshot(t: Throwable) {
+    private fun errorGetDataListUser(t: Throwable) {
 
     }
 

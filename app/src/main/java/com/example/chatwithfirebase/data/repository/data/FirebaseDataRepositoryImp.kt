@@ -9,7 +9,7 @@ import javax.inject.Inject
 class FirebaseDataRepositoryImp @Inject constructor(
     private val firebaseDataSource: FirebaseDataSource) : FirebaseDataRepository {
 
-    override fun getAllUser(): Observable<DataSnapshot> {
+    override fun getAllUser(): Observable<List<User>> {
         return firebaseDataSource.getAllUser()
     }
 

@@ -19,7 +19,7 @@ class FirebaseAuthSource @Inject constructor(
      fun getCurrentUser() : FirebaseUser? = firebaseAuth.currentUser
 
     // get current userId
-    fun getCurrentUserId():String = firebaseAuth.currentUser!!.uid
+    fun getCurrentUserId() = firebaseAuth.currentUser!!.uid
 
     // Completable notify status success or fall
     fun registerUser(email: String, password: String, fullName: String): Completable {

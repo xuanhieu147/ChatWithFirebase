@@ -19,6 +19,9 @@ class FirebaseDataSource @Inject constructor(
     private val firebaseDatabase: FirebaseDatabase,
     private val firebaseStorage: FirebaseStorage) {
 
+    private val userList = ArrayList<User>()
+    private val chatList = ArrayList<User>()
+
 
     // get current user
     fun getCurrentUser(): FirebaseUser? = firebaseAuth.currentUser
@@ -27,13 +30,21 @@ class FirebaseDataSource @Inject constructor(
     fun getCurrentUserId():String = firebaseAuth.currentUser!!.uid
 
     // get all user
-    fun getAllUser(): Observable<DataSnapshot> {
+    fun getAllUser(): Observable<List<User>> {
         return Observable.create { emitter ->
             firebaseDatabase.reference.child("User")
                 .addValueEventListener(object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
-                        emitter.onNext(snapshot)
-                        emitter.onComplete()
+                        userList.clear()
+                        for (dataSnapshot: DataSnapshot in snapshot.children) {
+                            val user = dataSnapshot.getValue(User::class.java)
+                            user?.let {
+                                if (user.userId != getCurrentUserId()) {
+                                    userList.add(it)
+                                    emitter.onNext(userList)
+                                }
+                            }
+                        }
                     }
 
                     override fun onCancelled(error: DatabaseError) {

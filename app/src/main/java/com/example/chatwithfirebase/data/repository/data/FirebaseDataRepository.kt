@@ -6,7 +6,7 @@ import io.reactivex.Observable
 
 interface FirebaseDataRepository {
 
-    fun getAllUser():Observable<DataSnapshot>
+    fun getAllUser():Observable<List<User>>
 
     fun getAllMessage():Observable<DataSnapshot>
 

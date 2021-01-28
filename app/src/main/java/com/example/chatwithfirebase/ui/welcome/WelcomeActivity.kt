@@ -58,7 +58,7 @@ class WelcomeActivity : BaseActivityBlack<ActivityWelcomeBinding, WelcomeViewMod
     private fun autoLogin() {
         goScreen(
             MessagesActivity::class.java,
-            false, R.anim.slide_in_right, R.anim.slide_out_left
+            true, R.anim.slide_in_right, R.anim.slide_out_left
         )
     }
 

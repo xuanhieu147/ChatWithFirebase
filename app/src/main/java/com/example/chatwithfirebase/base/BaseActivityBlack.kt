@@ -154,6 +154,7 @@ abstract class BaseActivityBlack<T : ViewDataBinding, V : BaseViewModel> :
         val builder: AlertDialog.Builder = if (getThemResId() != -1)
             AlertDialog.Builder(this, getThemResId()) else AlertDialog.Builder(this)
 
+
         builder.setCancelable(isCancelable)
         builder.setView(if (getLayoutIdLoading() == -1) R.layout.item_loading else getLayoutIdLoading())
         loading = builder.create()
@@ -232,7 +233,7 @@ abstract class BaseActivityBlack<T : ViewDataBinding, V : BaseViewModel> :
 
     private fun noStatusBarAndColorBlack() {
         window.apply {
-            // setDecorFitsSystemWindows(true)
+             setDecorFitsSystemWindows(true)
             // addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
             // View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR: make the text of status bar to black
             statusBarColor = Color.TRANSPARENT
