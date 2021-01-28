@@ -1,64 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<layout>
+    <data>
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/imgAvatar"
-        android:layout_width="@dimen/_40sdp"
-        android:layout_height="@dimen/_40sdp"
-        android:layout_marginStart="@dimen/_8sdp"
-        android:layout_marginTop="@dimen/_8sdp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/logo"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tvFullName"
-        style="@style/LouisGeorgeCafeBold.TextColorBlue"
-        android:layout_width="wrap_content"
+        <variable
+            name="itemMessage"
+            type="com.example.chatwithfirebase.data.model.User" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_marginBottom="@dimen/_16sdp"
+        android:id="@+id/constraintLayout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/_8sdp"
-        android:text="@string/full_name"
-        android:textSize="@dimen/_14sdp"
-        app:layout_constraintStart_toEndOf="@+id/imgAvatar"
-        app:layout_constraintTop_toTopOf="@+id/imgAvatar" />
+        >
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tvMessage"
-        style="@style/LouisGeorgeCafe.TextColorBlack"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_8sdp"
-        android:text="@string/title_messages"
-        app:layout_constraintStart_toStartOf="@+id/tvFullName"
-        app:layout_constraintTop_toBottomOf="@+id/tvFullName" />
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/imgAvatar"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_marginStart="@dimen/_8sdp"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/logo"
+            imageUrl="@{itemMessage.linkImage}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tvTime"
-        style="@style/LouisGeorgeCafe.TextColorBlack"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_8sdp"
-        android:layout_marginEnd="@dimen/_8sdp"
-        android:text="@string/time"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvFullName"
+            style="@style/LouisGeorgeCafeBold.TextColorBlue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_8sdp"
+            android:text="@{itemMessage.fullName}"
+            android:textSize="@dimen/_16sdp"
+            app:layout_constraintStart_toEndOf="@+id/imgAvatar"
+            app:layout_constraintTop_toTopOf="@+id/imgAvatar" />
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tvNumberMessage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_8sdp"
-        android:text="1"
-        android:textSize="@dimen/_10sdp"
-        android:padding="@dimen/_2sdp"
-        style="@style/LouisGeorgeCafe.TextColorWhite"
-        android:background="@drawable/bg_textview"
-        android:gravity="center_horizontal"
-        app:layout_constraintEnd_toEndOf="@+id/tvTime"
-        app:layout_constraintTop_toBottomOf="@+id/tvTime" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvMessage"
+            style="@style/LouisGeorgeCafe.TextColorBlack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:text="@string/title_messages"
+            app:layout_constraintStart_toStartOf="@+id/tvFullName"
+            app:layout_constraintTop_toBottomOf="@+id/tvFullName" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvTime"
+            style="@style/LouisGeorgeCafe.TextColorBlack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:layout_marginEnd="@dimen/_8sdp"
+            android:text="@string/time"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvNumberMessage"
+            style="@style/LouisGeorgeCafe.TextColorWhite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:background="@drawable/bg_textview"
+            android:gravity="center_horizontal"
+            android:padding="@dimen/_2sdp"
+            android:text="1"
+            android:textSize="@dimen/_10sdp"
+            app:layout_constraintEnd_toEndOf="@+id/tvTime"
+            app:layout_constraintTop_toBottomOf="@+id/tvTime" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

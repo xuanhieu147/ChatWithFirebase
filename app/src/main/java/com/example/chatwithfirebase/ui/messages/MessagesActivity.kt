@@ -1,9 +1,9 @@
 package com.example.chatwithfirebase.ui.messages
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log.e
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.chatwithfirebase.BR
 import com.example.chatwithfirebase.R
 import com.example.chatwithfirebase.base.BaseActivityBlack
@@ -42,6 +42,16 @@ class MessagesActivity : BaseActivityBlack<ActivityMessagesBinding, MessagesView
             )
         }
 
+        messagesViewModel.getData()
+        messagesViewModel.getUserList().observe(this, Observer { userList ->
+            binding.rvListUser.also {
+                it.layoutManager = LinearLayoutManager(this)
+                it.setHasFixedSize(true)
+                it.adapter = MessagesAdapter(userList as ArrayList<User>)
+            }
+        })
+
     }
+
 
 }

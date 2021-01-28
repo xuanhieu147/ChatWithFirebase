@@ -13,7 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ChatWithFirebase">
-        <activity android:name=".ui.messages.MessagesActivity"></activity>
+        <activity android:name=".ui.chat.ChatActivity"></activity>
+        <activity android:name=".ui.messages.MessagesActivity" />
         <activity android:name=".ui.welcome.WelcomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
