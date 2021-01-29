@@ -3,8 +3,10 @@ package com.example.chatwithfirebase.base
 import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.View
+import android.view.Window
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.annotation.LayoutRes
@@ -16,10 +18,11 @@ import com.example.chatwithfirebase.R
 import dagger.android.AndroidInjection
 import dagger.android.support.DaggerAppCompatActivity
 
+
 /**
-  Status bar color black :v
+  Status bar text color black and background color white :v
  */
-abstract class BaseActivityBlack<T : ViewDataBinding, V : BaseViewModel> :
+abstract class BaseActivity<T : ViewDataBinding, V : BaseViewModel> :
     DaggerAppCompatActivity() {
 
     lateinit var binding: T
@@ -43,7 +46,7 @@ abstract class BaseActivityBlack<T : ViewDataBinding, V : BaseViewModel> :
     override fun onCreate(savedInstanceState: Bundle?) {
         performDI()
         super.onCreate(savedInstanceState)
-        noStatusBarAndColorBlack()
+        statusBarBackgroundWhite()
         performDataBinding()
         updateUI(savedInstanceState)
         initDialog()
@@ -231,13 +234,12 @@ abstract class BaseActivityBlack<T : ViewDataBinding, V : BaseViewModel> :
     }
 
 
-    private fun noStatusBarAndColorBlack() {
+    private fun statusBarBackgroundWhite() {
         window.apply {
-//             setDecorFitsSystemWindows(true)
-            // addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-            // View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR: make the text of status bar to black
-            statusBarColor = Color.TRANSPARENT
-            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+                clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+                addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+                decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+                statusBarColor = Color.TRANSPARENT
         }
     }
 

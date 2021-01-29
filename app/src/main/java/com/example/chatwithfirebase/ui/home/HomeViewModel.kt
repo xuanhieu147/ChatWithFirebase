@@ -1,17 +1,18 @@
-package com.example.chatwithfirebase.ui.messages
+package com.example.chatwithfirebase.ui.home
 
 import androidx.lifecycle.MutableLiveData
 import com.example.chatwithfirebase.base.BaseViewModel
 import com.example.chatwithfirebase.data.model.User
-import com.google.firebase.database.DataSnapshot
 import javax.inject.Inject
 
-class MessagesViewModel @Inject constructor() : BaseViewModel() {
+class HomeViewModel @Inject constructor() : BaseViewModel() {
+
     private val liveDataUserList = MutableLiveData<List<User>>()
 
     fun getUserList(): MutableLiveData<List<User>> = liveDataUserList
 
     fun getData() {
+        setLoading(true)
         compositeDisposable.add(
             firebaseDataRepository.getAllUser()
                 .compose(schedulerProvider.ioToMainObservableScheduler())
@@ -20,11 +21,13 @@ class MessagesViewModel @Inject constructor() : BaseViewModel() {
     }
 
     private fun getListUserSuccess(userList: List<User>) {
-            liveDataUserList.value = userList
+        setLoading(false)
+        liveDataUserList.value = userList
     }
 
     private fun errorGetDataListUser(t: Throwable) {
-
+        setLoading(false)
+        liveDataUserList.value = null
     }
 
 

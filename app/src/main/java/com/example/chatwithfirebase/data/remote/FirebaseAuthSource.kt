@@ -3,6 +3,8 @@ package com.example.chatwithfirebase.data.remote
 import android.util.Log.e
 import com.example.chatwithfirebase.R
 import com.example.chatwithfirebase.base.constants.Constants
+import com.example.chatwithfirebase.data.model.User
+import com.example.chatwithfirebase.utils.LogUtil
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DatabaseReference
@@ -14,8 +16,7 @@ import kotlin.collections.HashMap
 
 class FirebaseAuthSource @Inject constructor(
     private val firebaseAuth: FirebaseAuth,
-    private val firebaseDatabase: FirebaseDatabase
-) {
+    private val firebaseDatabase: FirebaseDatabase) {
 
     private val notValue = "Not value"
 
@@ -36,6 +37,7 @@ class FirebaseAuthSource @Inject constructor(
             firebaseAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener {
                     if (getCurrentUserId() != notValue) {
+                        // add information user
                         val hashMap: HashMap<Any, Any> = HashMap()
                         hashMap["userId"] = getCurrentUserId()
                         hashMap["email"] = email
@@ -56,7 +58,7 @@ class FirebaseAuthSource @Inject constructor(
                             }
                             .addOnFailureListener { e -> emitter.onError(e) }
                     } else {
-                        e("Err", "Firebase User Id not value")
+                       LogUtil.error("Err", "Firebase User Id not value")
                     }
                 }
                 .addOnFailureListener { e -> emitter.onError(e) }

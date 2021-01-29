@@ -6,20 +6,20 @@
     <data>
 
         <variable
-            name="chatViewModel"
-            type="com.example.chatwithfirebase.ui.chat.ChatViewModel" />
+            name="messageViewModel"
+            type="com.example.chatwithfirebase.ui.message.MessageViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.chat.ChatActivity">
+        tools:context=".ui.message.MessageActivity">
 
         <LinearLayout
             android:id="@+id/relativeLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_messages"
+            android:background="@drawable/bg_gradient"
             android:orientation="horizontal"
             android:padding="@dimen/_16sdp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -41,7 +41,7 @@
                 android:layout_height="@dimen/_40sdp"
                 android:layout_gravity="center"
                 android:layout_marginLeft="@dimen/_8sdp"
-                android:src="@drawable/logo_no_text" />
+                android:src="@drawable/ic_logo_no_text" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -90,7 +90,7 @@
             android:layout_marginStart="@dimen/_8sdp"
             android:layout_marginEnd="@dimen/_8sdp"
             android:layout_marginBottom="@dimen/_8sdp"
-            android:background="@drawable/bg_rl_chat"
+            android:background="@drawable/bg_gray_ee"
             android:padding="6dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -125,7 +125,7 @@
                 android:layout_height="@dimen/_40sdp"
                 android:layout_alignParentRight="true"
                 android:layout_marginLeft="8dp"
-                android:background="@drawable/bg_img_send"
+                android:background="@drawable/bg_blue_61"
                 android:padding="@dimen/_4sdp"
                 android:src="@drawable/send" />
         </RelativeLayout>

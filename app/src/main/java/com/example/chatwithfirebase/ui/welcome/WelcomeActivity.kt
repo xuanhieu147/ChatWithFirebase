@@ -5,15 +5,15 @@ import android.os.Handler
 import androidx.lifecycle.ViewModelProvider
 import com.example.chatwithfirebase.BR
 import com.example.chatwithfirebase.R
-import com.example.chatwithfirebase.base.BaseActivityBlack
+import com.example.chatwithfirebase.base.BaseActivity
 import com.example.chatwithfirebase.databinding.ActivityWelcomeBinding
 import com.example.chatwithfirebase.di.ViewModelFactory
 import com.example.chatwithfirebase.ui.login.LoginActivity
-import com.example.chatwithfirebase.ui.messages.MessagesActivity
+import com.example.chatwithfirebase.ui.home.HomeActivity
 import com.example.chatwithfirebase.ui.register.RegisterActivity
 import javax.inject.Inject
 
-class WelcomeActivity : BaseActivityBlack<ActivityWelcomeBinding, WelcomeViewModel>() {
+class WelcomeActivity : BaseActivity<ActivityWelcomeBinding, WelcomeViewModel>() {
 
     @Inject
     lateinit var factory: ViewModelFactory
@@ -58,7 +58,7 @@ class WelcomeActivity : BaseActivityBlack<ActivityWelcomeBinding, WelcomeViewMod
     private fun autoLogin() {
         welcomeViewModel.setLoading(false)
         goScreen(
-            MessagesActivity::class.java,
+            HomeActivity::class.java,
             true, R.anim.slide_in_right, R.anim.slide_out_left
         )
     }

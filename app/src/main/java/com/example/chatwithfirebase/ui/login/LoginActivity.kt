@@ -1,22 +1,18 @@
 package com.example.chatwithfirebase.ui.login
 
 import android.os.Bundle
-import android.util.Log.e
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.chatwithfirebase.BR
 import com.example.chatwithfirebase.R
-import com.example.chatwithfirebase.base.BaseActivityBlack
+import com.example.chatwithfirebase.base.BaseActivity
 import com.example.chatwithfirebase.base.BaseViewModel
 import com.example.chatwithfirebase.databinding.ActivityLoginBinding
 import com.example.chatwithfirebase.di.ViewModelFactory
-import com.example.chatwithfirebase.ui.messages.MessagesActivity
-import com.example.chatwithfirebase.ui.register.RegisterViewModel
-import com.example.chatwithfirebase.ui.welcome.WelcomeActivity
+import com.example.chatwithfirebase.ui.home.HomeActivity
 import com.example.chatwithfirebase.utils.ToastUtils
 import javax.inject.Inject
 
-class LoginActivity : BaseActivityBlack<ActivityLoginBinding, LoginViewModel>() {
+class LoginActivity : BaseActivity<ActivityLoginBinding, LoginViewModel>() {
 
     @Inject
     lateinit var factory: ViewModelFactory
@@ -51,7 +47,7 @@ class LoginActivity : BaseActivityBlack<ActivityLoginBinding, LoginViewModel>() 
                 LoginViewModel.LOGIN_SUCCESS-> {
                     ToastUtils.toastSuccess(this, R.string.login, R.string.success)
                     goScreen(
-                        MessagesActivity::class.java,
+                        HomeActivity::class.java,
                         false, R.anim.slide_in_right, R.anim.slide_out_left
                     )
                 }

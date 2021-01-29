@@ -3,12 +3,11 @@
     <data>
 
         <variable
-            name="itemMessage"
+            name="user"
             type="com.example.chatwithfirebase.data.model.User" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_marginBottom="@dimen/_16sdp"
         android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
@@ -22,8 +21,8 @@
             android:layout_marginStart="@dimen/_8sdp"
             android:layout_marginTop="@dimen/_8sdp"
             android:scaleType="centerCrop"
-            android:src="@drawable/logo"
-            imageUrl="@{itemMessage.linkImage}"
+            android:src="@drawable/ic_logo_chat"
+            imageUrl="@{user.linkImage}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -33,7 +32,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_8sdp"
-            android:text="@{itemMessage.fullName}"
+            android:text="@{user.fullName}"
             android:textSize="@dimen/_16sdp"
             app:layout_constraintStart_toEndOf="@+id/imgAvatar"
             app:layout_constraintTop_toTopOf="@+id/imgAvatar" />
@@ -65,7 +64,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_8sdp"
-            android:background="@drawable/bg_textview"
+            android:background="@drawable/bg_circle_blue_61"
             android:gravity="center_horizontal"
             android:padding="@dimen/_2sdp"
             android:text="1"

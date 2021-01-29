@@ -25,6 +25,7 @@
     <string name="re_type_password">Please enter your re password</string>
     <string name="type_full_name">Please enter your full name</string>
     <string name="re_password_not_same_password">re-enter password is not the same as password</string>
+    <string name ="error_get_data">error get data</string>
 
     // success
     <string name="success">Success</string>

@@ -22,13 +22,13 @@ object ToastUtils {
                 else -> ""
             }
 
-            MotionToast.darkColorToast(
+            MotionToast.createColorToast(
                 context as Activity,
                 tit,
                 mes,
                 MotionToast.TOAST_SUCCESS,
                 MotionToast.GRAVITY_BOTTOM,
-                MotionToast.LONG_DURATION,
+                MotionToast.SHORT_DURATION ,
                 ResourcesCompat.getFont(context, R.font.louis_george_cafe)
             )
         }
@@ -48,13 +48,13 @@ object ToastUtils {
                 else -> ""
             }
 
-            MotionToast.darkColorToast(
+            MotionToast.createColorToast(
                 context as Activity,
                 tit,
                 mes,
                 MotionToast.TOAST_ERROR,
                 MotionToast.GRAVITY_BOTTOM,
-                MotionToast.LONG_DURATION,
+                MotionToast.SHORT_DURATION ,
                ResourcesCompat.getFont(context, R.font.louis_george_cafe)
             )
         }
@@ -74,13 +74,13 @@ object ToastUtils {
                 else -> ""
             }
 
-            MotionToast.darkColorToast(
+            MotionToast.createColorToast(
                 context as Activity,
                 tit,
                 mes,
                 MotionToast.TOAST_WARNING,
                 MotionToast.GRAVITY_BOTTOM,
-                MotionToast.LONG_DURATION,
+                MotionToast.SHORT_DURATION ,
                ResourcesCompat.getFont(context, R.font.louis_george_cafe)
             )
         }
@@ -100,13 +100,13 @@ object ToastUtils {
                 else -> ""
             }
 
-            MotionToast.darkColorToast(
+            MotionToast.createColorToast(
                 context as Activity,
                 tit,
                 mes,
                 MotionToast.TOAST_INFO,
                 MotionToast.GRAVITY_BOTTOM,
-                MotionToast.LONG_DURATION,
+                MotionToast.SHORT_DURATION ,
                ResourcesCompat.getFont(context, R.font.louis_george_cafe)
             )
         }
@@ -126,13 +126,13 @@ object ToastUtils {
                 else -> ""
             }
 
-            MotionToast.darkColorToast(
+            MotionToast.createColorToast(
                 context as Activity,
                 tit,
                 mes,
                 MotionToast.TOAST_DELETE,
                 MotionToast.GRAVITY_BOTTOM,
-                MotionToast.LONG_DURATION,
+                MotionToast.SHORT_DURATION ,
                ResourcesCompat.getFont(context, R.font.louis_george_cafe)
             )
         }
