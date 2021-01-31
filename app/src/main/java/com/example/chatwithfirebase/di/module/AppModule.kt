@@ -23,6 +23,9 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import javax.inject.Named
 import javax.inject.Singleton
 
+/**
+ * Custom by Duc Minh
+ */
 
 @Module
 class AppModule {
@@ -40,24 +43,11 @@ class AppModule {
     @Singleton
     fun provideContext(app: ChatWithFirebase): Context = app
 
-
-    @Provides
-    @Named("vertical")
-    fun provideVerticalLinearLayoutManager(context: Context) =
-            LinearLayoutManager(context, RecyclerView.VERTICAL, false)
-
-    @Provides
-    @Named("horizontal")
-    fun provideHorizontalLinearLayoutManager(context: Context) =
-            LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
-
     @Singleton
     @Provides
     fun provideSharedPreferencesManager(context: Context) = SharedPreferencesManager(context)
 
-    /**
-    Provide Firebase
-     */
+    /** Provide Firebase */
 
     @Singleton
     @Provides

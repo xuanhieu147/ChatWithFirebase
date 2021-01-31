@@ -6,6 +6,10 @@
     <data>
 
         <variable
+            name="user"
+            type="com.example.chatwithfirebase.data.model.User" />
+
+        <variable
             name="messageViewModel"
             type="com.example.chatwithfirebase.ui.message.MessageViewModel" />
     </data>
@@ -13,12 +17,14 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/white"
+        android:fitsSystemWindows="true"
         tools:context=".ui.message.MessageActivity">
 
         <LinearLayout
             android:id="@+id/relativeLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/_90sdp"
             android:background="@drawable/bg_gradient"
             android:orientation="horizontal"
             android:padding="@dimen/_16sdp"
@@ -37,11 +43,13 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/imgAvatar"
+                imageUrl="@{user.avatarUser}"
                 android:layout_width="@dimen/_40sdp"
                 android:layout_height="@dimen/_40sdp"
                 android:layout_gravity="center"
                 android:layout_marginLeft="@dimen/_8sdp"
-                android:src="@drawable/ic_logo_no_text" />
+                android:src="@drawable/ic_logo_no_text"
+                />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -55,8 +63,8 @@
                     style="@style/LouisGeorgeCafeBold.TextColorWhite"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/full_name"
-                    android:textSize="@dimen/_16sdp" />
+                    android:text="@{user.fullName}"
+                    android:textSize="@dimen/_14sdp" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tvStatus"
@@ -64,6 +72,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_4sdp"
+                    android:textSize="@dimen/_11sdp"
                     android:text="@string/status_online" />
             </LinearLayout>
         </LinearLayout>
@@ -75,6 +84,8 @@
             android:layout_marginStart="@dimen/_8sdp"
             android:layout_marginTop="@dimen/_16sdp"
             android:layout_marginEnd="@dimen/_8sdp"
+            tools:listitem="@layout/message_item_right"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toTopOf="@+id/rl_bottom"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
@@ -87,44 +98,42 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_marginStart="@dimen/_8sdp"
-            android:layout_marginEnd="@dimen/_8sdp"
-            android:layout_marginBottom="@dimen/_8sdp"
+            android:layout_margin="@dimen/_8sdp"
             android:background="@drawable/bg_gray_ee"
-            android:padding="6dp"
+            android:padding="@dimen/_8sdp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
 
             <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/imgFile"
+                android:id="@+id/imgCamera"
                 android:layout_width="@dimen/_20sdp"
                 android:layout_height="@dimen/_20sdp"
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="8dp"
+                android:layout_marginLeft="@dimen/_4sdp"
                 android:src="@drawable/camera" />
 
             <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/edMessage"
+                android:id="@+id/edtMessage"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 style="@style/LouisGeorgeCafe.TextColorBlack"
-                android:textSize="@dimen/_16sdp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
+                android:textSize="@dimen/_13sdp"
+                android:layout_marginLeft="@dimen/_8sdp"
+                android:layout_marginRight="@dimen/_8sdp"
                 android:layout_toLeftOf="@id/imgSend"
-                android:layout_toRightOf="@id/imgFile"
+                android:layout_toRightOf="@id/imgCamera"
                 android:background="@android:color/transparent"
                 android:hint="@string/type_message" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/imgSend"
-                android:layout_width="@dimen/_40sdp"
-                android:layout_height="@dimen/_40sdp"
+                android:layout_width="@dimen/_24sdp"
+                android:layout_height="@dimen/_24sdp"
                 android:layout_alignParentRight="true"
-                android:layout_marginLeft="8dp"
+                android:layout_centerVertical="true"
                 android:background="@drawable/bg_blue_61"
                 android:padding="@dimen/_4sdp"
                 android:src="@drawable/send" />

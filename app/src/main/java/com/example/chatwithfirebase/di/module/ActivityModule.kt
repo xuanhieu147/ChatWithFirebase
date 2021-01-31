@@ -1,13 +1,18 @@
 package com.example.chatwithfirebase.di.module
 
-import com.example.chatwithfirebase.ui.home.module.HomeModule
+import com.example.chatwithfirebase.ui.home.module.UserModule
 import com.example.chatwithfirebase.ui.message.MessageActivity
 import com.example.chatwithfirebase.ui.login.LoginActivity
 import com.example.chatwithfirebase.ui.home.HomeActivity
+import com.example.chatwithfirebase.ui.message.module.MessageModule
 import com.example.chatwithfirebase.ui.register.RegisterActivity
 import com.example.chatwithfirebase.ui.welcome.WelcomeActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
+
+/**
+ * Created by Duc Minh
+ */
 
 @Module
 abstract class ActivityModule {
@@ -21,9 +26,9 @@ abstract class ActivityModule {
     @ContributesAndroidInjector
     abstract fun contributeLoginActivity(): LoginActivity
 
-    @ContributesAndroidInjector(modules = [HomeModule::class])
+    @ContributesAndroidInjector(modules = [UserModule::class])
     abstract fun contributeHomeActivity(): HomeActivity
 
-    @ContributesAndroidInjector
+    @ContributesAndroidInjector(modules = [MessageModule::class])
     abstract fun contributeMessageActivity(): MessageActivity
 }

@@ -2,6 +2,10 @@ package com.example.chatwithfirebase.utils
 
 import java.util.regex.Pattern
 
+/**
+ * Copy by Duc Minh
+ */
+
 object EmailUtil {
     private val EMAIL_ADDRESS: Pattern = Pattern.compile(
         "[a-zA-Z0-9\\+\\.\\_\\%\\-\\+]{1,256}" +

@@ -6,6 +6,10 @@
     <data>
 
         <variable
+            name="user"
+            type="com.example.chatwithfirebase.data.model.User" />
+
+        <variable
             name="homeViewModel"
             type="com.example.chatwithfirebase.ui.home.HomeViewModel" />
     </data>
@@ -19,7 +23,7 @@
             <RelativeLayout
                 android:id="@+id/relativeLayout"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_150sdp"
+                android:layout_height="@dimen/_130sdp"
                 android:padding="@dimen/_16sdp"
                 android:background="@drawable/bg_gradient"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -46,7 +50,9 @@
                     android:layout_width="@dimen/_20sdp"
                     android:layout_height="@dimen/_20sdp"
                     android:layout_alignParentRight="true"
-                    android:src="@drawable/ic_logo_chat" />
+                    android:src="@drawable/ic_logo_chat"
+                    imageUrl="@{user.avatarUser}"
+                    />
 
                 <androidx.appcompat.widget.SearchView
                     android:id="@+id/searchView"
@@ -55,7 +61,9 @@
                     android:layout_below="@id/tvTitle"
                     android:layout_marginTop="@dimen/_32sdp"
                     android:background="@drawable/bg_white_opacity_20"
-                    app:searchIcon="@drawable/ic_search" />
+                    app:searchIcon="@drawable/ic_search"
+                    android:iconifiedByDefault="false"
+                    />
             </RelativeLayout>
 
 
@@ -63,6 +71,7 @@
                 android:id="@+id/rvListUser"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:listitem="@layout/item_user"
                 android:layout_margin="@dimen/_8sdp"
                 app:layout_constraintBottom_toBottomOf="parent"

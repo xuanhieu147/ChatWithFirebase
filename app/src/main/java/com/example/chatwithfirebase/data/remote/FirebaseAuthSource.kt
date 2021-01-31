@@ -14,6 +14,10 @@ import java.util.*
 import javax.inject.Inject
 import kotlin.collections.HashMap
 
+/**
+ * Code by Duc Minh
+ */
+
 class FirebaseAuthSource @Inject constructor(
     private val firebaseAuth: FirebaseAuth,
     private val firebaseDatabase: FirebaseDatabase) {
@@ -42,10 +46,12 @@ class FirebaseAuthSource @Inject constructor(
                         hashMap["userId"] = getCurrentUserId()
                         hashMap["email"] = email
                         hashMap["password"] = password
-                        hashMap["linkImage"] = Constants.AVATAR_DEFAULT_USER
+                        hashMap["avatarUser"] = Constants.AVATAR_DEFAULT_USER
                         hashMap["fullName"] = fullName
                         hashMap["online"] = "true"
-
+                        hashMap["lastMessage"] = ""
+                        hashMap ["date"] = ""
+                        hashMap ["time"] = ""
                         // add user
                         firebaseDatabase.reference
                             .child("User")

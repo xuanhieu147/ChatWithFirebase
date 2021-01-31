@@ -6,6 +6,10 @@ import android.content.Context
 import android.content.SharedPreferences
 import com.example.chatwithfirebase.base.constants.Constants
 
+/**
+ * Custom by Duc Minh
+ */
+
 class SharedPreferencesManager(context: Context) {
 
     private val sharedPreferences: SharedPreferences = context.getSharedPreferences(
@@ -45,6 +49,7 @@ class SharedPreferencesManager(context: Context) {
         editor.remove(key).apply()
     }
 
+    // USER
     fun saveUser(firebaseUserUId: String?) {
         putConfig(Constants.FIREBASE_USER_UID, firebaseUserUId)
     }
@@ -54,6 +59,18 @@ class SharedPreferencesManager(context: Context) {
 
     fun removeUser() {
         removeConfig(Constants.FIREBASE_USER_UID)
+    }
+
+    // AVATAR
+    fun saveUrlAvatar(urlAvatar:String?){
+        putConfig(Constants.URL_AVATAR, urlAvatar)
+    }
+
+    fun getUrlAvatar() : String = getString(Constants.URL_AVATAR, "")
+
+
+    fun removeUrlAvatar() {
+        removeConfig(Constants.URL_AVATAR)
     }
 
 }

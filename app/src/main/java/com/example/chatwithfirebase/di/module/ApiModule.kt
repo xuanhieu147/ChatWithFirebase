@@ -11,6 +11,9 @@ import retrofit2.converter.scalars.ScalarsConverterFactory
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
+/**
+ * Created by Duc Minh
+ */
 
 @Module
 class ApiModule {

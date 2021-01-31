@@ -5,6 +5,10 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
 
+/**
+ * Copy by Duc Minh
+ */
+
 object NetworkUtils {
     fun isNetworkAvailable(context: Context?): Boolean {
         if (context == null) return false

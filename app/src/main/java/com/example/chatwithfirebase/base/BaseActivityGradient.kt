@@ -17,7 +17,8 @@ import dagger.android.support.DaggerAppCompatActivity
 
 
 /**
-Status bar text color white and background gradient :v
+ * Custom by Duc Minh
+ * Status bar text color white and background gradient :v
  */
 abstract class BaseActivityGradient<T : ViewDataBinding, V : BaseViewModel> :
     DaggerAppCompatActivity() {
@@ -131,6 +132,25 @@ abstract class BaseActivityGradient<T : ViewDataBinding, V : BaseViewModel> :
         if (isFinish) {
             finish()
         }
+    }
+
+    open fun goScreenAndPutString(activityClazz: Class<*>, isFinish: Boolean,idReceiver:String,avatarSender:String,vararg aniInt: Int) {
+        val intent = Intent(this, activityClazz)
+        intent.putExtra("idReceiver",idReceiver)
+        intent.putExtra("avatarSender",avatarSender)
+        startActivity(intent)
+        overridePendingTransition(aniInt[0], aniInt[1])
+        if (isFinish) {
+            finish()
+        }
+    }
+
+    open fun getIdReceiver() : String? {
+        return intent.getStringExtra("idReceiver")
+    }
+
+    open fun getAvatarSender() : String? {
+        return intent.getStringExtra("avatarSender")
     }
 
     open fun launchIntent(intent: Intent, isFinish: Boolean, vararg aniInt: Int) {

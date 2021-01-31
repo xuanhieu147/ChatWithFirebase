@@ -2,18 +2,18 @@ package com.example.chatwithfirebase.ui.home
 
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.chatwithfirebase.BR
 import com.example.chatwithfirebase.base.BaseActivityGradient
 import com.example.chatwithfirebase.R
+import com.example.chatwithfirebase.base.OnItemClickListener
+import com.example.chatwithfirebase.base.manager.SharedPreferencesManager
 import com.example.chatwithfirebase.databinding.ActivityHomeBinding
 import com.example.chatwithfirebase.di.ViewModelFactory
-import com.example.chatwithfirebase.ui.home.adapter.HomeAdapter
-import com.example.chatwithfirebase.utils.ToastUtils
+import com.example.chatwithfirebase.ui.home.adapter.UserAdapter
+import com.example.chatwithfirebase.ui.message.MessageActivity
 import javax.inject.Inject
-import javax.inject.Named
 
-class HomeActivity : BaseActivityGradient<ActivityHomeBinding, HomeViewModel>() {
+class HomeActivity : BaseActivityGradient<ActivityHomeBinding, HomeViewModel>(),OnItemClickListener{
 
     @Inject
     lateinit var factory: ViewModelFactory
@@ -21,11 +21,10 @@ class HomeActivity : BaseActivityGradient<ActivityHomeBinding, HomeViewModel>() 
     private lateinit var homeViewModel: HomeViewModel
 
     @Inject
-    @field:Named("vertical")
-    lateinit var layoutManager: LinearLayoutManager
+    lateinit var userAdapter: UserAdapter
 
     @Inject
-    lateinit var homeAdapter: HomeAdapter
+    lateinit var sharedPreferencesManager: SharedPreferencesManager
 
     override fun getViewModel(): HomeViewModel {
         homeViewModel = ViewModelProvider(this, factory).get(HomeViewModel::class.java)
@@ -37,23 +36,46 @@ class HomeActivity : BaseActivityGradient<ActivityHomeBinding, HomeViewModel>() 
     override fun getBindingVariable(): Int = BR.homeViewModel
 
     override fun updateUI(savedInstanceState: Bundle?) {
-        // set adapter
-        binding.rvListUser.setHasFixedSize(true)
-        binding.rvListUser.layoutManager = layoutManager
-        binding.rvListUser.adapter = homeAdapter
 
-        // get data user
-        homeViewModel.getData()
-        homeViewModel.getUserList().observe(this,{
-            if(it!=null){
-                homeAdapter.clearItems()
-                homeAdapter.addItems(it)
-            }
-            else{
-                ToastUtils.toastError(this.applicationContext,R.string.error,R.string.error_get_data)
+        // get info user
+        homeViewModel.getInfoUser()
+        homeViewModel.getUser().observe(this,{
+            it?.let {
+                binding.user = it
+                sharedPreferencesManager.saveUrlAvatar(it.avatarUser)
             }
         })
 
+        // set adapter
+        binding.rvListUser.apply{
+            setHasFixedSize(true)
+            adapter = userAdapter
+        }
+
+        // get all user
+        homeViewModel.getAllUser()
+        homeViewModel.getUserList().observe(this, {
+            if (it != null) {
+                userAdapter.clearItems()
+                userAdapter.addItems(it)
+            } else {
+                toast(resources.getString(R.string.error_get_data))
+            }
+        })
+
+        // on Item Click
+        userAdapter.setOnItemClickListener(this)
+        homeViewModel.getInfoReceiver().observe(this,{
+            goScreenAndPutString(
+                MessageActivity::class.java,
+                false,it.userId,sharedPreferencesManager.getUrlAvatar() ,R.anim.slide_in_right, R.anim.slide_out_left,
+            )
+        })
+
+    }
+
+    override fun onItemClick(position: Int) {
+        homeViewModel.onItemClickGetPositionUser(position)
     }
 
 

@@ -102,10 +102,4 @@
         <item name="android:paddingHorizontal" tools:targetApi="o">@dimen/_8sdp</item>
     </style>
 
-    <style name="Search" parent="Widget.AppCompat.SearchView" >
-
-
-    </style>
-
-
 </resources>

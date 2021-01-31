@@ -1,8 +1,9 @@
 package com.example.chatwithfirebase.data.remote
 
 import android.net.Uri
-import com.example.chatwithfirebase.data.model.Chat
+import com.example.chatwithfirebase.data.model.Message
 import com.example.chatwithfirebase.data.model.User
+import com.example.chatwithfirebase.utils.DateUtils
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DataSnapshot
@@ -11,13 +12,14 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
 import io.reactivex.Completable
-import io.reactivex.Emitter
-import io.reactivex.Flowable
 import javax.inject.Inject
 import io.reactivex.Observable
-import java.lang.reflect.Array
 import java.util.*
 import kotlin.collections.HashMap
+
+/**
+ * Code by Duc Minh
+ */
 
 class FirebaseDataSource @Inject constructor(
     private val firebaseAuth: FirebaseAuth,
@@ -25,7 +27,7 @@ class FirebaseDataSource @Inject constructor(
     private val firebaseStorage: FirebaseStorage) {
 
     private val userList = ArrayList<User>()
-    private val chatList = ArrayList<Chat>()
+    private val messageList = ArrayList<Message>()
 
     private val notValue = "Not value"
     private val fileName = "image" + UUID.randomUUID().toString()
@@ -42,8 +44,48 @@ class FirebaseDataSource @Inject constructor(
         return notValue
     }
 
+    fun getInfoReceiver(userId:String):Observable<User>{
+        return Observable.create { emitter ->
+            firebaseDatabase.reference.child("User").child(userId)
+                .addValueEventListener(object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        val user = snapshot.getValue(User::class.java)
+                        user?.let {
+                            emitter.onNext(it)
+                        }
+                    }
+
+                    override fun onCancelled(error: DatabaseError) {
+                        emitter.onError(error.toException())
+                    }
+
+                })
+
+        }
+    }
+
+    fun getInfoUser():Observable<User>{
+        return Observable.create { emitter ->
+            firebaseDatabase.reference.child("User").child(getCurrentUserId())
+                .addValueEventListener(object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        val user = snapshot.getValue(User::class.java)
+                        user?.let {
+                            emitter.onNext(it)
+                        }
+                    }
+
+                    override fun onCancelled(error: DatabaseError) {
+                        emitter.onError(error.toException())
+                    }
+
+                })
+
+        }
+    }
+
     // get all user
-    fun getAllUser(): Observable<List<User>> {
+    fun getAllUser(): Observable<ArrayList<User>> {
         return Observable.create { emitter ->
             firebaseDatabase.reference.child("User")
                 .addValueEventListener(object : ValueEventListener {
@@ -68,19 +110,21 @@ class FirebaseDataSource @Inject constructor(
     }
 
     // get all message follow people chat
-    fun getAllMessage(senderId: String, receiverId: String): Observable<List<Chat>> {
+    fun getAllMessage(receiverId: String): Observable<ArrayList<Message>> {
         return Observable.create { emitter ->
-            firebaseDatabase.reference.child("Chat")
+            firebaseDatabase.reference.child("Message")
                 .addValueEventListener(object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
-                        chatList.clear()
+                        messageList.clear()
                         for (dataSnapshot: DataSnapshot in snapshot.children) {
-                            val chat = dataSnapshot.getValue(Chat::class.java)
-                            chat?.let {
-                                if (chat.senderId == senderId && chat.receiverId == receiverId ||
-                                    chat.senderId == receiverId && chat.receiverId == senderId
-                                ) {
-                                    chatList.add(it)
+                            val message = dataSnapshot.getValue(Message::class.java)
+                            message?.let {
+                                val senderId = getCurrentUserId()
+                                if (message.senderId == senderId && message.receiverId == receiverId ||
+                                    message.senderId == receiverId && message.receiverId == senderId) {
+
+                                    messageList.add(it)
+                                    emitter.onNext(messageList)
                                 }
                             }
                         }
@@ -94,25 +138,54 @@ class FirebaseDataSource @Inject constructor(
 
     }
 
-    fun sendMessage(senderId: String, receiverId: String, message: String): Completable {
+    fun sendMessage(receiverId: String, message: String,avatarSender:String,imageUpload:String): Completable {
         return Completable.create { emitter ->
             // add chat message
-            val hashMap: HashMap<Any, Any> = HashMap()
-            hashMap["senderId"] = senderId
-            hashMap["receiverId"] = receiverId
-            hashMap["message"] = message
 
-            firebaseDatabase.reference
-                .child("Chat")
-                .push().setValue(hashMap)
-                .addOnCompleteListener {
-                    if (it.isSuccessful) {
-                        emitter.onComplete()
+            if(imageUpload.isNullOrEmpty()) {
+                val hashMap: HashMap<Any, Any> = HashMap()
+                hashMap["senderId"] = getCurrentUserId()
+                hashMap["receiverId"] = receiverId
+                hashMap["message"] = message
+                hashMap["avatarSender"] = avatarSender
+                hashMap["imageUpload"] = ""
+                hashMap["date"] = DateUtils.getCurrentDate()!!
+                hashMap["time"] = DateUtils.getCurrentTime()!!
+
+                firebaseDatabase.reference
+                    .child("Message")
+                    .push().setValue(hashMap)
+                    .addOnCompleteListener {
+                        if (it.isSuccessful) {
+                            emitter.onComplete()
+                        }
                     }
-                }
-                .addOnFailureListener {
-                    emitter.onError(it)
-                }
+                    .addOnFailureListener {
+                        emitter.onError(it)
+                    }
+            }
+
+            else {
+                val hashMap: HashMap<Any, Any> = HashMap()
+                hashMap["senderId"] = getCurrentUserId()
+                hashMap["receiverId"] = receiverId
+                hashMap["message"] = ""
+                hashMap["avatarSender"] = avatarSender
+                hashMap["date"] = DateUtils.getCurrentDate()!!
+                hashMap["time"] = DateUtils.getCurrentTime()!!
+
+                firebaseDatabase.reference
+                    .child("Message")
+                    .push().setValue(hashMap)
+                    .addOnCompleteListener {
+                        if (it.isSuccessful) {
+                            emitter.onComplete()
+                        }
+                    }
+                    .addOnFailureListener {
+                        emitter.onError(it)
+                    }
+            }
 
         }
     }
@@ -124,7 +197,7 @@ class FirebaseDataSource @Inject constructor(
                     .addOnSuccessListener {
                         // update image profile user
                         val hashMap: HashMap<String, String> = HashMap()
-                        hashMap["linkImage"] = filePath.toString()
+                        hashMap["avatarSender"] = filePath.toString()
                         firebaseDatabase.reference
                             .child("User")
                             .child(getCurrentUserId())
@@ -138,6 +211,23 @@ class FirebaseDataSource @Inject constructor(
 
                     }
             }
+        }
+    }
+
+    fun updateLastMessageAndTime(userId:String,lastMessage:String,date:String,time:String): Completable {
+        return Completable.create{emitter->
+            val hashMap: HashMap<String, String> = HashMap()
+            hashMap["lastMessage"] = lastMessage
+            hashMap["date"] = date
+            hashMap["time"] = time
+            firebaseDatabase.reference.child("User").child(userId)
+                .updateChildren(hashMap as Map<String, String>)
+                .addOnCompleteListener {
+                    emitter.onComplete()
+                }
+                .addOnFailureListener {
+                    emitter.onError(it)
+                }
         }
     }
 

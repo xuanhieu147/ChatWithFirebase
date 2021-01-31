@@ -4,7 +4,10 @@ data class User(
     var userId: String = "",
     var email: String = "",
     var password: String = "",
-    var linkImage: String = "",
+    var avatarUser: String = "",
     var fullName: String = "",
-    var online: String = ""
+    var online: String = "",
+    var lastMessage: String = "",
+    var date: String = "",
+    var time: String = ""
 )

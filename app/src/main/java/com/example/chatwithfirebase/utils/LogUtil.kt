@@ -2,6 +2,10 @@ package com.example.chatwithfirebase.utils
 
 import android.util.Log
 
+/**
+ * Copy by Duc Minh
+ */
+
 object LogUtil {
 
     var isDebug = false
