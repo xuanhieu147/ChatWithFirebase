@@ -84,17 +84,17 @@ class HomeActivity : BaseActivityGradient<ActivityHomeBinding, HomeViewModel>(),
         })
 
         // search for user
-        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                return false
-            }
-
-            override fun onQueryTextChange(newText: String?): Boolean {
-                homeViewModel.searchForUser(newText.toString().toLowerCase())
-                return false
-            }
-
-        })
+//        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+//            override fun onQueryTextSubmit(query: String?): Boolean {
+//                return false
+//            }
+//
+//            override fun onQueryTextChange(newText: String?): Boolean {
+//                homeViewModel.searchForUser(newText.toString().toLowerCase())
+//                return false
+//            }
+//
+//        })
 
         binding.imgSetting.setOnClickListener {
             goScreen(
