@@ -7,7 +7,9 @@ import com.example.chatwithfirebase.di.ViewModelKey
 import com.example.chatwithfirebase.ui.message.MessageViewModel
 import com.example.chatwithfirebase.ui.login.LoginViewModel
 import com.example.chatwithfirebase.ui.home.HomeViewModel
+import com.example.chatwithfirebase.ui.notification.NotificationViewModel
 import com.example.chatwithfirebase.ui.register.RegisterViewModel
+import com.example.chatwithfirebase.ui.setting.SettingViewModel
 import com.example.chatwithfirebase.ui.welcome.WelcomeViewModel
 import dagger.Binds
 import dagger.Module
@@ -48,5 +50,14 @@ abstract class ViewModelModule {
     @ViewModelKey(MessageViewModel::class)
     abstract fun messageViewModel(viewModel: MessageViewModel): ViewModel
 
+    @Binds
+    @IntoMap
+    @ViewModelKey(SettingViewModel::class)
+    abstract fun settingViewModel(viewModel: SettingViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(NotificationViewModel::class)
+    abstract fun notificationViewModel(viewModel: NotificationViewModel): ViewModel
 }
 

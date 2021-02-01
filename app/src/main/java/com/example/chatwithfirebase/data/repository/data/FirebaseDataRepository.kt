@@ -12,6 +12,9 @@ interface FirebaseDataRepository {
 
     fun getAllUser():Observable<ArrayList<User>>
 
+    fun searchForUser(str: String):Observable<ArrayList<User>>
+
+
     fun getAllMessage(receiverId: String):Observable<ArrayList<Message>>
 
     fun sendMessage(receiverId: String, message: String,avatarSender:String,imageUpload:String):Completable

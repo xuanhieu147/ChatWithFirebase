@@ -5,16 +5,20 @@
     <string name="introduce_2">Please sign in or create an account below.</string>
     <string name="register">Create An Account</string>
     <string name="login">Login</string>
+    <string name="logout">Logout</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="re_password">Re Password</string>
     <string name="username">UserName</string>
     <string name="full_name">Full Name</string>
-    <string name="title_messages">Messages</string>
+    <string name="title_messages">MESSAGES</string>
     <string name="time">Time</string>
     <string name="status_online">Online</string>
     <string name="type_message">Type Your Message</string>
-
+    <string name="setting">SETTING</string>
+    <string name="notifications">Notifications</string>
+    <string name="title_notifications">NOTIFICATIONS</string>
+    <string name="on_off">On/Off</string>
 
     // error
     <string name="error">error</string>
@@ -25,7 +29,7 @@
     <string name="re_type_password">Please enter your re password</string>
     <string name="type_full_name">Please enter your full name</string>
     <string name="re_password_not_same_password">re-enter password is not the same as password</string>
-    <string name ="error_get_data">error get data</string>
+    <string name="error_get_data">error get data</string>
 
     // success
     <string name="success">Success</string>
