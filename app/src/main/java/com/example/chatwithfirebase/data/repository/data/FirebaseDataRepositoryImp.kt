@@ -17,6 +17,10 @@ class FirebaseDataRepositoryImp @Inject constructor(
         return firebaseDataSource.getAllUser()
     }
 
+    override fun getAllUserChatted(): Observable<ArrayList<User>> {
+       return firebaseDataSource.getAllUserChatted()
+    }
+
     override fun getAllMessage(receiverId: String): Observable<ArrayList<Message>> {
         return firebaseDataSource.getAllMessage(receiverId)
     }

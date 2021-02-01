@@ -9,6 +9,7 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor() : BaseViewModel() {
 
     private val liveDataUserList = MutableLiveData<List<User>>()
+    private val liveDataUserChattedList = MutableLiveData<List<User>>()
     private val liveDataInfoReceiver = SingleLiveData<User>()
     private val liveDataInfoUser = MutableLiveData<User>()
 
@@ -33,10 +34,37 @@ class HomeViewModel @Inject constructor() : BaseViewModel() {
         liveDataUserList.value = null
     }
 
+    // get all user chatted
+    fun getUserChattedList(): MutableLiveData<List<User>> = liveDataUserChattedList
+    fun getAllUserChatted() {
+        setLoading(true)
+        compositeDisposable.add(
+            firebaseDataRepository.getAllUserChatted()
+                .compose(schedulerProvider.ioToMainObservableScheduler())
+                .subscribe(this::getAllUserChattedSuccess, this::getAllUserChattedError)
+        )
+    }
+
+    private fun getAllUserChattedSuccess(userList: List<User>) {
+        setLoading(false)
+        liveDataUserChattedList.value = userList
+    }
+
+    private fun getAllUserChattedError(t: Throwable) {
+        setLoading(false)
+        liveDataUserChattedList.value = null
+    }
+
     // get info receiver when item click
     fun getInfoReceiver(): MutableLiveData<User> = liveDataInfoReceiver
     fun onItemClickGetPositionUser(position: Int) {
         liveDataUserList.value?.let {
+            liveDataInfoReceiver.value = it[position]
+        }
+    }
+
+    fun onItemClickGetPositionUserChatted(position: Int) {
+        liveDataUserChattedList.value?.let {
             liveDataInfoReceiver.value = it[position]
         }
     }

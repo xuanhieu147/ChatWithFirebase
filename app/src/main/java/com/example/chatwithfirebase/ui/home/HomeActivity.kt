@@ -3,22 +3,27 @@ package com.example.chatwithfirebase.ui.home
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
 import com.example.chatwithfirebase.BR
-import com.example.chatwithfirebase.base.BaseActivityGradient
 import com.example.chatwithfirebase.R
+import com.example.chatwithfirebase.base.BaseActivityGradient
 import com.example.chatwithfirebase.base.OnItemClickListener
+import com.example.chatwithfirebase.base.OnItemClickListener2
 import com.example.chatwithfirebase.base.manager.SharedPreferencesManager
 import com.example.chatwithfirebase.databinding.ActivityHomeBinding
 import com.example.chatwithfirebase.di.ViewModelFactory
+import com.example.chatwithfirebase.ui.home.adapter.UserChattedAdapter
 import com.example.chatwithfirebase.ui.home.adapter.UserAdapter
 import com.example.chatwithfirebase.ui.message.MessageActivity
 import javax.inject.Inject
 
-class HomeActivity : BaseActivityGradient<ActivityHomeBinding, HomeViewModel>(),OnItemClickListener{
+class HomeActivity : BaseActivityGradient<ActivityHomeBinding, HomeViewModel>(),OnItemClickListener,OnItemClickListener2{
 
     @Inject
     lateinit var factory: ViewModelFactory
 
     private lateinit var homeViewModel: HomeViewModel
+
+    @Inject
+    lateinit var userChattedAdapter: UserChattedAdapter
 
     @Inject
     lateinit var userAdapter: UserAdapter
@@ -39,7 +44,7 @@ class HomeActivity : BaseActivityGradient<ActivityHomeBinding, HomeViewModel>(),
 
         // get info user
         homeViewModel.getInfoUser()
-        homeViewModel.getUser().observe(this,{
+        homeViewModel.getUser().observe(this, {
             it?.let {
                 binding.user = it
                 sharedPreferencesManager.saveUrlAvatar(it.avatarUser)
@@ -47,10 +52,27 @@ class HomeActivity : BaseActivityGradient<ActivityHomeBinding, HomeViewModel>(),
         })
 
         // set adapter
+        binding.rvListChattedUser.apply{
+            setHasFixedSize(true)
+            adapter = userChattedAdapter
+        }
+
         binding.rvListUser.apply{
             setHasFixedSize(true)
             adapter = userAdapter
         }
+
+        // get all user chatted
+        homeViewModel.getAllUserChatted()
+        homeViewModel.getUserChattedList().observe(this, {
+            if (it != null) {
+                userChattedAdapter.clearItems()
+                userChattedAdapter.addItems(it)
+            } else {
+                toast(resources.getString(R.string.error_get_data))
+            }
+        })
+
 
         // get all user
         homeViewModel.getAllUser()
@@ -65,10 +87,15 @@ class HomeActivity : BaseActivityGradient<ActivityHomeBinding, HomeViewModel>(),
 
         // on Item Click
         userAdapter.setOnItemClickListener(this)
-        homeViewModel.getInfoReceiver().observe(this,{
+        userChattedAdapter.setOnItemClickListener2(this)
+        homeViewModel.getInfoReceiver().observe(this, {
             goScreenAndPutString(
                 MessageActivity::class.java,
-                false,it.userId,sharedPreferencesManager.getUrlAvatar() ,R.anim.slide_in_right, R.anim.slide_out_left,
+                false,
+                it.userId,
+                sharedPreferencesManager.getUrlAvatar(),
+                R.anim.slide_in_right,
+                R.anim.slide_out_left,
             )
         })
 
@@ -76,6 +103,10 @@ class HomeActivity : BaseActivityGradient<ActivityHomeBinding, HomeViewModel>(),
 
     override fun onItemClick(position: Int) {
         homeViewModel.onItemClickGetPositionUser(position)
+    }
+
+    override fun onItemClick2(position: Int) {
+        homeViewModel.onItemClickGetPositionUserChatted(position)
     }
 
 

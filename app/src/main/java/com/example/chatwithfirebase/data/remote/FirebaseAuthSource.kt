@@ -64,7 +64,7 @@ class FirebaseAuthSource @Inject constructor(
                             }
                             .addOnFailureListener { e -> emitter.onError(e) }
                     } else {
-                       LogUtil.error("Err", "Firebase User Id not value")
+                       LogUtil.error("Err", "Firebase User Id not value, register Falled")
                     }
                 }
                 .addOnFailureListener { e -> emitter.onError(e) }
