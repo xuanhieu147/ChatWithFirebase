@@ -29,6 +29,10 @@ class FirebaseDataRepositoryImp @Inject constructor(
        return firebaseDataSource.sendMessage(receiverId,message,avatarSender,imageUpload)
     }
 
+    override fun sendImageMessage(receiverId: String, avatarSender:String,imageUpload:String): Completable {
+        return firebaseDataSource.sendImageMessage(receiverId,avatarSender,imageUpload)
+    }
+
     override fun updateLastMessageAndTime(userId: String, lastMessage: String,date:String ,time: String): Completable {
         return firebaseDataSource.updateLastMessageAndTime(userId,lastMessage,date,time)
     }

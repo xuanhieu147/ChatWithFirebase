@@ -49,6 +49,15 @@ class MessageViewModel @Inject constructor() : BaseViewModel() {
         )
     }
 
+    // send ImageMessage
+    fun sendImgaeMessage(receiverId: String, avatarSender:String,imageUpload:String){
+        compositeDisposable.add(
+            firebaseDataRepository.sendImageMessage(receiverId,avatarSender,imageUpload)
+                .compose(schedulerProvider.ioToMainCompletableScheduler())
+                .subscribe(this::sendMessageSuccess,this::sendMessageError)
+        )
+    }
+
     private fun sendMessageSuccess() { LogUtil.error("Success") }
     private fun sendMessageError(t:Throwable) { LogUtil.error(t.toString()) }
 

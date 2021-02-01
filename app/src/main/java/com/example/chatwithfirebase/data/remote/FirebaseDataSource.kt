@@ -221,6 +221,38 @@ class FirebaseDataSource @Inject constructor(
         }
     }
 
+    fun sendImageMessage(
+        receiverId: String,
+        avatarSender: String,
+        imageUpload: String
+    ): Completable {
+        return Completable.create { emitter ->
+            // add chat message
+             val hashMap: HashMap<Any, Any> = HashMap()
+                hashMap["senderId"] = getCurrentUserId()
+                hashMap["receiverId"] = receiverId
+                hashMap["message"] = "send you an image"
+                hashMap["avatarSender"] = avatarSender
+                hashMap["imageUpload"] = imageUpload
+                hashMap["date"] = DateUtils.getCurrentDate()!!
+                hashMap["time"] = DateUtils.getCurrentTime()!!
+
+                firebaseDatabase.reference
+                    .child("Message")
+                    .push().setValue(hashMap)
+                    .addOnCompleteListener {
+                        if (it.isSuccessful) {
+                            emitter.onComplete()
+                        }
+                    }
+                    .addOnFailureListener {
+                        emitter.onError(it)
+                    }
+
+
+        }
+    }
+
     fun uploadImageProfile(filePath: Uri): Completable {
         return Completable.create { emitter ->
             filePath?.let {
