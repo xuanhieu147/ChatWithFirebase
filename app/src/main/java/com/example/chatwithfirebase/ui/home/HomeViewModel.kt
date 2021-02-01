@@ -15,6 +15,7 @@ class HomeViewModel @Inject constructor() : BaseViewModel() {
 
     // get all user
     fun getUserList(): MutableLiveData<List<User>> = liveDataUserList
+
     fun getAllUser() {
         setLoading(true)
         compositeDisposable.add(
@@ -32,6 +33,15 @@ class HomeViewModel @Inject constructor() : BaseViewModel() {
     private fun getAllUserError(t: Throwable) {
         setLoading(false)
         liveDataUserList.value = null
+    }
+
+    // search for user
+    fun searchForUser(str: String) {
+        compositeDisposable.add(
+            firebaseDataRepository.searchForUser(str)
+                .compose(schedulerProvider.ioToMainObservableScheduler())
+                .subscribe(this::getAllUserChattedSuccess, this::getAllUserChattedError)
+        )
     }
 
     // get all user chatted
@@ -70,7 +80,7 @@ class HomeViewModel @Inject constructor() : BaseViewModel() {
     }
 
     // get info user
-    fun getUser():MutableLiveData<User> = liveDataInfoUser
+    fun getUser(): MutableLiveData<User> = liveDataInfoUser
     fun getInfoUser() {
         setLoading(true)
         compositeDisposable.add(

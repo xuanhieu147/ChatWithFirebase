@@ -5,7 +5,10 @@ import com.example.chatwithfirebase.ui.message.MessageActivity
 import com.example.chatwithfirebase.ui.login.LoginActivity
 import com.example.chatwithfirebase.ui.home.HomeActivity
 import com.example.chatwithfirebase.ui.message.module.MessageModule
+import com.example.chatwithfirebase.ui.notification.NotificationActivity
+import com.example.chatwithfirebase.ui.notification.NotificationViewModel
 import com.example.chatwithfirebase.ui.register.RegisterActivity
+import com.example.chatwithfirebase.ui.setting.SettingActivity
 import com.example.chatwithfirebase.ui.welcome.WelcomeActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
@@ -31,4 +34,10 @@ abstract class ActivityModule {
 
     @ContributesAndroidInjector(modules = [MessageModule::class])
     abstract fun contributeMessageActivity(): MessageActivity
+
+    @ContributesAndroidInjector
+    abstract fun contributeSettingActivity(): SettingActivity
+
+    @ContributesAndroidInjector
+    abstract fun contributeNotificationActivity(): NotificationActivity
 }

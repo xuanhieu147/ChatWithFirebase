@@ -1,6 +1,9 @@
 package com.example.chatwithfirebase.ui.home
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.ViewModelProvider
 import com.example.chatwithfirebase.BR
 import com.example.chatwithfirebase.R
@@ -12,7 +15,10 @@ import com.example.chatwithfirebase.databinding.ActivityHomeBinding
 import com.example.chatwithfirebase.di.ViewModelFactory
 import com.example.chatwithfirebase.ui.home.adapter.UserChattedAdapter
 import com.example.chatwithfirebase.ui.home.adapter.UserAdapter
+import com.example.chatwithfirebase.ui.login.LoginActivity
 import com.example.chatwithfirebase.ui.message.MessageActivity
+import com.example.chatwithfirebase.ui.setting.SettingActivity
+import com.example.chatwithfirebase.ui.setting.SettingViewModel
 import javax.inject.Inject
 
 class HomeActivity : BaseActivityGradient<ActivityHomeBinding, HomeViewModel>(),OnItemClickListener,OnItemClickListener2{
@@ -42,6 +48,22 @@ class HomeActivity : BaseActivityGradient<ActivityHomeBinding, HomeViewModel>(),
 
     override fun updateUI(savedInstanceState: Bundle?) {
 
+        //  search for user
+        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                binding.searchView.onActionViewCollapsed()
+                homeViewModel.searchForUser(query!!)
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                binding.searchView.onActionViewExpanded()
+                homeViewModel.searchForUser(newText!!)
+                return false
+            }
+
+        })
+
         // get info user
         homeViewModel.getInfoUser()
         homeViewModel.getUser().observe(this, {
@@ -52,14 +74,14 @@ class HomeActivity : BaseActivityGradient<ActivityHomeBinding, HomeViewModel>(),
         })
 
         // set adapter
+        binding.rvListUser.apply {
+            setHasFixedSize(true)
+            adapter = userAdapter
+        }
+
         binding.rvListChattedUser.apply{
             setHasFixedSize(true)
             adapter = userChattedAdapter
-        }
-
-        binding.rvListUser.apply{
-            setHasFixedSize(true)
-            adapter = userAdapter
         }
 
         // get all user chatted
@@ -98,6 +120,13 @@ class HomeActivity : BaseActivityGradient<ActivityHomeBinding, HomeViewModel>(),
                 R.anim.slide_out_left,
             )
         })
+
+        binding.imgSetting.setOnClickListener {
+            goScreen(
+                SettingActivity::class.java,
+                false, R.anim.slide_in_right, R.anim.slide_out_left
+            )
+        }
 
     }
 

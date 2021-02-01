@@ -10,23 +10,25 @@ import java.util.ArrayList
 
 interface FirebaseDataRepository {
 
-    fun getAllUser():Observable<ArrayList<User>>
+    fun getAllUser(): Observable<ArrayList<User>>
 
-    fun getAllUserChatted():Observable<ArrayList<User>>
+    fun getAllUserChatted(): Observable<ArrayList<User>>
 
-    fun getAllMessage(receiverId: String):Observable<ArrayList<Message>>
+    fun searchForUser(str: String): Observable<ArrayList<User>>
 
-    fun sendMessage(receiverId: String, message: String,avatarSender:String,imageUpload:String):Completable
+    fun getAllMessage(receiverId: String): Observable<ArrayList<Message>>
 
-    fun updateLastMessageAndTime(userId:String,lastMessage:String,date:String,time:String): Completable
+    fun sendMessage(receiverId: String, message: String, avatarSender: String, imageUpload: String): Completable
 
-    fun uploadImageProfile(filePath: Uri) : Completable
+    fun updateLastMessageAndTime(userId: String, lastMessage: String, date: String, time: String): Completable
 
-    fun getInfoReceiver(userId:String) : Observable<User>
+    fun uploadImageProfile(filePath: Uri): Completable
 
-    fun getInfoUser():Observable<User>
+    fun getInfoReceiver(userId: String): Observable<User>
 
-    fun getCurrentUserId():String
+    fun getInfoUser(): Observable<User>
 
-    fun getCurrentUser():FirebaseUser?
+    fun getCurrentUserId(): String
+
+    fun getCurrentUser(): FirebaseUser?
 }
