@@ -304,7 +304,7 @@ class FirebaseDataSource @Inject constructor(
         return Completable.create { emitter ->
 
             val uploadTask: StorageTask<*>
-            val storageReference = firebaseStorage.reference.child("Chats Image")
+            val storageReference = firebaseStorage.reference.child("User Image")
             val filePath = storageReference.child(fileName)
             uploadTask = filePath.putFile(fileUri)
             uploadTask.continueWithTask(Continuation<UploadTask.TaskSnapshot, Task<Uri>> { task ->
