@@ -24,10 +24,10 @@ import kotlin.collections.HashMap
 class FirebaseDataSource @Inject constructor(
     private val firebaseAuth: FirebaseAuth,
     private val firebaseDatabase: FirebaseDatabase,
-    private val firebaseStorage: FirebaseStorage
-) {
+    private val firebaseStorage: FirebaseStorage) {
 
     private val userList = ArrayList<User>()
+    private val userListChatted = ArrayList<User>()
     private val messageList = ArrayList<Message>()
 
     private val notValue = "Not value"
@@ -110,6 +110,30 @@ class FirebaseDataSource @Inject constructor(
         }
     }
 
+    fun getAllUserChatted(): Observable<ArrayList<User>> {
+        return Observable.create { emitter ->
+            firebaseDatabase.reference.child("User")
+                .addValueEventListener(object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        userListChatted.clear()
+                        for (dataSnapshot: DataSnapshot in snapshot.children) {
+                            val user = dataSnapshot.getValue(User::class.java)
+                            user?.let {
+                                if (user.userId != getCurrentUserId() && user.lastMessage != "") {
+                                    userListChatted.add(it)
+                                    emitter.onNext(userListChatted)
+                                }
+                            }
+                        }
+                    }
+
+                    override fun onCancelled(error: DatabaseError) {
+                        emitter.onError(error.toException())
+                    }
+                })
+        }
+    }
+
     fun searchForUser(str: String): Observable<ArrayList<User>> {
         return Observable.create { emitter ->
             firebaseDatabase.reference.child("User").orderByChild("fullName")
@@ -121,7 +145,7 @@ class FirebaseDataSource @Inject constructor(
                         for (dataSnapshot: DataSnapshot in snapshot.children) {
                             val user = dataSnapshot.getValue(User::class.java)
                             user?.let {
-                                if (user.userId != getCurrentUserId()) {
+                                if (user.userId != getCurrentUserId() && user.lastMessage != "") {
                                     userList.add(it)
                                     emitter.onNext(userList)
                                 }
@@ -150,7 +174,6 @@ class FirebaseDataSource @Inject constructor(
                                 if (message.senderId == senderId && message.receiverId == receiverId ||
                                     message.senderId == receiverId && message.receiverId == senderId
                                 ) {
-
                                     messageList.add(it)
                                     emitter.onNext(messageList)
                                 }
@@ -166,15 +189,10 @@ class FirebaseDataSource @Inject constructor(
 
     }
 
-    fun sendMessage(
-        receiverId: String,
-        message: String,
-        avatarSender: String,
-        imageUpload: String
+    fun sendMessage(receiverId: String, message: String, avatarSender: String, imageUpload: String
     ): Completable {
         return Completable.create { emitter ->
             // add chat message
-
             if (imageUpload.isNullOrEmpty()) {
                 val hashMap: HashMap<Any, Any> = HashMap()
                 hashMap["senderId"] = getCurrentUserId()
@@ -277,12 +295,7 @@ class FirebaseDataSource @Inject constructor(
         }
     }
 
-    fun updateLastMessageAndTime(
-        userId: String,
-        lastMessage: String,
-        date: String,
-        time: String
-    ): Completable {
+    fun updateLastMessageAndTime(userId: String, lastMessage: String, date: String, time: String): Completable {
         return Completable.create { emitter ->
             val hashMap: HashMap<String, String> = HashMap()
             hashMap["lastMessage"] = lastMessage

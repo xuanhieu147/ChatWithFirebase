@@ -17,10 +17,7 @@ class FirebaseAuthRepositoryImp @Inject constructor(
        return firebaseAuthSource.getCurrentUser()
     }
 
-    override fun registerUser(
-        email: String,
-        password: String,
-        fullName: String): Completable {
+    override fun registerUser(email: String, password: String, fullName: String): Completable {
         return firebaseAuthSource.registerUser(email, password, fullName)
     }
 
