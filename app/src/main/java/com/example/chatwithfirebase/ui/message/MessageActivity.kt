@@ -3,6 +3,7 @@ package com.example.chatwithfirebase.ui.message
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.util.Log.e
 import androidx.lifecycle.ViewModelProvider
 import com.example.chatwithfirebase.BR
@@ -67,7 +68,6 @@ class MessageActivity : BaseActivityGradient<ActivityMessageBinding, MessageView
             if (it != null) {
                 messageAdapter.clearItems()
                 messageAdapter.addItems(it)
-
                 // scroll last position
                 binding.rvChat.scrollToPosition(it.size - 1)
 
@@ -76,7 +76,8 @@ class MessageActivity : BaseActivityGradient<ActivityMessageBinding, MessageView
                     getIdReceiver()!!,
                     it[it.size - 1].message,
                     it[it.size - 1].date,
-                    it[it.size - 1].time)
+                    it[it.size - 1].time
+                )
 
             } else {
                 toast(resources.getString(R.string.error_get_data))
@@ -86,16 +87,16 @@ class MessageActivity : BaseActivityGradient<ActivityMessageBinding, MessageView
         // send message
         binding.imgSend.setOnClickListener {
             val message = binding.edtMessage.text.toString()
-            messageViewModel.sendMessage(getIdReceiver()!!, message,getAvatarSender()!!,"")
+            messageViewModel.sendMessage(getIdReceiver()!!, message, getAvatarSender()!!, "")
 
             // clear text
             binding.edtMessage.text?.clear()
 
             // auto scroll last position when the layout size changes
-            binding.rvChat.apply{
+            binding.rvChat.apply {
                 addOnLayoutChangeListener { _, _, _, _, _, _, _, _, _ ->
-                scrollToPosition(messageAdapter.itemCount - 1)
-            }
+                    scrollToPosition(messageAdapter.itemCount - 1)
+                }
             }
         }
 
@@ -111,32 +112,8 @@ class MessageActivity : BaseActivityGradient<ActivityMessageBinding, MessageView
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 438 && resultCode == RESULT_OK && data != null && data!!.data != null) {
-            showLoadingDialog()
             val fileUri = data.data
-            val storageReference = FirebaseStorage.getInstance().reference.child("Chats Image")
-            val ref = FirebaseDatabase.getInstance().reference
-            val messageId = ref.push().key
-            val filePath = storageReference.child("$messageId.jpg")
-
-            val uploadTask: StorageTask<*>
-            uploadTask = filePath.putFile(fileUri!!)
-
-            uploadTask.continueWithTask(Continuation<UploadTask.TaskSnapshot, Task<Uri>> { task ->
-                if (task.isSuccessful) {
-                    task.exception?.let {
-                        throw it
-                    }
-                }
-                return@Continuation filePath.downloadUrl
-
-            }).addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    val downloadUrl = task.result
-                    val url = downloadUrl.toString()
-                    messageViewModel.sendImgaeMessage(getIdReceiver()!!,getAvatarSender()!!,url)
-                    hideLoadingDialog()
-                }
-            }
+            messageViewModel.sendImgaeMessage(fileUri!!, getIdReceiver()!!, getAvatarSender()!!)
         }
     }
 }

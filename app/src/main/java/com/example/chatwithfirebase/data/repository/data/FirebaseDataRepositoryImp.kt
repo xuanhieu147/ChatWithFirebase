@@ -11,14 +11,15 @@ import java.util.ArrayList
 import javax.inject.Inject
 
 class FirebaseDataRepositoryImp @Inject constructor(
-    private val firebaseDataSource: FirebaseDataSource) : FirebaseDataRepository {
+    private val firebaseDataSource: FirebaseDataSource
+) : FirebaseDataRepository {
 
     override fun getAllUser(): Observable<ArrayList<User>> {
         return firebaseDataSource.getAllUser()
     }
 
     override fun getAllUserChatted(): Observable<ArrayList<User>> {
-       return firebaseDataSource.getAllUserChatted()
+        return firebaseDataSource.getAllUserChatted()
     }
 
     override fun searchForUser(str: String): Observable<ArrayList<User>> {
@@ -30,16 +31,30 @@ class FirebaseDataRepositoryImp @Inject constructor(
         return firebaseDataSource.getAllMessage(receiverId)
     }
 
-    override fun sendMessage(receiverId: String, message: String,avatarSender:String,imageUpload:String): Completable {
-       return firebaseDataSource.sendMessage(receiverId,message,avatarSender,imageUpload)
+    override fun sendMessage(
+        receiverId: String,
+        message: String,
+        avatarSender: String,
+        imageUpload: String
+    ): Completable {
+        return firebaseDataSource.sendMessage(receiverId, message, avatarSender, imageUpload)
     }
 
-    override fun sendImageMessage(receiverId: String, avatarSender:String,imageUpload:String): Completable {
-        return firebaseDataSource.sendImageMessage(receiverId,avatarSender,imageUpload)
+    override fun sendImageMessage(
+        fileUri: Uri,
+        receiverId: String,
+        avatarSender: String
+    ): Completable {
+        return firebaseDataSource.sendImageMessage(fileUri, receiverId, avatarSender)
     }
 
-    override fun updateLastMessageAndTime(userId: String, lastMessage: String,date:String ,time: String): Completable {
-        return firebaseDataSource.updateLastMessageAndTime(userId,lastMessage,date,time)
+    override fun updateLastMessageAndTime(
+        userId: String,
+        lastMessage: String,
+        date: String,
+        time: String
+    ): Completable {
+        return firebaseDataSource.updateLastMessageAndTime(userId, lastMessage, date, time)
     }
 
     override fun uploadImageProfile(filePath: Uri): Completable {

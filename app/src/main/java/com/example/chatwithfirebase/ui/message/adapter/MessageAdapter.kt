@@ -1,9 +1,11 @@
 package com.example.chatwithfirebase.ui.message.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import com.bumptech.glide.Glide
 import com.example.chatwithfirebase.R
 import com.example.chatwithfirebase.base.BaseAdapter
 import com.example.chatwithfirebase.base.BaseViewHolder
@@ -75,15 +77,24 @@ class MessageAdapter(private val firebaseDataRepository: FirebaseDataRepository)
         override fun onBind(position: Int) {
             binding.message = messageList[position]
             binding.executePendingBindings()
+
+            if (messageList[position].message.equals("send you an image")) {
+                binding.tvMessage.visibility = View.GONE
+                binding.imgMessage.visibility = View.VISIBLE
+            } else {
+                binding.tvMessage.visibility = View.VISIBLE
+                binding.imgMessage.visibility = View.GONE
+            }
             // set show date and time
+
             if (binding.tvDate.text.toString() == DateUtils.getCurrentDate()) {
                 binding.tvDate.visibility = View.GONE
                 binding.tvTime.visibility = View.VISIBLE
             } else {
-                binding.tvTime.visibility = View.GONE
-                binding.tvDate.apply {
+                binding.tvDate.visibility = View.GONE
+                binding.tvTime.apply {
                     visibility = View.VISIBLE
-                    text = binding.tvTime.text.toString() + " " + text.toString()
+                    text = text.toString() + " " + binding.tvDate.text.toString()
                 }
             }
         }
@@ -95,15 +106,28 @@ class MessageAdapter(private val firebaseDataRepository: FirebaseDataRepository)
         override fun onBind(position: Int) {
             binding.message = messageList[position]
             binding.executePendingBindings()
+
+            if (messageList[position].message.equals("send you an image")) {
+                binding.tvMessage.visibility = View.GONE
+                binding.imgMessage.visibility = View.VISIBLE
+            } else {
+                binding.tvMessage.visibility = View.VISIBLE
+                binding.imgMessage.visibility = View.GONE
+            }
             // set show date and time
+
             if (binding.tvDate.text.toString() == DateUtils.getCurrentDate()) {
                 binding.tvTime.visibility = View.VISIBLE
                 binding.tvDate.visibility = View.GONE
             } else {
-                binding.tvTime.visibility = View.GONE
-                binding.tvDate.apply {
+                binding.tvDate.visibility = View.GONE
+//                binding.tvDate.apply {
+//                    visibility = View.VISIBLE
+//                    text = text.toString() + "  " + binding.tvTime.text.toString()
+//                }
+                binding.tvTime.apply {
                     visibility = View.VISIBLE
-                    text = text.toString() + "  " + binding.tvTime.text.toString()
+                    text = binding.tvDate.text.toString() + "  " + text.toString()
                 }
             }
         }
