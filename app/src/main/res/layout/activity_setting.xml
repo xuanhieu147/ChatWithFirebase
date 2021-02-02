@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <variable
+            name="user"
+            type="com.example.chatwithfirebase.data.model.User" />
         <variable
             name="settingViewModel"
             type="com.example.chatwithfirebase.ui.setting.SettingViewModel" />
@@ -44,6 +46,7 @@
                 android:id="@+id/imgAvatar"
                 android:layout_width="@dimen/_50sdp"
                 android:layout_height="@dimen/_50sdp"
+                imageUrl="@{user.avatarUser}"
                 android:layout_below="@id/imgSetting"
                 android:layout_marginLeft="@dimen/_16sdp"
                 android:layout_marginTop="@dimen/_32sdp"
@@ -58,7 +61,7 @@
                 android:layout_marginLeft="@dimen/_16sdp"
                 android:layout_marginTop="@dimen/_32sdp"
                 android:layout_toRightOf="@id/imgAvatar"
-                android:text="@string/full_name"
+                android:text="@{user.fullName}"
                 android:textSize="@dimen/_14sdp" />
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -70,7 +73,7 @@
                 android:layout_marginLeft="@dimen/_16sdp"
                 android:layout_marginTop="@dimen/_8sdp"
                 android:layout_toRightOf="@id/imgAvatar"
-                android:text="@string/email"
+                android:text="@{user.email}"
                 android:textSize="@dimen/_10sdp" />
 
             <androidx.appcompat.widget.AppCompatImageView

@@ -57,8 +57,12 @@ class FirebaseDataRepositoryImp @Inject constructor(
         return firebaseDataSource.updateLastMessageAndTime(userId, lastMessage, date, time)
     }
 
-    override fun uploadImageProfile(filePath: Uri): Completable {
-        return firebaseDataSource.uploadImageProfile(filePath)
+    override fun uploadImageProfile(fileUri: Uri): Completable {
+        return firebaseDataSource.uploadImageProfile(fileUri)
+    }
+
+    override fun updateFullName(fullname: String): Completable {
+        return firebaseDataSource.updateFullName(fullname)
     }
 
     override fun getInfoReceiver(userId: String): Observable<User> {

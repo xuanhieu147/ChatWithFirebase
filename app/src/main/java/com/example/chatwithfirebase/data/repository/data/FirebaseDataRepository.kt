@@ -34,7 +34,9 @@ interface FirebaseDataRepository {
         time: String
     ): Completable
 
-    fun uploadImageProfile(filePath: Uri): Completable
+    fun uploadImageProfile(fileUri: Uri): Completable
+
+    fun updateFullName(fullname: String): Completable
 
     fun getInfoReceiver(userId: String): Observable<User>
 
