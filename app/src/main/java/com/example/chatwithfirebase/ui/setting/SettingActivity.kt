@@ -1,15 +1,18 @@
 package com.example.chatwithfirebase.ui.setting
 
+import android.Manifest
 import android.app.Dialog
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.view.Window
-import androidx.appcompat.widget.AppCompatButton
-import androidx.appcompat.widget.AppCompatEditText
-import androidx.appcompat.widget.AppCompatTextView
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.example.chatwithfirebase.BR
@@ -20,6 +23,7 @@ import com.example.chatwithfirebase.databinding.CustomDialogEditBinding
 import com.example.chatwithfirebase.di.ViewModelFactory
 import com.example.chatwithfirebase.ui.setting.notification.NotificationActivity
 import com.example.chatwithfirebase.utils.ToastUtils
+import com.google.android.material.snackbar.Snackbar
 import javax.inject.Inject
 
 
@@ -61,20 +65,45 @@ class SettingActivity : BaseActivity<ActivitySettingBinding, SettingViewModel>()
         }
 
         //update Avatar
-        binding.imgAvatar.setOnClickListener {
-            val intent = Intent()
-            intent.action = Intent.ACTION_GET_CONTENT
-            intent.type = "image/*"
-            startActivityForResult(Intent.createChooser(intent, "Pick Image"), 438)
-        }
+        updateAvatar()
 
         //update FullName
         updateFullName()
 
         // camera
+        openCamera()
+
+    }
+
+    private fun openCamera() {
         binding.imgCamera.setOnClickListener {
+            checkPermission(android.Manifest.permission.CAMERA, "Camera", CAMERA)
             val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-            startActivityForResult(Intent.createChooser(intent, R.string.title_img.toString()), 438)
+            startActivityForResult(
+                Intent.createChooser(intent, R.string.title_img.toString()),
+                438
+            )
+
+        }
+    }
+
+    private fun updateAvatar() {
+        binding.imgAvatar.setOnClickListener {
+            checkPermission(
+                android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                "WRITE_EXTERNAL_STORAGE",
+                WRITE_EXTERNAL_STORAGE
+            )
+            checkPermission(
+                android.Manifest.permission.READ_EXTERNAL_STORAGE,
+                "READ_EXTERNAL_STORAGE",
+                READ_EXTERNAL_STORAGE
+            )
+            val intent = Intent()
+            intent.action = Intent.ACTION_GET_CONTENT
+            intent.type = "image/*"
+            startActivityForResult(Intent.createChooser(intent, "Pick Image"), 438)
+
         }
     }
 

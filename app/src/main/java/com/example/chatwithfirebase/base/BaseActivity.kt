@@ -1,20 +1,29 @@
 package com.example.chatwithfirebase.base
 
+import android.app.Dialog
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Color
-import android.graphics.drawable.Drawable
+import android.os.Build
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
 import android.view.Window
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.widget.AppCompatButton
+import androidx.appcompat.widget.AppCompatEditText
+import androidx.appcompat.widget.AppCompatTextView
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import com.example.chatwithfirebase.R
+import com.example.chatwithfirebase.utils.ToastUtils
 import dagger.android.AndroidInjection
 import dagger.android.support.DaggerAppCompatActivity
 
@@ -29,6 +38,10 @@ abstract class BaseActivity<T : ViewDataBinding, V : BaseViewModel> :
     lateinit var binding: T
     lateinit var loading: AlertDialog
     private var isCancelable = false
+
+    val CAMERA = 101
+    val READ_EXTERNAL_STORAGE = 102
+    val WRITE_EXTERNAL_STORAGE = 103
 
     protected abstract fun getViewModel(): V
 
@@ -128,6 +141,68 @@ abstract class BaseActivity<T : ViewDataBinding, V : BaseViewModel> :
     }
 
 
+    fun checkPermission(permission: String, name: String, requestCode: Int) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            when {
+                ContextCompat.checkSelfPermission(
+                    applicationContext,
+                    permission
+                ) == PackageManager.PERMISSION_GRANTED -> {
+                    ToastUtils.toastSuccess(this, R.string.permission, R.string.permission_granted)
+                }
+                shouldShowRequestPermissionRationale(permission) -> showDialog(
+                    permission,
+                    name,
+                    requestCode
+                )
+
+                else -> ActivityCompat.requestPermissions(this, arrayOf(permission), requestCode)
+            }
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        fun innerCheck(name: String){
+            if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED){
+                ToastUtils.toastError(this, R.string.permission, R.string.permission_type)
+            }
+            else{
+                ToastUtils.toastSuccess(this, R.string.permission, R.string.permission_granted)
+
+            }
+        }
+
+        when(requestCode){
+            CAMERA -> innerCheck("CAMERA")
+            READ_EXTERNAL_STORAGE -> innerCheck("READ_EXTERNAL_STORAGE")
+            WRITE_EXTERNAL_STORAGE -> innerCheck("WRITE_EXTERNAL_STORAGE")
+
+        }
+
+    }
+
+    private fun showDialog(permission: String, name: String, requestCode: Int) {
+        val builder = AlertDialog.Builder(this)
+
+        builder.apply {
+            setMessage("Permission to access your $name is required to use this app")
+            setTitle("Permission required")
+            setPositiveButton("OK") { dialog, which ->
+                ActivityCompat.requestPermissions(
+                    this@BaseActivity,
+                    arrayOf(permission),
+                    requestCode
+                )
+            }
+        }
+        val dialog = builder.create()
+        dialog.show()
+    }
+
     open fun goScreen(activityClazz: Class<*>, isFinish: Boolean, vararg aniInt: Int) {
         val intent = Intent(this, activityClazz)
         startActivity(intent)
@@ -203,6 +278,7 @@ abstract class BaseActivity<T : ViewDataBinding, V : BaseViewModel> :
         builder.show()
     }
 
+
     fun showActionDialog(
         title: String?,
         message: Any,
@@ -237,10 +313,10 @@ abstract class BaseActivity<T : ViewDataBinding, V : BaseViewModel> :
 
     private fun statusBarBackgroundWhite() {
         window.apply {
-                clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-                addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-                decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-                statusBarColor = Color.TRANSPARENT
+            clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+            addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+            decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+            statusBarColor = Color.TRANSPARENT
         }
     }
 

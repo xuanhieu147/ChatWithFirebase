@@ -93,6 +93,16 @@ class MessageActivity : BaseActivityGradient<ActivityMessageBinding, MessageView
 
         //send imageMessage
         binding.imgLibrary.setOnClickListener {
+            checkPermission(
+                android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                "WRITE_EXTERNAL_STORAGE",
+                WRITE_EXTERNAL_STORAGE
+            )
+            checkPermission(
+                android.Manifest.permission.READ_EXTERNAL_STORAGE,
+                "READ_EXTERNAL_STORAGE",
+                READ_EXTERNAL_STORAGE
+            )
             val intent = Intent()
             intent.action = Intent.ACTION_GET_CONTENT
             intent.type = "image/*"
@@ -101,6 +111,7 @@ class MessageActivity : BaseActivityGradient<ActivityMessageBinding, MessageView
 
         // camera
         binding.imgCamera.setOnClickListener {
+            checkPermission(android.Manifest.permission.CAMERA, "Camera", CAMERA)
             val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
             startActivityForResult(Intent.createChooser(intent, R.string.title_img.toString()), 438)
         }

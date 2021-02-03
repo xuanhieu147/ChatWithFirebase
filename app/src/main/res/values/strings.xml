@@ -34,6 +34,9 @@
     <string name="same_full_name">The FullName you enter is the same as your current Fullname</string>
     <string name="re_password_not_same_password">re-enter password is not the same as password</string>
     <string name="error_get_data">error get data</string>
+    <string name="permission">Permission</string>
+    <string name="permission_type">Permission to record denied</string>
+    <string name="permission_granted">Permission granted</string>
 
     // success
     <string name="success">Success</string>
