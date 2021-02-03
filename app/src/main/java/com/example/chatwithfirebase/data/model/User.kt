@@ -6,8 +6,5 @@ data class User(
     var password: String = "",
     var avatarUser: String = "",
     var fullName: String = "",
-    var online: String = "",
-    var lastMessage: String = "",
-    var date: String = "",
-    var time: String = ""
+    var status: String = "",
 )

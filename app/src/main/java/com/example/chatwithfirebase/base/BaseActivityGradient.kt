@@ -134,10 +134,11 @@ abstract class BaseActivityGradient<T : ViewDataBinding, V : BaseViewModel> :
         }
     }
 
-    open fun goScreenAndPutString(activityClazz: Class<*>, isFinish: Boolean,idReceiver:String,avatarSender:String,vararg aniInt: Int) {
+    open fun goScreenAndPutString(activityClazz: Class<*>, isFinish: Boolean,idReceiver:String,avatarSender:String,fullName:String,vararg aniInt: Int) {
         val intent = Intent(this, activityClazz)
         intent.putExtra("idReceiver",idReceiver)
         intent.putExtra("avatarSender",avatarSender)
+        intent.putExtra("fullName",fullName)
         startActivity(intent)
         overridePendingTransition(aniInt[0], aniInt[1])
         if (isFinish) {
@@ -151,6 +152,10 @@ abstract class BaseActivityGradient<T : ViewDataBinding, V : BaseViewModel> :
 
     open fun getAvatarSender() : String? {
         return intent.getStringExtra("avatarSender")
+    }
+
+    open fun getFullName() : String? {
+        return intent.getStringExtra("fullName")
     }
 
     open fun launchIntent(intent: Intent, isFinish: Boolean, vararg aniInt: Int) {

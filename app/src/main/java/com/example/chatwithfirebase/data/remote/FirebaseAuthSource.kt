@@ -1,13 +1,9 @@
 package com.example.chatwithfirebase.data.remote
 
-import android.util.Log.e
-import com.example.chatwithfirebase.R
 import com.example.chatwithfirebase.base.constants.Constants
-import com.example.chatwithfirebase.data.model.User
 import com.example.chatwithfirebase.utils.LogUtil
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import io.reactivex.Completable
 import java.util.*
@@ -42,16 +38,14 @@ class FirebaseAuthSource @Inject constructor(
                 .addOnCompleteListener {
                     if (getCurrentUserId() != notValue) {
                         // add information user
-                        val hashMap: HashMap<Any, Any> = HashMap()
+                        val hashMap: HashMap<String, String> = HashMap()
                         hashMap["userId"] = getCurrentUserId()
                         hashMap["email"] = email
                         hashMap["password"] = password
                         hashMap["avatarUser"] = Constants.AVATAR_DEFAULT_USER
                         hashMap["fullName"] = fullName
-                        hashMap["online"] = "true"
-                        hashMap["lastMessage"] = ""
-                        hashMap ["date"] = ""
-                        hashMap ["time"] = ""
+                        hashMap["status"] = "offline"
+
                         // add user
                         firebaseDatabase.reference
                             .child("User")

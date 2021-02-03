@@ -6,6 +6,8 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.chatwithfirebase.BR
 import com.example.chatwithfirebase.R
 import com.example.chatwithfirebase.base.BaseActivityGradient
+import com.example.chatwithfirebase.data.model.NotificationData
+import com.example.chatwithfirebase.data.model.PushNotification
 import com.example.chatwithfirebase.databinding.ActivityMessageBinding
 import com.example.chatwithfirebase.di.ViewModelFactory
 import com.example.chatwithfirebase.ui.message.adapter.MessageAdapter
@@ -19,10 +21,10 @@ class MessageActivity : BaseActivityGradient<ActivityMessageBinding, MessageView
     @Inject
     lateinit var factory: ViewModelFactory
 
-    private lateinit var messageViewModel: MessageViewModel
-
     @Inject
     lateinit var messageAdapter: MessageAdapter
+
+    private lateinit var messageViewModel: MessageViewModel
 
     override fun getViewModel(): MessageViewModel {
         messageViewModel = ViewModelProvider(this, factory).get(MessageViewModel::class.java)
@@ -34,6 +36,7 @@ class MessageActivity : BaseActivityGradient<ActivityMessageBinding, MessageView
     override fun getBindingVariable(): Int = BR.messageViewModel
 
     override fun updateUI(savedInstanceState: Bundle?) {
+
         binding.imgBack.setOnClickListener {
             onBackPressed()
         }
@@ -63,19 +66,10 @@ class MessageActivity : BaseActivityGradient<ActivityMessageBinding, MessageView
                 // scroll last position
                 binding.rvChat.scrollToPosition(it.size - 1)
 
-                // update last message and time
-                messageViewModel.updateLastMessageAndTime(
-                    getIdReceiver()!!,
-                    it[it.size - 1].message,
-                    it[it.size - 1].date,
-                    it[it.size - 1].time)
-
-            } else {
-                toast(resources.getString(R.string.error_get_data))
             }
         })
 
-        // send message
+        // send message on click
         binding.imgSend.setOnClickListener {
             val message = binding.edtMessage.text.toString()
             messageViewModel.sendMessage(getIdReceiver()!!, message,getAvatarSender()!!,"")
@@ -86,8 +80,13 @@ class MessageActivity : BaseActivityGradient<ActivityMessageBinding, MessageView
             // auto scroll last position when the layout size changes
             binding.rvChat.apply{
                 addOnLayoutChangeListener { _, _, _, _, _, _, _, _, _ ->
-                scrollToPosition(messageAdapter.itemCount - 1)
+                scrollToPosition(messageAdapter.itemCount - 1)}
             }
+
+            // push notification
+            var topic = "/topics/${getIdReceiver()}"
+            PushNotification(NotificationData(getFullName()!!,message),topic).also {
+                messageViewModel.sendNotification(it)
             }
         }
     }

@@ -17,10 +17,6 @@ class FirebaseDataRepositoryImp @Inject constructor(
         return firebaseDataSource.getAllUser()
     }
 
-    override fun getAllUserChatted(): Observable<ArrayList<User>> {
-       return firebaseDataSource.getAllUserChatted()
-    }
-
     override fun searchForUser(str: String): Observable<ArrayList<User>> {
         return firebaseDataSource.searchForUser(str)
 
@@ -32,10 +28,6 @@ class FirebaseDataRepositoryImp @Inject constructor(
 
     override fun sendMessage(receiverId: String, message: String,avatarSender:String,imageUpload:String): Completable {
        return firebaseDataSource.sendMessage(receiverId,message,avatarSender,imageUpload)
-    }
-
-    override fun updateLastMessageAndTime(userId: String, lastMessage: String,date:String ,time: String): Completable {
-        return firebaseDataSource.updateLastMessageAndTime(userId,lastMessage,date,time)
     }
 
     override fun uploadImageProfile(filePath: Uri): Completable {

@@ -19,7 +19,7 @@ import javax.inject.Singleton
             (ApiModule::class),
             (ActivityModule::class),
             (ViewModelModule::class),
-            (AppModule::class)
+            (AppModule::class),
         ]
 )
 @Singleton

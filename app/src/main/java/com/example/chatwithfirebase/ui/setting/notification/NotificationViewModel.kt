@@ -1,4 +1,4 @@
-package com.example.chatwithfirebase.ui.notification
+package com.example.chatwithfirebase.ui.setting.notification
 
 import com.example.chatwithfirebase.base.BaseViewModel
 import javax.inject.Inject

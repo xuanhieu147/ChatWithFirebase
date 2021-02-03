@@ -1,15 +1,16 @@
 package com.example.chatwithfirebase.ui.home
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.chatwithfirebase.base.BaseViewModel
 import com.example.chatwithfirebase.base.SingleLiveData
 import com.example.chatwithfirebase.data.model.User
+import com.google.firebase.messaging.FirebaseMessaging
 import javax.inject.Inject
 
 class HomeViewModel @Inject constructor() : BaseViewModel() {
 
     private val liveDataUserList = MutableLiveData<List<User>>()
-    private val liveDataUserChattedList = MutableLiveData<List<User>>()
     private val liveDataInfoReceiver = SingleLiveData<User>()
     private val liveDataInfoUser = MutableLiveData<User>()
 
@@ -28,6 +29,8 @@ class HomeViewModel @Inject constructor() : BaseViewModel() {
     private fun getAllUserSuccess(userList: List<User>) {
         setLoading(false)
         liveDataUserList.value = userList
+        var userId = firebaseDataRepository.getCurrentUserId()
+        FirebaseMessaging.getInstance().subscribeToTopic("/topics/$userId")
     }
 
     private fun getAllUserError(t: Throwable) {
@@ -40,41 +43,14 @@ class HomeViewModel @Inject constructor() : BaseViewModel() {
         compositeDisposable.add(
             firebaseDataRepository.searchForUser(str)
                 .compose(schedulerProvider.ioToMainObservableScheduler())
-                .subscribe(this::getAllUserChattedSuccess, this::getAllUserChattedError)
+                .subscribe(this::getAllUserSuccess, this::getAllUserError)
         )
-    }
-
-    // get all user chatted
-    fun getUserChattedList(): MutableLiveData<List<User>> = liveDataUserChattedList
-    fun getAllUserChatted() {
-        setLoading(true)
-        compositeDisposable.add(
-            firebaseDataRepository.getAllUserChatted()
-                .compose(schedulerProvider.ioToMainObservableScheduler())
-                .subscribe(this::getAllUserChattedSuccess, this::getAllUserChattedError)
-        )
-    }
-
-    private fun getAllUserChattedSuccess(userList: List<User>) {
-        setLoading(false)
-        liveDataUserChattedList.value = userList
-    }
-
-    private fun getAllUserChattedError(t: Throwable) {
-        setLoading(false)
-        liveDataUserChattedList.value = null
     }
 
     // get info receiver when item click
     fun getInfoReceiver(): MutableLiveData<User> = liveDataInfoReceiver
     fun onItemClickGetPositionUser(position: Int) {
         liveDataUserList.value?.let {
-            liveDataInfoReceiver.value = it[position]
-        }
-    }
-
-    fun onItemClickGetPositionUserChatted(position: Int) {
-        liveDataUserChattedList.value?.let {
             liveDataInfoReceiver.value = it[position]
         }
     }
@@ -90,12 +66,10 @@ class HomeViewModel @Inject constructor() : BaseViewModel() {
         )
     }
 
-    private fun getInfoUserSuccess(user: User) {
-        liveDataInfoUser.value = user
-    }
+    private fun getInfoUserSuccess(user: User) { liveDataInfoUser.value = user }
+    private fun getInfoUserSuccess(t: Throwable) { liveDataInfoUser.value = null }
 
-    private fun getInfoUserSuccess(t: Throwable) {
-        liveDataInfoUser.value = null
-    }
-
+     fun getCurrentUserId(): String{
+         return firebaseDataRepository.getCurrentUserId()
+     }
 }

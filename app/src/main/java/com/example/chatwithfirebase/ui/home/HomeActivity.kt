@@ -1,27 +1,27 @@
 package com.example.chatwithfirebase.ui.home
 
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
+import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.ViewModelProvider
 import com.example.chatwithfirebase.BR
 import com.example.chatwithfirebase.R
 import com.example.chatwithfirebase.base.BaseActivityGradient
 import com.example.chatwithfirebase.base.OnItemClickListener
-import com.example.chatwithfirebase.base.OnItemClickListener2
 import com.example.chatwithfirebase.base.manager.SharedPreferencesManager
 import com.example.chatwithfirebase.databinding.ActivityHomeBinding
 import com.example.chatwithfirebase.di.ViewModelFactory
-import com.example.chatwithfirebase.ui.home.adapter.UserChattedAdapter
 import com.example.chatwithfirebase.ui.home.adapter.UserAdapter
 import com.example.chatwithfirebase.ui.login.LoginActivity
 import com.example.chatwithfirebase.ui.message.MessageActivity
-import com.example.chatwithfirebase.ui.setting.SettingActivity
-import com.example.chatwithfirebase.ui.setting.SettingViewModel
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.messaging.FirebaseMessaging
 import javax.inject.Inject
 
-class HomeActivity : BaseActivityGradient<ActivityHomeBinding, HomeViewModel>(),OnItemClickListener,OnItemClickListener2{
+
+class HomeActivity : BaseActivityGradient<ActivityHomeBinding, HomeViewModel>(),OnItemClickListener{
 
     @Inject
     lateinit var factory: ViewModelFactory
@@ -29,10 +29,10 @@ class HomeActivity : BaseActivityGradient<ActivityHomeBinding, HomeViewModel>(),
     private lateinit var homeViewModel: HomeViewModel
 
     @Inject
-    lateinit var userChattedAdapter: UserChattedAdapter
+    lateinit var userAdapter: UserAdapter
 
     @Inject
-    lateinit var userAdapter: UserAdapter
+    lateinit var firebaseMessaging: FirebaseMessaging
 
     @Inject
     lateinit var sharedPreferencesManager: SharedPreferencesManager
@@ -48,21 +48,9 @@ class HomeActivity : BaseActivityGradient<ActivityHomeBinding, HomeViewModel>(),
 
     override fun updateUI(savedInstanceState: Bundle?) {
 
-        //  search for user
-        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                binding.searchView.onActionViewCollapsed()
-                homeViewModel.searchForUser(query!!)
-                return false
-            }
-
-            override fun onQueryTextChange(newText: String?): Boolean {
-                binding.searchView.onActionViewExpanded()
-                homeViewModel.searchForUser(newText!!)
-                return false
-            }
-
-        })
+         // token device return notification
+        firebaseMessaging.token.addOnCompleteListener { task -> sharedPreferencesManager.token = task.result }
+        firebaseMessaging.subscribeToTopic("/topics/${homeViewModel.getCurrentUserId()}")
 
         // get info user
         homeViewModel.getInfoUser()
@@ -79,22 +67,6 @@ class HomeActivity : BaseActivityGradient<ActivityHomeBinding, HomeViewModel>(),
             adapter = userAdapter
         }
 
-        binding.rvListChattedUser.apply{
-            setHasFixedSize(true)
-            adapter = userChattedAdapter
-        }
-
-        // get all user chatted
-        homeViewModel.getAllUserChatted()
-        homeViewModel.getUserChattedList().observe(this, {
-            if (it != null) {
-                userChattedAdapter.clearItems()
-                userChattedAdapter.addItems(it)
-            } else {
-                toast(resources.getString(R.string.error_get_data))
-            }
-        })
-
 
         // get all user
         homeViewModel.getAllUser()
@@ -102,40 +74,50 @@ class HomeActivity : BaseActivityGradient<ActivityHomeBinding, HomeViewModel>(),
             if (it != null) {
                 userAdapter.clearItems()
                 userAdapter.addItems(it)
+
             } else {
                 toast(resources.getString(R.string.error_get_data))
             }
         })
 
-        // on Item Click
+        // On Item Click
         userAdapter.setOnItemClickListener(this)
-        userChattedAdapter.setOnItemClickListener2(this)
         homeViewModel.getInfoReceiver().observe(this, {
             goScreenAndPutString(
                 MessageActivity::class.java,
                 false,
                 it.userId,
                 sharedPreferencesManager.getUrlAvatar(),
+                it.fullName,
                 R.anim.slide_in_right,
                 R.anim.slide_out_left,
             )
         })
 
+        //  search for user
+        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                binding.searchView.requestFocus()
+                homeViewModel.searchForUser(newText!!)
+                return false
+            }
+
+        })
+
         binding.imgSetting.setOnClickListener {
             goScreen(
-                SettingActivity::class.java,
+                LoginActivity::class.java,
                 false, R.anim.slide_in_right, R.anim.slide_out_left
             )
         }
-
     }
 
     override fun onItemClick(position: Int) {
         homeViewModel.onItemClickGetPositionUser(position)
-    }
-
-    override fun onItemClick2(position: Int) {
-        homeViewModel.onItemClickGetPositionUserChatted(position)
     }
 
 

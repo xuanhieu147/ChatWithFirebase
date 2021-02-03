@@ -7,7 +7,7 @@ import com.example.chatwithfirebase.di.ViewModelKey
 import com.example.chatwithfirebase.ui.message.MessageViewModel
 import com.example.chatwithfirebase.ui.login.LoginViewModel
 import com.example.chatwithfirebase.ui.home.HomeViewModel
-import com.example.chatwithfirebase.ui.notification.NotificationViewModel
+import com.example.chatwithfirebase.ui.setting.notification.NotificationViewModel
 import com.example.chatwithfirebase.ui.register.RegisterViewModel
 import com.example.chatwithfirebase.ui.setting.SettingViewModel
 import com.example.chatwithfirebase.ui.welcome.WelcomeViewModel

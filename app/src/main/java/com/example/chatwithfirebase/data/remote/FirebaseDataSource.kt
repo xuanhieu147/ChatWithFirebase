@@ -1,6 +1,7 @@
 package com.example.chatwithfirebase.data.remote
 
 import android.net.Uri
+import android.util.Log.e
 import com.example.chatwithfirebase.data.model.Message
 import com.example.chatwithfirebase.data.model.User
 import com.example.chatwithfirebase.utils.DateUtils
@@ -27,7 +28,6 @@ class FirebaseDataSource @Inject constructor(
     private val firebaseStorage: FirebaseStorage) {
 
     private val userList = ArrayList<User>()
-    private val userListChatted = ArrayList<User>()
     private val messageList = ArrayList<Message>()
 
     private val notValue = "Not value"
@@ -110,29 +110,6 @@ class FirebaseDataSource @Inject constructor(
         }
     }
 
-    fun getAllUserChatted(): Observable<ArrayList<User>> {
-        return Observable.create { emitter ->
-            firebaseDatabase.reference.child("User")
-                .addValueEventListener(object : ValueEventListener {
-                    override fun onDataChange(snapshot: DataSnapshot) {
-                        userListChatted.clear()
-                        for (dataSnapshot: DataSnapshot in snapshot.children) {
-                            val user = dataSnapshot.getValue(User::class.java)
-                            user?.let {
-                                if (user.userId != getCurrentUserId() && user.lastMessage != "") {
-                                    userListChatted.add(it)
-                                    emitter.onNext(userListChatted)
-                                }
-                            }
-                        }
-                    }
-
-                    override fun onCancelled(error: DatabaseError) {
-                        emitter.onError(error.toException())
-                    }
-                })
-        }
-    }
 
     fun searchForUser(str: String): Observable<ArrayList<User>> {
         return Observable.create { emitter ->
@@ -145,7 +122,7 @@ class FirebaseDataSource @Inject constructor(
                         for (dataSnapshot: DataSnapshot in snapshot.children) {
                             val user = dataSnapshot.getValue(User::class.java)
                             user?.let {
-                                if (user.userId != getCurrentUserId() && user.lastMessage != "") {
+                                if (user.userId != getCurrentUserId()) {
                                     userList.add(it)
                                     emitter.onNext(userList)
                                 }
@@ -189,12 +166,13 @@ class FirebaseDataSource @Inject constructor(
 
     }
 
-    fun sendMessage(receiverId: String, message: String, avatarSender: String, imageUpload: String
+    fun sendMessage(
+        receiverId: String, message: String, avatarSender: String, imageUpload: String
     ): Completable {
         return Completable.create { emitter ->
             // add chat message
             if (imageUpload.isNullOrEmpty()) {
-                val hashMap: HashMap<Any, Any> = HashMap()
+                val hashMap: HashMap<String, String> = HashMap()
                 hashMap["senderId"] = getCurrentUserId()
                 hashMap["receiverId"] = receiverId
                 hashMap["message"] = message
@@ -235,7 +213,6 @@ class FirebaseDataSource @Inject constructor(
                         emitter.onError(it)
                     }
             }
-
         }
     }
 
@@ -262,23 +239,5 @@ class FirebaseDataSource @Inject constructor(
             }
         }
     }
-
-    fun updateLastMessageAndTime(userId: String, lastMessage: String, date: String, time: String): Completable {
-        return Completable.create { emitter ->
-            val hashMap: HashMap<String, String> = HashMap()
-            hashMap["lastMessage"] = lastMessage
-            hashMap["date"] = date
-            hashMap["time"] = time
-            firebaseDatabase.reference.child("User").child(userId)
-                .updateChildren(hashMap as Map<String, String>)
-                .addOnCompleteListener {
-                    emitter.onComplete()
-                }
-                .addOnFailureListener {
-                    emitter.onError(it)
-                }
-        }
-    }
-
 
 }

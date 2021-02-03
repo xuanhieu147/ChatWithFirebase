@@ -73,4 +73,15 @@ class SharedPreferencesManager(context: Context) {
         removeConfig(Constants.URL_AVATAR)
     }
 
+    // TOKEN
+    fun saveToken(token:String?){
+        putConfig(Constants.TOKEN, token)
+    }
+
+    var token : String? = getString(Constants.TOKEN, "")
+
+    fun removeToken() {
+        removeConfig(Constants.TOKEN)
+    }
+
 }

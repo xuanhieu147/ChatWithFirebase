@@ -1,18 +1,13 @@
 package com.example.chatwithfirebase.ui.setting
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
 import com.example.chatwithfirebase.BR
 import com.example.chatwithfirebase.R
 import com.example.chatwithfirebase.base.BaseActivity
-import com.example.chatwithfirebase.databinding.ActivityRegisterBinding
 import com.example.chatwithfirebase.databinding.ActivitySettingBinding
 import com.example.chatwithfirebase.di.ViewModelFactory
-import com.example.chatwithfirebase.ui.login.LoginActivity
-import com.example.chatwithfirebase.ui.notification.NotificationActivity
-import com.example.chatwithfirebase.ui.register.RegisterViewModel
-import com.example.chatwithfirebase.ui.welcome.WelcomeActivity
+import com.example.chatwithfirebase.ui.setting.notification.NotificationActivity
 import javax.inject.Inject
 
 class SettingActivity : BaseActivity<ActivitySettingBinding, SettingViewModel>() {

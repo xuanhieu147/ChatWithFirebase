@@ -1,8 +1,11 @@
 package com.example.chatwithfirebase.ui.message
 
+import android.util.Log.e
 import androidx.lifecycle.MutableLiveData
 import com.example.chatwithfirebase.base.BaseViewModel
 import com.example.chatwithfirebase.data.model.Message
+import com.example.chatwithfirebase.data.model.NotificationData
+import com.example.chatwithfirebase.data.model.PushNotification
 import com.example.chatwithfirebase.data.model.User
 import com.example.chatwithfirebase.utils.LogUtil
 import javax.inject.Inject
@@ -52,17 +55,22 @@ class MessageViewModel @Inject constructor() : BaseViewModel() {
     private fun sendMessageSuccess() { LogUtil.error("Success") }
     private fun sendMessageError(t:Throwable) { LogUtil.error(t.toString()) }
 
-    // update last message and time
-    fun updateLastMessageAndTime(userId:String,lastMessage:String,date:String,time:String){
+    // Send Notification
+    fun sendNotification(pushNotification: PushNotification){
         compositeDisposable.add(
-            firebaseDataRepository.updateLastMessageAndTime(userId,lastMessage,date,time)
-                .compose(schedulerProvider.ioToMainCompletableScheduler())
-                .subscribe(this::updateLastMessageAndTimeSuccess,this::updateLastMessageAndTimeError)
+            firebaseNotificationRepository.sendNotification(pushNotification)
+                .compose(schedulerProvider.ioToMainObservableScheduler())
+                .subscribe(this::sendNotificationSuccess,this::sendNotificationError)
         )
     }
 
-    private fun updateLastMessageAndTimeSuccess(){ LogUtil.error("Success") }
-    private fun updateLastMessageAndTimeError(t:Throwable){ LogUtil.error(t.toString()) }
+    private fun sendNotificationSuccess(notificationData: NotificationData){
+        e("abc","abc")
+    }
+
+    private fun sendNotificationError(t:Throwable){
+        e("abc","err")
+    }
 
 
 }

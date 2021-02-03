@@ -1,6 +1,5 @@
 package com.example.chatwithfirebase.ui.home.module
 
-import com.example.chatwithfirebase.ui.home.adapter.UserChattedAdapter
 import com.example.chatwithfirebase.ui.home.adapter.UserAdapter
 import dagger.Module
 import dagger.Provides
@@ -10,7 +9,4 @@ class UserModule {
 
     @Provides
     fun provideUserAdapter() = UserAdapter()
-
-    @Provides
-    fun provideUserChattedAdapter() = UserChattedAdapter()
 }

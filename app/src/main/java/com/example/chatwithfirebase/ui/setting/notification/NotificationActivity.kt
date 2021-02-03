@@ -1,16 +1,12 @@
-package com.example.chatwithfirebase.ui.notification
+package com.example.chatwithfirebase.ui.setting.notification
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
 import com.example.chatwithfirebase.BR
 import com.example.chatwithfirebase.R
-import com.example.chatwithfirebase.base.BaseActivity
 import com.example.chatwithfirebase.base.BaseActivityGradient
 import com.example.chatwithfirebase.databinding.ActivityNotificationBinding
-import com.example.chatwithfirebase.databinding.ActivitySettingBinding
 import com.example.chatwithfirebase.di.ViewModelFactory
-import com.example.chatwithfirebase.ui.setting.SettingViewModel
 import javax.inject.Inject
 
 class NotificationActivity : BaseActivityGradient<ActivityNotificationBinding, NotificationViewModel>() {
@@ -29,9 +25,6 @@ class NotificationActivity : BaseActivityGradient<ActivityNotificationBinding, N
 
     override fun getBindingVariable(): Int = BR.notificationViewModel
 
-    override fun updateUI(savedInstanceState: Bundle?) {
-
-
-    }
+    override fun updateUI(savedInstanceState: Bundle?) {}
 
 }

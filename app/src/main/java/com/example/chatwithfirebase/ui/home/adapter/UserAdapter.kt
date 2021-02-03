@@ -7,7 +7,6 @@ import com.example.chatwithfirebase.base.BaseViewHolder
 import com.example.chatwithfirebase.base.OnItemClickListener
 import com.example.chatwithfirebase.data.model.User
 import com.example.chatwithfirebase.databinding.ItemUserBinding
-import com.example.chatwithfirebase.databinding.ItemUserChattedBinding
 
 class UserAdapter : BaseAdapter<User, BaseViewHolder>() {
 
@@ -30,7 +29,7 @@ class UserAdapter : BaseAdapter<User, BaseViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
         val dataBinding =
             ItemUserBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return UserChattedViewHolder(dataBinding)
+        return UserViewHolder(dataBinding)
     }
 
     override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
@@ -41,7 +40,7 @@ class UserAdapter : BaseAdapter<User, BaseViewHolder>() {
         return listUser?.size
     }
 
-    inner class UserChattedViewHolder(private val binding: ItemUserBinding) :
+    inner class UserViewHolder(private val binding: ItemUserBinding) :
         BaseViewHolder(binding.root) {
 
         override fun onBind(position: Int) {

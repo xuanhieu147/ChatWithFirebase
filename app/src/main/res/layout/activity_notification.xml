@@ -7,13 +7,13 @@
 
         <variable
             name="notificationViewModel"
-            type="com.example.chatwithfirebase.ui.notification.NotificationViewModel" />
+            type="com.example.chatwithfirebase.ui.setting.notification.NotificationViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.notification.NotificationActivity">
+        tools:context=".ui.setting.notification.NotificationActivity">
 
         <RelativeLayout
             android:id="@+id/relativeLayout"
