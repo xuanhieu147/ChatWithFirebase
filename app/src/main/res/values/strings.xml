@@ -18,6 +18,7 @@
     <string name="setting">SETTING</string>
     <string name="notifications">Notifications</string>
     <string name="title_notifications">NOTIFICATIONS</string>
+    <string name="title_img">Pick Image</string>
     <string name="on_off">On/Off</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>

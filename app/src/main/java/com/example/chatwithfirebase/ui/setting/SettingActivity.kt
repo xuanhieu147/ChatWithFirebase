@@ -3,6 +3,7 @@ package com.example.chatwithfirebase.ui.setting
 import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.view.Window
@@ -70,7 +71,11 @@ class SettingActivity : BaseActivity<ActivitySettingBinding, SettingViewModel>()
         //update FullName
         updateFullName()
 
-
+        // camera
+        binding.imgCamera.setOnClickListener {
+            val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            startActivityForResult(Intent.createChooser(intent, R.string.title_img.toString()), 438)
+        }
     }
 
     //update FullName
@@ -111,8 +116,8 @@ class SettingActivity : BaseActivity<ActivitySettingBinding, SettingViewModel>()
             dialog.show()
         }
 
-        settingViewModel.uiEventLiveData.observe(this,{
-            if (it == SettingViewModel.SAME_FULL_NAME){
+        settingViewModel.uiEventLiveData.observe(this, {
+            if (it == SettingViewModel.SAME_FULL_NAME) {
                 ToastUtils.toastError(this, R.string.full_name, R.string.same_full_name)
             }
         })

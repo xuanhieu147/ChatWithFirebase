@@ -33,7 +33,7 @@ class FirebaseDataRepositoryImp @Inject constructor(
         avatarSender: String,
         imageUpload: String
     ): Completable {
-        return firebaseDataSource.sendMessage(receiverId, message, avatarSender, imageUpload)
+        return firebaseDataSource.sendMessage(receiverId, message, avatarSender)
     }
 
     override fun uploadImageProfile(filePath: Uri): Completable {
