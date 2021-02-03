@@ -19,6 +19,8 @@
     <string name="notifications">Notifications</string>
     <string name="title_notifications">NOTIFICATIONS</string>
     <string name="on_off">On/Off</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
 
     // error
     <string name="error">error</string>
@@ -28,6 +30,7 @@
     <string name="type_password">Please enter your password</string>
     <string name="re_type_password">Please enter your re password</string>
     <string name="type_full_name">Please enter your full name</string>
+    <string name="same_full_name">The FullName you enter is the same as your current Fullname</string>
     <string name="re_password_not_same_password">re-enter password is not the same as password</string>
     <string name="error_get_data">error get data</string>
 

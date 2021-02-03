@@ -1,6 +1,7 @@
 package com.example.chatwithfirebase.ui.message
 
 import android.util.Log.e
+import android.net.Uri
 import androidx.lifecycle.MutableLiveData
 import com.example.chatwithfirebase.base.BaseViewModel
 import com.example.chatwithfirebase.data.model.Message
@@ -16,7 +17,7 @@ class MessageViewModel @Inject constructor() : BaseViewModel() {
     private val liveDataListMessage = MutableLiveData<ArrayList<Message>>()
 
     // Get Info Receiver
-    fun liveDataGetInfoReceiver() : MutableLiveData<User> = liveDataUser
+    fun liveDataGetInfoReceiver(): MutableLiveData<User> = liveDataUser
 
     fun getInfoReceiver(userId: String) {
         compositeDisposable.add(
@@ -26,34 +27,66 @@ class MessageViewModel @Inject constructor() : BaseViewModel() {
         )
     }
 
-    private fun getInfoReceiverSuccess(user: User) { liveDataUser.value = user }
-    private fun getInfoReceiverError(t: Throwable) { liveDataUser.value = null }
+    private fun getInfoReceiverSuccess(user: User) {
+        liveDataUser.value = user
+    }
+
+    private fun getInfoReceiverError(t: Throwable) {
+        liveDataUser.value = null
+    }
 
     // get All Message
-    fun liveDataGetAllMessage() : MutableLiveData<ArrayList<Message>> = liveDataListMessage
+    fun liveDataGetAllMessage(): MutableLiveData<ArrayList<Message>> = liveDataListMessage
 
-    fun getAllMessage(receiverId: String){
+    fun getAllMessage(receiverId: String) {
         compositeDisposable.add(
             firebaseDataRepository.getAllMessage(receiverId)
                 .compose(schedulerProvider.ioToMainObservableScheduler())
-                .subscribe(this::getAllMessageSuccess,this::getAllMessageError)
+                .subscribe(this::getAllMessageSuccess, this::getAllMessageError)
         )
     }
 
-    private fun getAllMessageSuccess(messageList:ArrayList<Message>) { liveDataListMessage.value = messageList }
-    private fun getAllMessageError(t:Throwable) { liveDataListMessage.value = null }
+    private fun getAllMessageSuccess(messageList: ArrayList<Message>) {
+        liveDataListMessage.value = messageList
+    }
+
+    private fun getAllMessageError(t: Throwable) {
+        liveDataListMessage.value = null
+    }
 
     // send message
-    fun sendMessage(receiverId: String, message: String,avatarSender:String,imageUpload:String){
+    fun sendMessage(
+        receiverId: String,
+        message: String,
+        avatarSender: String,
+        imageUpload: String
+    ) {
         compositeDisposable.add(
-            firebaseDataRepository.sendMessage(receiverId, message,avatarSender,imageUpload)
+            firebaseDataRepository.sendMessage(receiverId, message, avatarSender, imageUpload)
                 .compose(schedulerProvider.ioToMainCompletableScheduler())
-                .subscribe(this::sendMessageSuccess,this::sendMessageError)
+                .subscribe(this::sendMessageSuccess, this::sendMessageError)
         )
     }
 
-    private fun sendMessageSuccess() { LogUtil.error("Success") }
-    private fun sendMessageError(t:Throwable) { LogUtil.error(t.toString()) }
+    // send ImageMessage
+    fun sendImageMessage(fileUri: Uri, receiverId: String, avatarSender: String) {
+        setLoading(true)
+        compositeDisposable.add(
+            firebaseDataRepository.sendImageMessage(fileUri, receiverId, avatarSender)
+                .compose(schedulerProvider.ioToMainCompletableScheduler())
+                .subscribe(this::sendMessageSuccess, this::sendMessageError)
+        )
+    }
+
+    private fun sendMessageSuccess() {
+        setLoading(false)
+        LogUtil.error("Success")
+    }
+
+    private fun sendMessageError(t: Throwable) {
+        LogUtil.error(t.toString())
+    }
+
 
     // Send Notification
     fun sendNotification(pushNotification: PushNotification){
@@ -68,9 +101,8 @@ class MessageViewModel @Inject constructor() : BaseViewModel() {
         e("abc","abc")
     }
 
-    private fun sendNotificationError(t:Throwable){
-        e("abc","err")
+    private fun sendNotificationError(t:Throwable) {
+        e("abc", "err")
+
     }
-
-
 }

@@ -15,6 +15,7 @@ import com.example.chatwithfirebase.di.ViewModelFactory
 import com.example.chatwithfirebase.ui.home.adapter.UserAdapter
 import com.example.chatwithfirebase.ui.login.LoginActivity
 import com.example.chatwithfirebase.ui.message.MessageActivity
+import com.example.chatwithfirebase.ui.setting.SettingActivity
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.messaging.FirebaseMessaging
@@ -110,7 +111,7 @@ class HomeActivity : BaseActivityGradient<ActivityHomeBinding, HomeViewModel>(),
 
         binding.imgSetting.setOnClickListener {
             goScreen(
-                LoginActivity::class.java,
+                SettingActivity::class.java,
                 false, R.anim.slide_in_right, R.anim.slide_out_left
             )
         }

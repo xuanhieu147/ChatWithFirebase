@@ -4,7 +4,7 @@ package com.example.chatwithfirebase.data.model
                     var receiverId: String = "",
                     var message: String = "",
                     var avatarSender : String ="",
-                    var linkImage :String="",
+                    var imageUpload :String="",
                     var date:String="",
                     var time:String=""
  )

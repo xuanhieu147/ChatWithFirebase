@@ -5,6 +5,8 @@ import android.util.Log.e
 import com.example.chatwithfirebase.data.model.Message
 import com.example.chatwithfirebase.data.model.User
 import com.example.chatwithfirebase.utils.DateUtils
+import com.google.android.gms.tasks.Continuation
+import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DataSnapshot
@@ -12,6 +14,8 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageTask
+import com.google.firebase.storage.UploadTask
 import io.reactivex.Completable
 import javax.inject.Inject
 import io.reactivex.Observable
@@ -25,7 +29,8 @@ import kotlin.collections.HashMap
 class FirebaseDataSource @Inject constructor(
     private val firebaseAuth: FirebaseAuth,
     private val firebaseDatabase: FirebaseDatabase,
-    private val firebaseStorage: FirebaseStorage) {
+    private val firebaseStorage: FirebaseStorage
+) {
 
     private val userList = ArrayList<User>()
     private val messageList = ArrayList<Message>()
@@ -166,77 +171,153 @@ class FirebaseDataSource @Inject constructor(
 
     }
 
-    fun sendMessage(
-        receiverId: String, message: String, avatarSender: String, imageUpload: String
-    ): Completable {
+    fun sendMessage(receiverId: String, message: String, avatarSender: String): Completable {
         return Completable.create { emitter ->
             // add chat message
-            if (imageUpload.isNullOrEmpty()) {
-                val hashMap: HashMap<String, String> = HashMap()
-                hashMap["senderId"] = getCurrentUserId()
-                hashMap["receiverId"] = receiverId
-                hashMap["message"] = message
-                hashMap["avatarSender"] = avatarSender
-                hashMap["imageUpload"] = ""
-                hashMap["date"] = DateUtils.getCurrentDate()!!
-                hashMap["time"] = DateUtils.getCurrentTime()!!
+            val hashMap: HashMap<String, String> = HashMap()
+            hashMap["senderId"] = getCurrentUserId()
+            hashMap["receiverId"] = receiverId
+            hashMap["message"] = message
+            hashMap["avatarSender"] = avatarSender
+            hashMap["imageUpload"] = ""
+            hashMap["date"] = DateUtils.getCurrentDate()!!
+            hashMap["time"] = DateUtils.getCurrentTime()!!
 
-                firebaseDatabase.reference
-                    .child("Message")
-                    .push().setValue(hashMap)
-                    .addOnCompleteListener {
-                        if (it.isSuccessful) {
-                            emitter.onComplete()
-                        }
+            firebaseDatabase.reference
+                .child("Message")
+                .push().setValue(hashMap)
+                .addOnCompleteListener {
+                    if (it.isSuccessful) {
+                        emitter.onComplete()
                     }
-                    .addOnFailureListener {
-                        emitter.onError(it)
-                    }
-            } else {
-                val hashMap: HashMap<Any, Any> = HashMap()
-                hashMap["senderId"] = getCurrentUserId()
-                hashMap["receiverId"] = receiverId
-                hashMap["message"] = ""
-                hashMap["avatarSender"] = avatarSender
-                hashMap["date"] = DateUtils.getCurrentDate()!!
-                hashMap["time"] = DateUtils.getCurrentTime()!!
-
-                firebaseDatabase.reference
-                    .child("Message")
-                    .push().setValue(hashMap)
-                    .addOnCompleteListener {
-                        if (it.isSuccessful) {
-                            emitter.onComplete()
-                        }
-                    }
-                    .addOnFailureListener {
-                        emitter.onError(it)
-                    }
-            }
+                }
+                .addOnFailureListener {
+                    emitter.onError(it)
+                }
         }
     }
 
-    fun uploadImageProfile(filePath: Uri): Completable {
+    fun sendImageMessage(
+        fileUri: Uri,
+        receiverId: String,
+        avatarSender: String,
+    ): Completable {
         return Completable.create { emitter ->
-            filePath?.let {
-                firebaseStorage.reference.child(fileName).putFile(filePath)
-                    .addOnSuccessListener {
-                        // update image profile user
-                        val hashMap: HashMap<String, String> = HashMap()
-                        hashMap["avatarSender"] = filePath.toString()
-                        firebaseDatabase.reference
-                            .child("User")
-                            .child(getCurrentUserId())
-                            .updateChildren(hashMap as Map<String, String>)
-                            .addOnCompleteListener {
+
+            val uploadTask: StorageTask<*>
+            val storageReference = firebaseStorage.reference.child("Chats Image")
+            val filePath = storageReference.child(fileName)
+            uploadTask = filePath.putFile(fileUri)
+            uploadTask.continueWithTask(Continuation<UploadTask.TaskSnapshot, Task<Uri>> { task ->
+                if (task.isSuccessful) {
+                    task.exception?.let {
+                        throw it
+                    }
+                }
+                return@Continuation filePath.downloadUrl
+
+            }).addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val downloadUrl = task.result
+                    val url = downloadUrl.toString()
+                    // add chat message
+                    val hashMap: HashMap<String, String> = HashMap()
+                    hashMap["senderId"] = getCurrentUserId()
+                    hashMap["receiverId"] = receiverId
+                    hashMap["message"] = "send you an image"
+                    hashMap["avatarSender"] = avatarSender
+                    hashMap["imageUpload"] = url
+                    hashMap["date"] = DateUtils.getCurrentDate()!!
+                    hashMap["time"] = DateUtils.getCurrentTime()!!
+
+                    firebaseDatabase.reference
+                        .child("Message")
+                        .push().setValue(hashMap)
+                        .addOnCompleteListener {
+                            if (it.isSuccessful) {
                                 emitter.onComplete()
                             }
-                            .addOnFailureListener {
-                                emitter.onError(it)
-                            }
-
-                    }
+                        }
+                        .addOnFailureListener {
+                            emitter.onError(it)
+                        }
+                }
+                emitter.onComplete()
             }
+                .addOnFailureListener {
+                    emitter.onError(it)
+                }
+
+
+        }
+    }
+
+    fun uploadImageProfile(fileUri: Uri): Completable {
+        return Completable.create { emitter ->
+
+            val uploadTask: StorageTask<*>
+            val storageReference = firebaseStorage.reference.child("User Image")
+            val filePath = storageReference.child(fileName)
+            uploadTask = filePath.putFile(fileUri)
+            uploadTask.continueWithTask(Continuation<UploadTask.TaskSnapshot, Task<Uri>> { task ->
+                if (task.isSuccessful) {
+                    task.exception?.let {
+                        throw it
+                    }
+                }
+                return@Continuation filePath.downloadUrl
+
+            }).addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val downloadUrl = task.result
+                    val url = downloadUrl.toString()
+                    // add chat message
+
+                    // update image profile user
+                    val hashMap: HashMap<String, String> = HashMap()
+                    hashMap["avatarUser"] = url
+                    firebaseDatabase.reference
+                        .child("User")
+                        .child(getCurrentUserId())
+                        .updateChildren(hashMap as Map<String, String>)
+                        .addOnCompleteListener {
+                            emitter.onComplete()
+                        }
+                        .addOnFailureListener {
+                            emitter.onError(it)
+                        }
+
+
+                }
+                emitter.onComplete()
+            }
+                .addOnFailureListener {
+                    emitter.onError(it)
+                }
+
+
+        }
+
+    }
+
+    fun updateFullName(fullname: String): Completable {
+        return Completable.create { emitter ->
+
+            // update full name
+            val hashMap: HashMap<String, String> = HashMap()
+            hashMap["fullName"] = fullname
+            firebaseDatabase.reference
+                .child("User")
+                .child(getCurrentUserId())
+                .updateChildren(hashMap as Map<String, String>)
+                .addOnCompleteListener {
+                    emitter.onComplete()
+                }
+                .addOnFailureListener {
+                    emitter.onError(it)
+                }
+
+
         }
     }
 
