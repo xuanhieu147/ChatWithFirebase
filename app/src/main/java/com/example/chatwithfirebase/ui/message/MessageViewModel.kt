@@ -55,14 +55,9 @@ class MessageViewModel @Inject constructor() : BaseViewModel() {
     }
 
     // send message
-    fun sendMessage(
-        receiverId: String,
-        message: String,
-        avatarSender: String,
-        imageUpload: String
-    ) {
+    fun sendMessage(receiverId: String, message: String, avatarSender: String, ) {
         compositeDisposable.add(
-            firebaseDataRepository.sendMessage(receiverId, message, avatarSender, imageUpload)
+            firebaseDataRepository.sendMessage(receiverId, message, avatarSender)
                 .compose(schedulerProvider.ioToMainCompletableScheduler())
                 .subscribe(this::sendMessageSuccess, this::sendMessageError)
         )
@@ -80,11 +75,11 @@ class MessageViewModel @Inject constructor() : BaseViewModel() {
 
     private fun sendMessageSuccess() {
         setLoading(false)
-        LogUtil.error("Success")
+        LogUtil.error("Send Message Success")
     }
 
     private fun sendMessageError(t: Throwable) {
-        LogUtil.error(t.toString())
+        LogUtil.error("Send Message Error $t")
     }
 
 
@@ -98,11 +93,22 @@ class MessageViewModel @Inject constructor() : BaseViewModel() {
     }
 
     private fun sendNotificationSuccess(notificationData: NotificationData){
-        e("abc","abc")
+        LogUtil.error(" Push Notification Success")
     }
 
     private fun sendNotificationError(t:Throwable) {
-        e("abc", "err")
+        LogUtil.error(" Push Notification Error $t")
+    }
 
+    fun getCurrentUserId(): String{
+        return firebaseDataRepository.getCurrentUserId()
+    }
+
+    fun getUrlAvatar():String{
+        return sharedPreferencesManager.getUrlAvatar()
+    }
+
+    fun getFullName():String{
+        return sharedPreferencesManager.getFullName()
     }
 }

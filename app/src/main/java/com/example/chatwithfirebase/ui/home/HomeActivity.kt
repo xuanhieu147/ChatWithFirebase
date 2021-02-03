@@ -58,7 +58,6 @@ class HomeActivity : BaseActivityGradient<ActivityHomeBinding, HomeViewModel>(),
         homeViewModel.getUser().observe(this, {
             it?.let {
                 binding.user = it
-                sharedPreferencesManager.saveUrlAvatar(it.avatarUser)
             }
         })
 
@@ -88,8 +87,6 @@ class HomeActivity : BaseActivityGradient<ActivityHomeBinding, HomeViewModel>(),
                 MessageActivity::class.java,
                 false,
                 it.userId,
-                sharedPreferencesManager.getUrlAvatar(),
-                it.fullName,
                 R.anim.slide_in_right,
                 R.anim.slide_out_left,
             )
@@ -120,6 +117,4 @@ class HomeActivity : BaseActivityGradient<ActivityHomeBinding, HomeViewModel>(),
     override fun onItemClick(position: Int) {
         homeViewModel.onItemClickGetPositionUser(position)
     }
-
-
 }

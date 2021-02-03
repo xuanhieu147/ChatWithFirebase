@@ -50,38 +50,29 @@ class SharedPreferencesManager(context: Context) {
     }
 
     // USER
-    fun saveUser(firebaseUserUId: String?) {
-        putConfig(Constants.FIREBASE_USER_UID, firebaseUserUId)
+    fun saveUser(firebaseUserUid: String?,email:String?) {
+        putConfig(Constants.FIREBASE_USER_UID, firebaseUserUid)
+        putConfig(Constants.EMAIL, email)
     }
 
     fun getUser() : String = getString(Constants.FIREBASE_USER_UID, "")
+    fun getEmail() : String = getString(Constants.EMAIL, "")
+    fun removeUser() { removeConfig(Constants.FIREBASE_USER_UID) }
+    fun removeEmail() { removeConfig(Constants.EMAIL) }
 
-
-    fun removeUser() {
-        removeConfig(Constants.FIREBASE_USER_UID)
-    }
-
-    // AVATAR
-    fun saveUrlAvatar(urlAvatar:String?){
+    // INFO USER
+    fun saveInfoUser(fullName:String?,urlAvatar:String?){
+        putConfig(Constants.FULL_NAME, fullName)
         putConfig(Constants.URL_AVATAR, urlAvatar)
     }
 
-    fun getUrlAvatar() : String = getString(Constants.URL_AVATAR, "")
-
-
-    fun removeUrlAvatar() {
-        removeConfig(Constants.URL_AVATAR)
-    }
+    fun getFullName(): String = getString(Constants.FULL_NAME, "")
+    fun getUrlAvatar(): String = getString(Constants.URL_AVATAR, "")
+    fun removeFullName() { removeConfig(Constants.FULL_NAME) }
+    fun removeUrlAvatar() { removeConfig(Constants.URL_AVATAR) }
 
     // TOKEN
-    fun saveToken(token:String?){
-        putConfig(Constants.TOKEN, token)
-    }
-
+    fun saveToken(token:String?){ putConfig(Constants.TOKEN, token) }
     var token : String? = getString(Constants.TOKEN, "")
-
-    fun removeToken() {
-        removeConfig(Constants.TOKEN)
-    }
-
+    fun removeToken() { removeConfig(Constants.TOKEN) }
 }

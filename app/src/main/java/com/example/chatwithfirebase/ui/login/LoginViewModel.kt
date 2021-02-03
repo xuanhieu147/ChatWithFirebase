@@ -49,7 +49,7 @@ class LoginViewModel @Inject constructor(): BaseViewModel() {
 
     private fun onLoginSuccessful(){
         setLoading(false)
-        sharedPreferencesManager.saveUser(firebaseAuthRepository.getCurrentUserId())
+        sharedPreferencesManager.saveUser(firebaseAuthRepository.getCurrentUserId(),email.value)
         uiEventLiveData.value = LOGIN_SUCCESS
     }
 

@@ -1,9 +1,7 @@
 package com.example.chatwithfirebase.ui.message
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.util.Log.e
 import androidx.lifecycle.ViewModelProvider
 import com.example.chatwithfirebase.BR
@@ -14,14 +12,6 @@ import com.example.chatwithfirebase.data.model.PushNotification
 import com.example.chatwithfirebase.databinding.ActivityMessageBinding
 import com.example.chatwithfirebase.di.ViewModelFactory
 import com.example.chatwithfirebase.ui.message.adapter.MessageAdapter
-import com.example.chatwithfirebase.utils.DateUtils
-import com.example.chatwithfirebase.utils.LogUtil
-import com.google.android.gms.tasks.Continuation
-import com.google.android.gms.tasks.Task
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageTask
-import com.google.firebase.storage.UploadTask
 import javax.inject.Inject
 
 
@@ -81,7 +71,7 @@ class MessageActivity : BaseActivityGradient<ActivityMessageBinding, MessageView
         // send message on click
         binding.imgSend.setOnClickListener {
             val message = binding.edtMessage.text.toString()
-            messageViewModel.sendMessage(getIdReceiver()!!, message, getAvatarSender()!!, "")
+            messageViewModel.sendMessage(getIdReceiver()!!, message,messageViewModel.getUrlAvatar())
 
             // clear text
             binding.edtMessage.text?.clear()
@@ -94,14 +84,15 @@ class MessageActivity : BaseActivityGradient<ActivityMessageBinding, MessageView
 
             // push notification
             var topic = "/topics/${getIdReceiver()}"
-            PushNotification(NotificationData(getFullName()!!,message),topic).also {
+            PushNotification(NotificationData(
+                messageViewModel.getCurrentUserId(),
+                messageViewModel.getFullName(),message),topic).also {
                 messageViewModel.sendNotification(it)
                 }
             }
 
         //send imageMessage
         binding.imgCamera.setOnClickListener {
-            val intent = Intent()
             intent.action = Intent.ACTION_GET_CONTENT
             intent.type = "image/*"
             startActivityForResult(Intent.createChooser(intent, "Pick Image"), 438)
@@ -112,7 +103,13 @@ class MessageActivity : BaseActivityGradient<ActivityMessageBinding, MessageView
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 438 && resultCode == RESULT_OK && data != null && data!!.data != null) {
             val fileUri = data.data
-            messageViewModel.sendImageMessage(fileUri!!, getIdReceiver()!!, getAvatarSender()!!)
+            if(fileUri!=null) {
+                messageViewModel.sendImageMessage(
+                    fileUri!!,
+                    getIdReceiver()!!,
+                    messageViewModel.getUrlAvatar()
+                )
+            }
         }
     }
 }

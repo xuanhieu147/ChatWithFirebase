@@ -66,7 +66,10 @@ class HomeViewModel @Inject constructor() : BaseViewModel() {
         )
     }
 
-    private fun getInfoUserSuccess(user: User) { liveDataInfoUser.value = user }
+    private fun getInfoUserSuccess(user: User) {
+        liveDataInfoUser.value = user
+        sharedPreferencesManager.saveInfoUser(user.fullName,user.avatarUser)
+    }
     private fun getInfoUserSuccess(t: Throwable) { liveDataInfoUser.value = null }
 
      fun getCurrentUserId(): String{

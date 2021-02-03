@@ -1,11 +1,9 @@
 package com.example.chatwithfirebase.ui.message.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import com.bumptech.glide.Glide
 import com.example.chatwithfirebase.R
 import com.example.chatwithfirebase.base.BaseAdapter
 import com.example.chatwithfirebase.base.BaseViewHolder
@@ -16,8 +14,7 @@ import com.example.chatwithfirebase.databinding.MessageItemRightBinding
 import com.example.chatwithfirebase.utils.DateUtils
 import java.util.ArrayList
 
-class MessageAdapter(private val firebaseDataRepository: FirebaseDataRepository) :
-    BaseAdapter<Message, BaseViewHolder>() {
+class MessageAdapter(private val firebaseDataRepository: FirebaseDataRepository) : BaseAdapter<Message, BaseViewHolder>() {
 
     companion object {
         private const val MESSAGE_TYPE_LEFT = 0
@@ -78,15 +75,15 @@ class MessageAdapter(private val firebaseDataRepository: FirebaseDataRepository)
             binding.message = messageList[position]
             binding.executePendingBindings()
 
-            if (messageList[position].message.equals("send you an image")) {
+            if (messageList[position].message == "Send you an image") {
                 binding.tvMessage.visibility = View.GONE
                 binding.imgMessage.visibility = View.VISIBLE
             } else {
                 binding.tvMessage.visibility = View.VISIBLE
                 binding.imgMessage.visibility = View.GONE
             }
-            // set show date and time
 
+            // set show date and time
             if (binding.tvDate.text.toString() == DateUtils.getCurrentDate()) {
                 binding.tvDate.visibility = View.GONE
                 binding.tvTime.visibility = View.VISIBLE
@@ -107,24 +104,20 @@ class MessageAdapter(private val firebaseDataRepository: FirebaseDataRepository)
             binding.message = messageList[position]
             binding.executePendingBindings()
 
-            if (messageList[position].message.equals("send you an image")) {
+            if (messageList[position].message == "Send you an image") {
                 binding.tvMessage.visibility = View.GONE
                 binding.imgMessage.visibility = View.VISIBLE
             } else {
                 binding.tvMessage.visibility = View.VISIBLE
                 binding.imgMessage.visibility = View.GONE
             }
-            // set show date and time
 
+            // set show date and time
             if (binding.tvDate.text.toString() == DateUtils.getCurrentDate()) {
                 binding.tvTime.visibility = View.VISIBLE
                 binding.tvDate.visibility = View.GONE
             } else {
                 binding.tvDate.visibility = View.GONE
-//                binding.tvDate.apply {
-//                    visibility = View.VISIBLE
-//                    text = text.toString() + "  " + binding.tvTime.text.toString()
-//                }
                 binding.tvTime.apply {
                     visibility = View.VISIBLE
                     text = binding.tvDate.text.toString() + "  " + text.toString()

@@ -27,27 +27,17 @@ class FirebaseDataRepositoryImp @Inject constructor(
         return firebaseDataSource.getAllMessage(receiverId)
     }
 
-    override fun sendMessage(
-        receiverId: String,
-        message: String,
-        avatarSender: String,
-        imageUpload: String
-    ): Completable {
-        return firebaseDataSource.sendMessage(receiverId, message, avatarSender, imageUpload)
+    override fun sendMessage(receiverId: String, message: String, avatarSender: String): Completable {
+        return firebaseDataSource.sendMessage(receiverId, message, avatarSender)
     }
 
     override fun uploadImageProfile(filePath: Uri): Completable {
         return firebaseDataSource.uploadImageProfile(filePath)
     }
 
-    override fun sendImageMessage(
-        fileUri: Uri,
-        receiverId: String,
-        avatarSender: String
-    ): Completable {
+    override fun sendImageMessage(fileUri: Uri, receiverId: String, avatarSender: String): Completable {
         return firebaseDataSource.sendImageMessage(fileUri, receiverId, avatarSender)
     }
-
 
     override fun updateFullName(fullname: String): Completable {
         return firebaseDataSource.updateFullName(fullname)

@@ -12,8 +12,10 @@ object Constants {
 
     // SharedPreferencesManager
     const val FILE_NAME = "CHAT_WITH_FIREBASE"
-    const val URL_AVATAR = "URL_AVATAR"
     const val FIREBASE_USER_UID = "FIREBASE_USER_UID"
+    const val EMAIL = "EMAIL"
+    const val FULL_NAME = "FULL_NAME"
+    const val URL_AVATAR = "URL_AVATAR"
     const val TOKEN = "TOKEN"
 
     // Notification

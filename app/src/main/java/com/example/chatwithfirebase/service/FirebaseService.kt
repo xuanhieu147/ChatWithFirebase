@@ -8,6 +8,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Color
 import android.os.Build
+import android.util.Log.e
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import com.example.chatwithfirebase.R
@@ -27,7 +28,6 @@ class FirebaseService : FirebaseMessagingService() {
 
 
     companion object {
-
         const val CHANNEL_NOTIFICATION_ID = "NOTIFICATION_CHANNEL"
         const val CHANNEL_CHAT_NAME = "CHANNEL_FIREBASE_CHAT"
     }
@@ -55,12 +55,14 @@ class FirebaseService : FirebaseMessagingService() {
 //    }
 //    }
 
-    // handling received messages - data messages - forebackground, background
+    // handling received messages - data messages - foreground, background
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         super.onMessageReceived(remoteMessage)
 
         // handling event when click notification
-        val intent = Intent(this, HomeActivity::class.java)
+        val intent = Intent(this, MessageActivity::class.java)
+        intent.putExtra("idReceiver",remoteMessage.data["idReceiver"])
+        intent.putExtra("fullName",remoteMessage.data["fullName"])
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
 
         // handling notification
@@ -69,7 +71,7 @@ class FirebaseService : FirebaseMessagingService() {
 
         val pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT)
         val notification = NotificationCompat.Builder(this, CHANNEL_NOTIFICATION_ID)
-            .setContentTitle(remoteMessage.data["title"])
+            .setContentTitle(remoteMessage.data["fullName"])
             .setContentText(remoteMessage.data["message"])
             .setSmallIcon(R.drawable.ic_logo_no_text)
             .setAutoCancel(true)
@@ -81,7 +83,6 @@ class FirebaseService : FirebaseMessagingService() {
         }
 
         notificationManager.notify(notificationId, notification)
-
     }
 
     @RequiresApi(Build.VERSION_CODES.O)

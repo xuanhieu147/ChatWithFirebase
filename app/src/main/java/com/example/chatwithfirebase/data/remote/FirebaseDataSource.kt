@@ -197,11 +197,7 @@ class FirebaseDataSource @Inject constructor(
         }
     }
 
-    fun sendImageMessage(
-        fileUri: Uri,
-        receiverId: String,
-        avatarSender: String,
-    ): Completable {
+    fun sendImageMessage(fileUri: Uri, receiverId: String, avatarSender: String): Completable {
         return Completable.create { emitter ->
 
             val uploadTask: StorageTask<*>
@@ -224,7 +220,7 @@ class FirebaseDataSource @Inject constructor(
                     val hashMap: HashMap<String, String> = HashMap()
                     hashMap["senderId"] = getCurrentUserId()
                     hashMap["receiverId"] = receiverId
-                    hashMap["message"] = "send you an image"
+                    hashMap["message"] = "Send you an image"
                     hashMap["avatarSender"] = avatarSender
                     hashMap["imageUpload"] = url
                     hashMap["date"] = DateUtils.getCurrentDate()!!
@@ -300,12 +296,12 @@ class FirebaseDataSource @Inject constructor(
 
     }
 
-    fun updateFullName(fullname: String): Completable {
+    fun updateFullName(fullName: String): Completable {
         return Completable.create { emitter ->
 
             // update full name
             val hashMap: HashMap<String, String> = HashMap()
-            hashMap["fullName"] = fullname
+            hashMap["fullName"] = fullName
             firebaseDatabase.reference
                 .child("User")
                 .child(getCurrentUserId())
