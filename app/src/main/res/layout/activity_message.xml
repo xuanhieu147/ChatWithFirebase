@@ -106,14 +106,21 @@
             app:layout_constraintStart_toStartOf="parent">
 
             <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/imgCamera"
-                android:layout_width="@dimen/_20sdp"
-                android:layout_height="@dimen/_20sdp"
+                android:id="@+id/imgLibrary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/_4sdp"
+                android:src="@drawable/crop_original_24" />
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/imgCamera"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/imgLibrary"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/_4sdp"
                 android:src="@drawable/camera" />
-
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/edtMessage"
                 android:layout_width="match_parent"

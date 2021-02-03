@@ -11,8 +11,7 @@ import java.util.ArrayList
 import javax.inject.Inject
 
 class FirebaseDataRepositoryImp @Inject constructor(
-    private val firebaseDataSource: FirebaseDataSource
-) : FirebaseDataRepository {
+    private val firebaseDataSource: FirebaseDataSource) : FirebaseDataRepository {
 
     override fun getAllUser(): Observable<ArrayList<User>> {
         return firebaseDataSource.getAllUser()

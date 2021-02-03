@@ -2,7 +2,7 @@ package com.example.chatwithfirebase.ui.message
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log.e
+import android.provider.MediaStore
 import androidx.lifecycle.ViewModelProvider
 import com.example.chatwithfirebase.BR
 import com.example.chatwithfirebase.R
@@ -92,10 +92,17 @@ class MessageActivity : BaseActivityGradient<ActivityMessageBinding, MessageView
             }
 
         //send imageMessage
-        binding.imgCamera.setOnClickListener {
+        binding.imgLibrary.setOnClickListener {
+            val intent = Intent()
             intent.action = Intent.ACTION_GET_CONTENT
             intent.type = "image/*"
-            startActivityForResult(Intent.createChooser(intent, "Pick Image"), 438)
+            startActivityForResult(Intent.createChooser(intent, R.string.title_img.toString()), 438)
+        }
+
+        // camera
+        binding.imgCamera.setOnClickListener {
+            val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            startActivityForResult(Intent.createChooser(intent, R.string.title_img.toString()), 438)
         }
     }
 

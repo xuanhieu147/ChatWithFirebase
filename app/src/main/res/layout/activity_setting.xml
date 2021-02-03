@@ -4,9 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="user"
             type="com.example.chatwithfirebase.data.model.User" />
+
         <variable
             name="settingViewModel"
             type="com.example.chatwithfirebase.ui.setting.SettingViewModel" />
@@ -20,9 +22,9 @@
         <RelativeLayout
             android:id="@+id/relativeLayout"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_130sdp"
+            android:layout_height="wrap_content"
             android:background="@drawable/bg_gradient"
-            android:padding="@dimen/_16sdp"
+            android:padding="@dimen/_8sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -44,13 +46,23 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/imgAvatar"
+                imageUrl="@{user.avatarUser}"
                 android:layout_width="@dimen/_50sdp"
                 android:layout_height="@dimen/_50sdp"
-                imageUrl="@{user.avatarUser}"
                 android:layout_below="@id/imgSetting"
                 android:layout_marginLeft="@dimen/_16sdp"
                 android:layout_marginTop="@dimen/_32sdp"
-                android:src="@drawable/camera" />
+                android:src="@drawable/ic_logo_no_text" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/imgCamera"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/imgAvatar"
+                android:layout_toLeftOf="@id/tvEmail"
+                android:layout_marginRight="@dimen/_16sdp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:src="@drawable/ic_camera_white" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tvFullName"
@@ -123,6 +135,7 @@
                 android:layout_centerVertical="true"
                 android:src="@drawable/arrow_back" />
         </RelativeLayout>
+
         <RelativeLayout
             android:id="@+id/rlLogOut"
             android:layout_width="0dp"
