@@ -99,13 +99,15 @@ class MessageActivity : BaseActivityGradient<ActivityMessageBinding, MessageView
                 "READ_EXTERNAL_STORAGE",
                 Constants.READ_EXTERNAL_STORAGE
             )
-            val intent = Intent()
-            intent.action = Intent.ACTION_GET_CONTENT
-            intent.type = "image/*"
-            startActivityForResult(
-                Intent.createChooser(intent, R.string.pick_image.toString()),
-                438
-            )
+            if (isCheckPermission == true) {
+                val intent = Intent()
+                intent.action = Intent.ACTION_GET_CONTENT
+                intent.type = "image/*"
+                startActivityForResult(
+                    Intent.createChooser(intent, R.string.pick_image.toString()),
+                    438
+                )
+            }
         }
 
         // camera

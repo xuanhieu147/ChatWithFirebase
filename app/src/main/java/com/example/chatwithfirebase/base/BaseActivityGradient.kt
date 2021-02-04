@@ -32,6 +32,7 @@ abstract class BaseActivityGradient<T : ViewDataBinding, V : BaseViewModel> :
     lateinit var binding: T
     lateinit var loading: AlertDialog
     private var isCancelable = false
+    var isCheckPermission = false
 
     protected abstract fun getViewModel(): V
 
@@ -135,9 +136,13 @@ abstract class BaseActivityGradient<T : ViewDataBinding, V : BaseViewModel> :
             when {
                 ContextCompat.checkSelfPermission(applicationContext, permission) == PackageManager.PERMISSION_GRANTED -> {
                     ToastUtils.toastSuccess(this, R.string.permission, R.string.permission_granted)
+                    isCheckPermission = true
                 }
 
-                shouldShowRequestPermissionRationale(permission) -> showPermissionsDialog(permission, name, requestCode)
+                shouldShowRequestPermissionRationale(permission) -> {
+                    showPermissionsDialog(permission, name, requestCode)
+                    isCheckPermission = false
+                }
                 else -> ActivityCompat.requestPermissions(this, arrayOf(permission), requestCode)
             }
         }

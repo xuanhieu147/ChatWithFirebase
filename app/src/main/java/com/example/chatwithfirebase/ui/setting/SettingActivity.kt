@@ -108,10 +108,13 @@ class SettingActivity : BaseActivityGradient<ActivitySettingBinding, SettingView
             "READ_EXTERNAL_STORAGE",
             Constants.READ_EXTERNAL_STORAGE
         )
-        val intent = Intent()
-        intent.action = Intent.ACTION_GET_CONTENT
-        intent.type = "image/*"
-        startActivityForResult(Intent.createChooser(intent, "Pick Image"), 438)
+        if (isCheckPermission == true) {
+            val intent = Intent()
+            intent.action = Intent.ACTION_GET_CONTENT
+            intent.type = "image/*"
+            startActivityForResult(Intent.createChooser(intent, "Pick Image"), 438)
+        }
+
     }
 
     private fun updateAvatar() {
