@@ -57,7 +57,6 @@ class MessageActivity : BaseActivityGradient<ActivityMessageBinding, MessageView
             setHasFixedSize(true)
             adapter = messageAdapter
         }
-
         messageViewModel.getAllMessage(getIdReceiver()!!)
         messageViewModel.liveDataGetAllMessage().observe(this, {
             if (it != null) {
@@ -110,6 +109,7 @@ class MessageActivity : BaseActivityGradient<ActivityMessageBinding, MessageView
         }
 
         // camera
+
         binding.imgCamera.setOnClickListener {
             checkPermission(android.Manifest.permission.CAMERA, "Camera", Constants.CAMERA)
             val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)

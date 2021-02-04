@@ -32,7 +32,6 @@ class MessageViewModel @Inject constructor() : BaseViewModel() {
     // get All Message
     fun liveDataGetAllMessage(): MutableLiveData<ArrayList<Message>> = liveDataListMessage
     fun getAllMessage(receiverId: String) {
-        setLoading(true)
         compositeDisposable.add(
             firebaseDataRepository.getAllMessage(receiverId)
                 .compose(schedulerProvider.ioToMainObservableScheduler())

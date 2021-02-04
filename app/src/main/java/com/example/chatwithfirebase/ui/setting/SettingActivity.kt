@@ -3,6 +3,7 @@ package com.example.chatwithfirebase.ui.setting
 import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.Window
 import androidx.databinding.DataBindingUtil
@@ -10,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.chatwithfirebase.BR
 import com.example.chatwithfirebase.R
 import com.example.chatwithfirebase.base.BaseActivityGradient
+import com.example.chatwithfirebase.base.constants.Constants
 import com.example.chatwithfirebase.databinding.ActivitySettingBinding
 import com.example.chatwithfirebase.databinding.LayoutDialogEditBinding
 import com.example.chatwithfirebase.databinding.LayoutUpdateAvatarBinding
@@ -53,20 +55,21 @@ class SettingActivity : BaseActivityGradient<ActivitySettingBinding, SettingView
         }
 
         binding.rlLogout.setOnClickListener {
-            showActionDialog(getString(R.string.logout),
+            showActionDialog(
+                getString(R.string.logout),
                 getString(R.string.question_log_out),
-                getString(R.string.ok)) { _, _ ->
-                  settingViewModel.signOut()
-                  openLoginScreen()
+                getString(R.string.ok)
+            ) { _, _ ->
+                settingViewModel.signOut()
+                openLoginScreen()
             }
         }
 
-         updateAvatar()
+        updateAvatar()
         updateFullName()
-        // openCamera()
     }
 
-    private fun openLoginScreen(){
+    private fun openLoginScreen() {
         goScreen(
             LoginActivity::class.java,
             true,
@@ -75,7 +78,7 @@ class SettingActivity : BaseActivityGradient<ActivitySettingBinding, SettingView
         )
     }
 
-    private fun openNotificationScreen(){
+    private fun openNotificationScreen() {
         goScreen(
             NotificationActivity::class.java,
             false,
@@ -85,22 +88,36 @@ class SettingActivity : BaseActivityGradient<ActivitySettingBinding, SettingView
     }
 
 
-//    private fun openCamera() {
-//        binding.imgCamera.setOnClickListener {
-//            checkPermission(android.Manifest.permission.CAMERA, "Camera", Constants.CAMERA)
-//            val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-//            startActivityForResult(
-//                Intent.createChooser(intent, R.string.title_img.toString()),
-//                438
-//            )
-//
-//        }
-//    }
+    private fun openCamera() {
+        checkPermission(android.Manifest.permission.CAMERA, "Camera", Constants.CAMERA)
+        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        startActivityForResult(
+            Intent.createChooser(intent, R.string.pick_image.toString()),
+            438
+        )
+    }
+
+    private fun openPhotoLibrary() {
+        checkPermission(
+            android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            "WRITE_EXTERNAL_STORAGE",
+            Constants.WRITE_EXTERNAL_STORAGE
+        )
+        checkPermission(
+            android.Manifest.permission.READ_EXTERNAL_STORAGE,
+            "READ_EXTERNAL_STORAGE",
+            Constants.READ_EXTERNAL_STORAGE
+        )
+        val intent = Intent()
+        intent.action = Intent.ACTION_GET_CONTENT
+        intent.type = "image/*"
+        startActivityForResult(Intent.createChooser(intent, "Pick Image"), 438)
+    }
 
     private fun updateAvatar() {
         binding.imgAvatar.setOnClickListener {
 
-            val bottomSheetDialog = BottomSheetDialog(this@SettingActivity,R.style.SheetDialog)
+            val bottomSheetDialog = BottomSheetDialog(this@SettingActivity, R.style.SheetDialog)
             val bindingBottomSheetDialog: LayoutUpdateAvatarBinding = DataBindingUtil.inflate(
                 LayoutInflater.from(this),
                 R.layout.layout_update_avatar,
@@ -108,30 +125,22 @@ class SettingActivity : BaseActivityGradient<ActivitySettingBinding, SettingView
                 false
             )
             bottomSheetDialog.setContentView(bindingBottomSheetDialog.root)
+            bindingBottomSheetDialog.btnTakePhoto.setOnClickListener {
+                openCamera()
+            }
+            bindingBottomSheetDialog.btnSelectPicture.setOnClickListener {
+                openPhotoLibrary()
+            }
             bottomSheetDialog.show()
 
 
-//            checkPermission(
-//                android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
-//                "WRITE_EXTERNAL_STORAGE",
-//                Constants.WRITE_EXTERNAL_STORAGE
-//            )
-//            checkPermission(
-//                android.Manifest.permission.READ_EXTERNAL_STORAGE,
-//                "READ_EXTERNAL_STORAGE",
-//                Constants.READ_EXTERNAL_STORAGE
-//            )
-//            val intent = Intent()
-//            intent.action = Intent.ACTION_GET_CONTENT
-//            intent.type = "image/*"
-//            startActivityForResult(Intent.createChooser(intent, "Pick Image"), 438)
         }
     }
 
     private fun updateFullName() {
         binding.imgEdit.setOnClickListener {
 
-            val dialog = Dialog(this,R.style.SheetDialog)
+            val dialog = Dialog(this, R.style.SheetDialog)
             val bindingDialog: LayoutDialogEditBinding = DataBindingUtil.inflate(
                 LayoutInflater.from(this),
                 R.layout.layout_dialog_edit,
