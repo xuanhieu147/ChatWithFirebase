@@ -57,4 +57,10 @@ class LoginViewModel @Inject constructor(): BaseViewModel() {
         setLoading(false)
         showError(t)
     }
+
+    fun getEmail() {
+        if(!sharedPreferencesManager.getEmail().isNullOrEmpty()){
+             email.value = sharedPreferencesManager.getEmail()
+        }
+    }
 }

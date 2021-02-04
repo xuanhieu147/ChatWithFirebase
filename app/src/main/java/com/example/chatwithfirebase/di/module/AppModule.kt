@@ -28,10 +28,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import javax.inject.Named
 import javax.inject.Singleton
 
-/**
- * Custom by Duc Minh
- */
-
+/** Custom by Duc Minh */
 @Module
 class AppModule {
 
@@ -52,7 +49,6 @@ class AppModule {
     @Singleton
     @Provides
     fun provideSharedPreferencesManager(context: Context) = SharedPreferencesManager(context)
-
 
     /** Provide Firebase */
 
@@ -87,17 +83,17 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideFirebaseAuthRepository(
-        firebaseAuthRepositoryImp: FirebaseAuthRepositoryImp): FirebaseAuthRepository = firebaseAuthRepositoryImp
+    fun provideFirebaseAuthRepository(firebaseAuthRepositoryImp: FirebaseAuthRepositoryImp):
+            FirebaseAuthRepository = firebaseAuthRepositoryImp
 
     @Provides
     @Singleton
-    fun provideFirebaseDataRepository(
-        firebaseDataRepositoryImp: FirebaseDataRepositoryImp): FirebaseDataRepository = firebaseDataRepositoryImp
+    fun provideFirebaseDataRepository(firebaseDataRepositoryImp: FirebaseDataRepositoryImp):
+            FirebaseDataRepository = firebaseDataRepositoryImp
 
     @Provides
     @Singleton
-    fun provideNotificationRepository(
-        firebaseNotificationRepositoryImp: FirebaseNotificationRepositoryImp): FirebaseNotificationRepository = firebaseNotificationRepositoryImp
+    fun provideNotificationRepository(firebaseNotificationRepositoryImp: FirebaseNotificationRepositoryImp):
+            FirebaseNotificationRepository = firebaseNotificationRepositoryImp
 
 }

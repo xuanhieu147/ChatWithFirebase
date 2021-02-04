@@ -6,5 +6,5 @@ import io.reactivex.Observable
 
 interface FirebaseNotificationRepository {
 
-    fun sendNotification(pushNotification: PushNotification) : Observable<NotificationData>
+    fun sendNotification(pushNotification: PushNotification): Observable<NotificationData>
 }

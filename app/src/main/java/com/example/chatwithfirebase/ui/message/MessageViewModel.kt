@@ -18,7 +18,6 @@ class MessageViewModel @Inject constructor() : BaseViewModel() {
 
     // Get Info Receiver
     fun liveDataGetInfoReceiver(): MutableLiveData<User> = liveDataUser
-
     fun getInfoReceiver(userId: String) {
         compositeDisposable.add(
             firebaseDataRepository.getInfoReceiver(userId)
@@ -27,18 +26,13 @@ class MessageViewModel @Inject constructor() : BaseViewModel() {
         )
     }
 
-    private fun getInfoReceiverSuccess(user: User) {
-        liveDataUser.value = user
-    }
-
-    private fun getInfoReceiverError(t: Throwable) {
-        liveDataUser.value = null
-    }
+    private fun getInfoReceiverSuccess(user: User) { liveDataUser.value = user }
+    private fun getInfoReceiverError(t: Throwable) { liveDataUser.value = null }
 
     // get All Message
     fun liveDataGetAllMessage(): MutableLiveData<ArrayList<Message>> = liveDataListMessage
-
     fun getAllMessage(receiverId: String) {
+        setLoading(true)
         compositeDisposable.add(
             firebaseDataRepository.getAllMessage(receiverId)
                 .compose(schedulerProvider.ioToMainObservableScheduler())
@@ -47,27 +41,18 @@ class MessageViewModel @Inject constructor() : BaseViewModel() {
     }
 
     private fun getAllMessageSuccess(messageList: ArrayList<Message>) {
+        setLoading(false)
         liveDataListMessage.value = messageList
     }
 
     private fun getAllMessageError(t: Throwable) {
+        setLoading(false)
         liveDataListMessage.value = null
     }
 
-    // send message
-    fun sendMessage(receiverId: String, message: String, avatarSender: String, ) {
+    fun sendMessage(receiverId: String, message: String, avatarSender: String) {
         compositeDisposable.add(
             firebaseDataRepository.sendMessage(receiverId, message, avatarSender)
-                .compose(schedulerProvider.ioToMainCompletableScheduler())
-                .subscribe(this::sendMessageSuccess, this::sendMessageError)
-        )
-    }
-
-    // send ImageMessage
-    fun sendImageMessage(fileUri: Uri, receiverId: String, avatarSender: String) {
-        setLoading(true)
-        compositeDisposable.add(
-            firebaseDataRepository.sendImageMessage(fileUri, receiverId, avatarSender)
                 .compose(schedulerProvider.ioToMainCompletableScheduler())
                 .subscribe(this::sendMessageSuccess, this::sendMessageError)
         )
@@ -79,9 +64,28 @@ class MessageViewModel @Inject constructor() : BaseViewModel() {
     }
 
     private fun sendMessageError(t: Throwable) {
+        setLoading(false)
         LogUtil.error("Send Message Error $t")
     }
 
+    fun sendImageMessage(fileUri: Uri, receiverId: String, avatarSender: String) {
+        setLoading(true)
+        compositeDisposable.add(
+            firebaseDataRepository.sendImageMessage(fileUri, receiverId, avatarSender)
+                .compose(schedulerProvider.ioToMainCompletableScheduler())
+                .subscribe(this::sendImageMessageSuccess, this::sendImageMessageError)
+        )
+    }
+
+    private fun sendImageMessageSuccess() {
+        setLoading(false)
+        LogUtil.error("Send Image Message Success")
+    }
+
+    private fun sendImageMessageError(t: Throwable) {
+        setLoading(false)
+        LogUtil.error("Send Image Message Error $t")
+    }
 
     // Send Notification
     fun sendNotification(pushNotification: PushNotification){

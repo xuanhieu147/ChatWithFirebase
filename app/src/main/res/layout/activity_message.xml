@@ -22,7 +22,7 @@
         tools:context=".ui.message.MessageActivity">
 
         <LinearLayout
-            android:id="@+id/relativeLayout"
+            android:id="@+id/llLayout"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_90sdp"
             android:background="@drawable/bg_gradient"
@@ -39,7 +39,7 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="@dimen/_16sdp"
                 android:layout_marginBottom="@dimen/_16sdp"
-                android:src="@drawable/ic_baseline_arrow_back_ios_24" />
+                android:src="@drawable/ic_arrow_back" />
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/imgAvatar"
@@ -48,8 +48,7 @@
                 android:layout_height="@dimen/_40sdp"
                 android:layout_gravity="center"
                 android:layout_marginLeft="@dimen/_8sdp"
-                android:src="@drawable/ic_logo_no_text"
-                />
+                android:src="@drawable/ic_logo_no_text" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -72,29 +71,28 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_4sdp"
-                    android:textSize="@dimen/_11sdp"
-                    android:text="@string/status_online" />
+                    android:text="@{user.status}"
+                    android:textSize="@dimen/_11sdp" />
             </LinearLayout>
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvChat"
+            android:id="@+id/rclChat"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginStart="@dimen/_8sdp"
-            android:layout_marginTop="@dimen/_16sdp"
             android:layout_marginEnd="@dimen/_8sdp"
-            tools:listitem="@layout/message_item_right"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintBottom_toTopOf="@+id/rl_bottom"
+            app:layout_constraintBottom_toTopOf="@+id/rlBottom"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/relativeLayout"
-            app:layout_constraintVertical_bias="1.0" />
+            app:layout_constraintTop_toBottomOf="@+id/llLayout"
+            app:layout_constraintVertical_bias="1.0"
+            tools:listitem="@layout/message_item_right" />
 
         <RelativeLayout
-            android:id="@+id/rl_bottom"
+            android:id="@+id/rlBottom"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
@@ -106,34 +104,36 @@
             app:layout_constraintStart_toStartOf="parent">
 
             <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/imgLibrary"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/_4sdp"
-                android:src="@drawable/crop_original_24" />
-            <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/imgCamera"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/imgLibrary"
                 android:layout_centerVertical="true"
+                android:layout_alignParentLeft="true"
                 android:layout_marginLeft="@dimen/_4sdp"
                 android:src="@drawable/camera" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/imgLibrary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/_4sdp"
+                android:layout_toRightOf="@id/imgCamera"
+                android:src="@drawable/ic_library" />
+
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/edtMessage"
+                style="@style/LouisGeorgeCafe.TextColorBlack"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                style="@style/LouisGeorgeCafe.TextColorBlack"
-                android:textSize="@dimen/_13sdp"
                 android:layout_marginLeft="@dimen/_8sdp"
                 android:layout_marginRight="@dimen/_8sdp"
                 android:layout_toLeftOf="@id/imgSend"
-                android:layout_toRightOf="@id/imgCamera"
+                android:layout_toRightOf="@id/imgLibrary"
                 android:background="@android:color/transparent"
-                android:hint="@string/type_message" />
+                android:hint="@string/type_message"
+                android:textSize="@dimen/_13sdp" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/imgSend"

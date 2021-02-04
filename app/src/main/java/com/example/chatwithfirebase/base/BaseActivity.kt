@@ -32,16 +32,11 @@ import dagger.android.support.DaggerAppCompatActivity
  * Custom by Duc Minh
  * Status bar text color black and background color white :v
  */
-abstract class BaseActivity<T : ViewDataBinding, V : BaseViewModel> :
-    DaggerAppCompatActivity() {
+abstract class BaseActivity<T : ViewDataBinding, V : BaseViewModel> : DaggerAppCompatActivity() {
 
     lateinit var binding: T
     lateinit var loading: AlertDialog
     private var isCancelable = false
-
-    val CAMERA = 101
-    val READ_EXTERNAL_STORAGE = 102
-    val WRITE_EXTERNAL_STORAGE = 103
 
     protected abstract fun getViewModel(): V
 
@@ -133,74 +128,10 @@ abstract class BaseActivity<T : ViewDataBinding, V : BaseViewModel> :
                 } catch (e: IllegalAccessException) {
                     e.printStackTrace()
                 }
-
             }
         } catch (e: Exception) {
             e.printStackTrace()
         }
-    }
-
-
-    fun checkPermission(permission: String, name: String, requestCode: Int) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            when {
-                ContextCompat.checkSelfPermission(
-                    applicationContext,
-                    permission
-                ) == PackageManager.PERMISSION_GRANTED -> {
-                    ToastUtils.toastSuccess(this, R.string.permission, R.string.permission_granted)
-                }
-                shouldShowRequestPermissionRationale(permission) -> showDialog(
-                    permission,
-                    name,
-                    requestCode
-                )
-
-                else -> ActivityCompat.requestPermissions(this, arrayOf(permission), requestCode)
-            }
-        }
-    }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        fun innerCheck(name: String){
-            if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED){
-                ToastUtils.toastError(this, R.string.permission, R.string.permission_type)
-            }
-            else{
-                ToastUtils.toastSuccess(this, R.string.permission, R.string.permission_granted)
-
-            }
-        }
-
-        when(requestCode){
-            CAMERA -> innerCheck("CAMERA")
-            READ_EXTERNAL_STORAGE -> innerCheck("READ_EXTERNAL_STORAGE")
-            WRITE_EXTERNAL_STORAGE -> innerCheck("WRITE_EXTERNAL_STORAGE")
-
-        }
-
-    }
-
-    private fun showDialog(permission: String, name: String, requestCode: Int) {
-        val builder = AlertDialog.Builder(this)
-
-        builder.apply {
-            setMessage("Permission to access your $name is required to use this app")
-            setTitle("Permission required")
-            setPositiveButton("OK") { dialog, which ->
-                ActivityCompat.requestPermissions(
-                    this@BaseActivity,
-                    arrayOf(permission),
-                    requestCode
-                )
-            }
-        }
-        val dialog = builder.create()
-        dialog.show()
     }
 
     open fun goScreen(activityClazz: Class<*>, isFinish: Boolean, vararg aniInt: Int) {
@@ -232,13 +163,10 @@ abstract class BaseActivity<T : ViewDataBinding, V : BaseViewModel> :
     private fun initDialog() {
         val builder: AlertDialog.Builder = if (getThemResId() != -1)
             AlertDialog.Builder(this, getThemResId()) else AlertDialog.Builder(this)
-
-
         builder.setCancelable(isCancelable)
         builder.setView(if (getLayoutIdLoading() == -1) R.layout.item_loading else getLayoutIdLoading())
         loading = builder.create()
     }
-
 
     /**
      * Show dialog loading
@@ -278,13 +206,12 @@ abstract class BaseActivity<T : ViewDataBinding, V : BaseViewModel> :
         builder.show()
     }
 
-
     fun showActionDialog(
         title: String?,
         message: Any,
         positiveAction: String,
-        positiveListener: DialogInterface.OnClickListener
-    ) {
+        positiveListener: DialogInterface.OnClickListener) {
+
         val builder = AlertDialog.Builder(this)
         builder.setTitle(title)
         if (message is Int) {
@@ -292,6 +219,7 @@ abstract class BaseActivity<T : ViewDataBinding, V : BaseViewModel> :
         } else if (message is String) {
             builder.setMessage(message)
         }
+
         builder.setPositiveButton(positiveAction, positiveListener)
         builder.setNegativeButton(android.R.string.cancel, null)
         builder.setCancelable(true)
@@ -309,7 +237,6 @@ abstract class BaseActivity<T : ViewDataBinding, V : BaseViewModel> :
         super.onResume()
         getViewModel().onResume()
     }
-
 
     private fun statusBarBackgroundWhite() {
         window.apply {
@@ -329,5 +256,4 @@ abstract class BaseActivity<T : ViewDataBinding, V : BaseViewModel> :
             }
         })
     }
-
 }

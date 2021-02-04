@@ -2,6 +2,8 @@ package com.example.chatwithfirebase.ui.home.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
+import com.example.chatwithfirebase.R
 import com.example.chatwithfirebase.base.BaseAdapter
 import com.example.chatwithfirebase.base.BaseViewHolder
 import com.example.chatwithfirebase.base.OnItemClickListener
@@ -27,8 +29,7 @@ class UserAdapter : BaseAdapter<User, BaseViewHolder>() {
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
-        val dataBinding =
-            ItemUserBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val dataBinding = ItemUserBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return UserViewHolder(dataBinding)
     }
 
@@ -36,9 +37,7 @@ class UserAdapter : BaseAdapter<User, BaseViewHolder>() {
         holder.onBind(position)
     }
 
-    override fun getItemCount(): Int {
-        return listUser?.size
-    }
+    override fun getItemCount(): Int = listUser?.size
 
     inner class UserViewHolder(private val binding: ItemUserBinding) :
         BaseViewHolder(binding.root) {
@@ -46,9 +45,20 @@ class UserAdapter : BaseAdapter<User, BaseViewHolder>() {
         override fun onBind(position: Int) {
             binding.user = listUser[position]
             binding.executePendingBindings()
+
             itemView.setOnClickListener {
                 onItemClickListener?.onItemClick(position)
             }
+
+           if(binding.tvStatus.text.toString() == "online"){
+               binding.tvStatus.setTextColor(
+                   ContextCompat.getColor(binding.root.context,R.color.blue_61))
+           }
+            else{
+               binding.tvStatus.setTextColor(
+                   ContextCompat.getColor(binding.root.context,R.color.black))
+            }
         }
+
     }
 }

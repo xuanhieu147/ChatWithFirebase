@@ -11,32 +11,37 @@
     <string name="re_password">Re Password</string>
     <string name="username">UserName</string>
     <string name="full_name">Full Name</string>
-    <string name="title_messages">MESSAGES</string>
+    <string name="message">message</string>
     <string name="time">Time</string>
     <string name="status_online">Online</string>
-    <string name="type_message">Type Your Message</string>
-    <string name="setting">SETTING</string>
-    <string name="notifications">Notifications</string>
-    <string name="title_notifications">NOTIFICATIONS</string>
-    <string name="title_img">Pick Image</string>
+    <string name="setting">setting</string>
+    <string name="notifications">Notification</string>
+    <string name="pick_image">Pick Image</string>
     <string name="on_off">On/Off</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
+    <string name="take_a_photo">Take a Photo</string>
+    <string name="select_picture">Select picture</string>
+    <string name="update_avatar">Update avatar</string>
+    <string name="update_full_name">Update Full Name</string>
 
     // error
     <string name="error">error</string>
+    <string name="type_message">Type Your Message</string>
     <string name="type_email">Please enter your email</string>
     <string name="wrong_email_format">Wrong email format</string>
     <string name="wrong_email_password">Email and password are incorrect</string>
     <string name="type_password">Please enter your password</string>
     <string name="re_type_password">Please enter your re password</string>
     <string name="type_full_name">Please enter your full name</string>
-    <string name="same_full_name">The FullName you enter is the same as your current Fullname</string>
     <string name="re_password_not_same_password">re-enter password is not the same as password</string>
     <string name="error_get_data">error get data</string>
+
     <string name="permission">Permission</string>
     <string name="permission_type">Permission to record denied</string>
     <string name="permission_granted">Permission granted</string>
+
+    <string name="question_log_out">Do you want logout ?</string>
 
     // success
     <string name="success">Success</string>

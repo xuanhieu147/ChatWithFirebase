@@ -13,10 +13,7 @@ import retrofit2.converter.scalars.ScalarsConverterFactory
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
-/**
- * Created by Duc Minh
- */
-
+/** Created by Duc Minh */
 @Module
 class ApiModule {
 
@@ -44,6 +41,7 @@ class ApiModule {
 
     @Provides
     @Singleton
-    fun provideApiNotification(retrofit: Retrofit): ApiFirebaseNotification = retrofit.create(ApiFirebaseNotification::class.java)
+    fun provideApiNotification(retrofit: Retrofit):
+            ApiFirebaseNotification = retrofit.create(ApiFirebaseNotification::class.java)
 
 }

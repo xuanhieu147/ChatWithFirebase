@@ -10,6 +10,7 @@ import com.example.chatwithfirebase.R
 import com.example.chatwithfirebase.base.BaseActivityGradient
 import com.example.chatwithfirebase.base.OnItemClickListener
 import com.example.chatwithfirebase.base.manager.SharedPreferencesManager
+import com.example.chatwithfirebase.data.model.User
 import com.example.chatwithfirebase.databinding.ActivityHomeBinding
 import com.example.chatwithfirebase.di.ViewModelFactory
 import com.example.chatwithfirebase.ui.home.adapter.UserAdapter
@@ -27,8 +28,6 @@ class HomeActivity : BaseActivityGradient<ActivityHomeBinding, HomeViewModel>(),
     @Inject
     lateinit var factory: ViewModelFactory
 
-    private lateinit var homeViewModel: HomeViewModel
-
     @Inject
     lateinit var userAdapter: UserAdapter
 
@@ -37,6 +36,8 @@ class HomeActivity : BaseActivityGradient<ActivityHomeBinding, HomeViewModel>(),
 
     @Inject
     lateinit var sharedPreferencesManager: SharedPreferencesManager
+
+    private lateinit var homeViewModel: HomeViewModel
 
     override fun getViewModel(): HomeViewModel {
         homeViewModel = ViewModelProvider(this, factory).get(HomeViewModel::class.java)
@@ -49,24 +50,17 @@ class HomeActivity : BaseActivityGradient<ActivityHomeBinding, HomeViewModel>(),
 
     override fun updateUI(savedInstanceState: Bundle?) {
 
-         // token device return notification
-        firebaseMessaging.token.addOnCompleteListener { task -> sharedPreferencesManager.token = task.result }
-        firebaseMessaging.subscribeToTopic("/topics/${homeViewModel.getCurrentUserId()}")
-
-        // get info user
-        homeViewModel.getInfoUser()
-        homeViewModel.getUser().observe(this, {
-            it?.let {
-                binding.user = it
-            }
-        })
-
         // set adapter
-        binding.rvListUser.apply {
+        binding.rclListUser.apply {
             setHasFixedSize(true)
             adapter = userAdapter
         }
 
+        // get info user
+        homeViewModel.getInfoUser()
+        homeViewModel.getUser().observe(this, {
+            it?.let { binding.user = it }
+        })
 
         // get all user
         homeViewModel.getAllUser()
@@ -80,38 +74,58 @@ class HomeActivity : BaseActivityGradient<ActivityHomeBinding, HomeViewModel>(),
             }
         })
 
-        // On Item Click
+        // on item click
         userAdapter.setOnItemClickListener(this)
         homeViewModel.getInfoReceiver().observe(this, {
-            goScreenAndPutString(
-                MessageActivity::class.java,
-                false,
-                it.userId,
-                R.anim.slide_in_right,
-                R.anim.slide_out_left,
-            )
+            openMessageScreen(it)
         })
 
-        //  search for user
-        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+
+        binding.imgSetting.setOnClickListener {
+            openSettingScreen()
+        }
+
+        tokenGetNotification()
+        searchUser()
+    }
+
+    // token device return notification
+    private fun tokenGetNotification(){
+        firebaseMessaging.token.addOnCompleteListener { task -> sharedPreferencesManager.token = task.result }
+        firebaseMessaging.subscribeToTopic("/topics/${homeViewModel.getCurrentUserId()}")
+    }
+
+    private fun searchUser(){
+        binding.svSearch.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 return false
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                binding.searchView.requestFocus()
+                binding.svSearch.requestFocus()
                 homeViewModel.searchForUser(newText!!)
                 return false
             }
 
         })
+    }
 
-        binding.imgSetting.setOnClickListener {
-            goScreen(
-                SettingActivity::class.java,
-                false, R.anim.slide_in_right, R.anim.slide_out_left
-            )
-        }
+     private fun openMessageScreen(user: User){
+         goScreenAndPutString(
+             MessageActivity::class.java,
+             false,
+             user.userId,
+             R.anim.slide_in_right,
+             R.anim.slide_out_left,
+         )
+     }
+
+    private fun openSettingScreen(){
+        goScreen(SettingActivity::class.java,
+            false,
+            R.anim.slide_in_right,
+            R.anim.slide_out_left
+        )
     }
 
     override fun onItemClick(position: Int) {

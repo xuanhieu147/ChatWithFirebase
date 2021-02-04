@@ -13,10 +13,8 @@ import javax.inject.Inject
 class SettingViewModel @Inject constructor() : BaseViewModel() {
 
     companion object {
-
         const val SAME_FULL_NAME = 5
         const val SUCCESS = 6
-
     }
 
     private val liveDataInfoUser = MutableLiveData<User>()
@@ -30,6 +28,16 @@ class SettingViewModel @Inject constructor() : BaseViewModel() {
                 .compose(schedulerProvider.ioToMainObservableScheduler())
                 .subscribe(this::getInfoUserSuccess, this::getInfoUserError)
         )
+    }
+
+    private fun getInfoUserSuccess(user: User) {
+        setLoading(false)
+        liveDataInfoUser.value = user
+    }
+
+    private fun getInfoUserError(t: Throwable) {
+        setLoading(false)
+        liveDataInfoUser.value = null
     }
 
     // update Avatar
@@ -46,9 +54,8 @@ class SettingViewModel @Inject constructor() : BaseViewModel() {
     // update FullName
     fun updateFullName(fullName: String) {
         setLoading(true)
-        if (fullName == liveDataInfoUser.value!!.fullName)
-        {
-            uiEventLiveData.value = SettingViewModel.SAME_FULL_NAME
+        if (fullName == liveDataInfoUser.value!!.fullName) {
+            uiEventLiveData.value = SAME_FULL_NAME
         }
         compositeDisposable.add(
             firebaseDataRepository.updateFullName(fullName)
@@ -58,21 +65,16 @@ class SettingViewModel @Inject constructor() : BaseViewModel() {
 
     }
 
-    private fun getInfoUserSuccess(user: User) {
-        setLoading(false)
-        liveDataInfoUser.value = user
-    }
-
-    private fun getInfoUserError(t: Throwable) {
-        liveDataInfoUser.value = null
-    }
-
     private fun updateAvatarSuccess() {
         setLoading(false)
-        LogUtil.error("Success")
     }
 
     private fun updateAvatarError(t: Throwable) {
-        LogUtil.error(t.toString())
+        setLoading(false)
+    }
+
+     fun signOut(){
+        firebaseAuthRepository.signOut()
+        sharedPreferencesManager.removeUser()
     }
 }

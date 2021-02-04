@@ -8,7 +8,8 @@ import javax.inject.Inject
 
 
 class FirebaseNotificationRepositoryImp @Inject constructor(
-    private val apiFirebaseNotification:ApiFirebaseNotification) :FirebaseNotificationRepository{
+    private val apiFirebaseNotification:ApiFirebaseNotification
+    ) :FirebaseNotificationRepository{
 
     override fun sendNotification(pushNotification: PushNotification) : Observable<NotificationData>{
         return apiFirebaseNotification.sendNotification(pushNotification)

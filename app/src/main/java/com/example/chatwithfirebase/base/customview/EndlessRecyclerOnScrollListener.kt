@@ -7,7 +7,10 @@ import androidx.recyclerview.widget.RecyclerView
  * Copy by Duc Minh
  */
 
-abstract class EndlessRecyclerOnScrollListener(private val linearLayoutManager: LinearLayoutManager) : RecyclerView.OnScrollListener() {
+abstract class EndlessRecyclerOnScrollListener(
+    private val linearLayoutManager: LinearLayoutManager
+    ) : RecyclerView.OnScrollListener() {
+
     companion object {
         val TAG = EndlessRecyclerOnScrollListener::class.java.simpleName
     }

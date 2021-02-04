@@ -72,7 +72,5 @@ class HomeViewModel @Inject constructor() : BaseViewModel() {
     }
     private fun getInfoUserSuccess(t: Throwable) { liveDataInfoUser.value = null }
 
-     fun getCurrentUserId(): String{
-         return firebaseDataRepository.getCurrentUserId()
-     }
+    fun getCurrentUserId(): String = firebaseDataRepository.getCurrentUserId()
 }

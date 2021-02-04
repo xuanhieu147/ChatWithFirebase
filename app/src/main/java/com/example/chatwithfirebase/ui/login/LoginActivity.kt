@@ -29,10 +29,12 @@ class LoginActivity : BaseActivity<ActivityLoginBinding, LoginViewModel>() {
     override fun getBindingVariable(): Int = BR.loginViewModel
 
     override fun updateUI(savedInstanceState: Bundle?) {
+
         binding.imgBack.setOnClickListener {
             onBackPressed()
         }
 
+        loginViewModel.getEmail()
         loginViewModel.uiEventLiveData.observe(this,{
             when(it){
                 LoginViewModel.ERROR_TYPE_EMAIL->
@@ -46,15 +48,21 @@ class LoginActivity : BaseActivity<ActivityLoginBinding, LoginViewModel>() {
 
                 LoginViewModel.LOGIN_SUCCESS-> {
                     ToastUtils.toastSuccess(this, R.string.login, R.string.success)
-                    goScreen(
-                        HomeActivity::class.java,
-                        false, R.anim.slide_in_right, R.anim.slide_out_left
-                    )
+                    openLoginScreen()
                 }
 
                 BaseViewModel.SHOW_ERROR ->
                     ToastUtils.toastError(this, R.string.wrong_email_password, loginViewModel.errorMessage)
             }
         })
+    }
+
+    private fun openLoginScreen(){
+        goScreen(
+            HomeActivity::class.java,
+            false,
+            R.anim.slide_in_right,
+            R.anim.slide_out_left
+        )
     }
 }

@@ -1,33 +1,27 @@
 package com.example.chatwithfirebase.ui.setting
 
-import android.Manifest
 import android.app.Dialog
 import android.content.Intent
-import android.content.pm.PackageManager
-import android.os.Build
 import android.os.Bundle
-import android.provider.MediaStore
 import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.view.Window
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.example.chatwithfirebase.BR
 import com.example.chatwithfirebase.R
-import com.example.chatwithfirebase.base.BaseActivity
+import com.example.chatwithfirebase.base.BaseActivityGradient
 import com.example.chatwithfirebase.databinding.ActivitySettingBinding
-import com.example.chatwithfirebase.databinding.CustomDialogEditBinding
+import com.example.chatwithfirebase.databinding.LayoutDialogEditBinding
+import com.example.chatwithfirebase.databinding.LayoutUpdateAvatarBinding
 import com.example.chatwithfirebase.di.ViewModelFactory
+import com.example.chatwithfirebase.ui.login.LoginActivity
 import com.example.chatwithfirebase.ui.setting.notification.NotificationActivity
 import com.example.chatwithfirebase.utils.ToastUtils
-import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import javax.inject.Inject
 
 
-class SettingActivity : BaseActivity<ActivitySettingBinding, SettingViewModel>() {
+class SettingActivity : BaseActivityGradient<ActivitySettingBinding, SettingViewModel>() {
 
     @Inject
     lateinit var factory: ViewModelFactory
@@ -45,76 +39,102 @@ class SettingActivity : BaseActivity<ActivitySettingBinding, SettingViewModel>()
 
     override fun updateUI(savedInstanceState: Bundle?) {
 
-        // get info user
+        binding.imgBack.setOnClickListener {
+            onBackPressed()
+        }
+
         settingViewModel.getInfoUser()
         settingViewModel.getUser().observe(this, {
-            it?.let {
-                binding.user = it
-            }
+            it?.let { binding.user = it }
         })
 
-        binding.rlNotifications.setOnClickListener {
-            goScreen(
-                NotificationActivity::class.java,
-                false, R.anim.slide_in_right, R.anim.slide_out_left
-            )
+        binding.rlNotification.setOnClickListener {
+            openNotificationScreen()
         }
 
-        binding.rlLogOut.setOnClickListener {
-
+        binding.rlLogout.setOnClickListener {
+            showActionDialog(getString(R.string.logout),
+                getString(R.string.question_log_out),
+                getString(R.string.ok)) { _, _ ->
+                  settingViewModel.signOut()
+                  openLoginScreen()
+            }
         }
 
-        //update Avatar
-        updateAvatar()
-
-        //update FullName
+         updateAvatar()
         updateFullName()
-
-        // camera
-        openCamera()
-
+        // openCamera()
     }
 
-    private fun openCamera() {
-        binding.imgCamera.setOnClickListener {
-            checkPermission(android.Manifest.permission.CAMERA, "Camera", CAMERA)
-            val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-            startActivityForResult(
-                Intent.createChooser(intent, R.string.title_img.toString()),
-                438
-            )
-
-        }
+    private fun openLoginScreen(){
+        goScreen(
+            LoginActivity::class.java,
+            true,
+            R.anim.slide_out_left,
+            R.anim.slide_in_right
+        )
     }
+
+    private fun openNotificationScreen(){
+        goScreen(
+            NotificationActivity::class.java,
+            false,
+            R.anim.slide_out_left,
+            R.anim.slide_in_right
+        )
+    }
+
+
+//    private fun openCamera() {
+//        binding.imgCamera.setOnClickListener {
+//            checkPermission(android.Manifest.permission.CAMERA, "Camera", Constants.CAMERA)
+//            val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+//            startActivityForResult(
+//                Intent.createChooser(intent, R.string.title_img.toString()),
+//                438
+//            )
+//
+//        }
+//    }
 
     private fun updateAvatar() {
         binding.imgAvatar.setOnClickListener {
-            checkPermission(
-                android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                "WRITE_EXTERNAL_STORAGE",
-                WRITE_EXTERNAL_STORAGE
-            )
-            checkPermission(
-                android.Manifest.permission.READ_EXTERNAL_STORAGE,
-                "READ_EXTERNAL_STORAGE",
-                READ_EXTERNAL_STORAGE
-            )
-            val intent = Intent()
-            intent.action = Intent.ACTION_GET_CONTENT
-            intent.type = "image/*"
-            startActivityForResult(Intent.createChooser(intent, "Pick Image"), 438)
 
+            val bottomSheetDialog = BottomSheetDialog(this@SettingActivity,R.style.SheetDialog)
+            val bindingBottomSheetDialog: LayoutUpdateAvatarBinding = DataBindingUtil.inflate(
+                LayoutInflater.from(this),
+                R.layout.layout_update_avatar,
+                null,
+                false
+            )
+            bottomSheetDialog.setContentView(bindingBottomSheetDialog.root)
+            bottomSheetDialog.show()
+
+
+//            checkPermission(
+//                android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+//                "WRITE_EXTERNAL_STORAGE",
+//                Constants.WRITE_EXTERNAL_STORAGE
+//            )
+//            checkPermission(
+//                android.Manifest.permission.READ_EXTERNAL_STORAGE,
+//                "READ_EXTERNAL_STORAGE",
+//                Constants.READ_EXTERNAL_STORAGE
+//            )
+//            val intent = Intent()
+//            intent.action = Intent.ACTION_GET_CONTENT
+//            intent.type = "image/*"
+//            startActivityForResult(Intent.createChooser(intent, "Pick Image"), 438)
         }
     }
 
-    //update FullName
     private fun updateFullName() {
         binding.imgEdit.setOnClickListener {
 
-            val dialog = Dialog(this)
-            val bindingDialog: CustomDialogEditBinding = DataBindingUtil.inflate(
+            val dialog = Dialog(this,R.style.SheetDialog)
+            val bindingDialog: LayoutDialogEditBinding = DataBindingUtil.inflate(
                 LayoutInflater.from(this),
-                R.layout.custom_dialog_edit,
+                R.layout.layout_dialog_edit,
                 null,
                 false
             )
@@ -124,32 +144,26 @@ class SettingActivity : BaseActivity<ActivitySettingBinding, SettingViewModel>()
             dialog.setContentView(bindingDialog.root)
 
             bindingDialog.tvTitle.text = title.toString()
-
-            bindingDialog.edFullName.hint = binding.tvFullName.text
+            bindingDialog.edtFullName.hint = binding.tvFullName.text
 
             bindingDialog.btnOk.setOnClickListener {
-                if (bindingDialog.edFullName.text.toString() == "") {
+                if (bindingDialog.edtFullName.text.toString() == "") {
                     ToastUtils.toastError(this, R.string.full_name, R.string.type_full_name)
                 } else {
-                    settingViewModel.updateFullName(bindingDialog.edFullName.text.toString())
+                    settingViewModel.updateFullName(bindingDialog.edtFullName.text.toString())
                     dialog.dismiss()
                 }
             }
 
             bindingDialog.btnCancel.setOnClickListener { dialog.dismiss() }
-            val window: Window? = dialog.window
-            window?.setLayout(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
-            )
             dialog.show()
         }
 
-        settingViewModel.uiEventLiveData.observe(this, {
-            if (it == SettingViewModel.SAME_FULL_NAME) {
-                ToastUtils.toastError(this, R.string.full_name, R.string.same_full_name)
-            }
-        })
+//        settingViewModel.uiEventLiveData.observe(this, {
+//            if (it == SettingViewModel.SAME_FULL_NAME) {
+//                ToastUtils.toastError(this, R.string.full_name, R.string.same_full_name)
+//            }
+//        })
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

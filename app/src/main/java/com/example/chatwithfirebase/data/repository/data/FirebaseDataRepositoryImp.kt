@@ -11,15 +11,11 @@ import java.util.ArrayList
 import javax.inject.Inject
 
 class FirebaseDataRepositoryImp @Inject constructor(
-    private val firebaseDataSource: FirebaseDataSource) : FirebaseDataRepository {
+    private val firebaseDataSource: FirebaseDataSource
+    ) : FirebaseDataRepository {
 
     override fun getAllUser(): Observable<ArrayList<User>> {
         return firebaseDataSource.getAllUser()
-    }
-
-    override fun searchForUser(str: String): Observable<ArrayList<User>> {
-        return firebaseDataSource.searchForUser(str)
-
     }
 
     override fun getAllMessage(receiverId: String): Observable<ArrayList<Message>> {
@@ -30,16 +26,8 @@ class FirebaseDataRepositoryImp @Inject constructor(
         return firebaseDataSource.sendMessage(receiverId, message, avatarSender)
     }
 
-    override fun uploadImageProfile(filePath: Uri): Completable {
-        return firebaseDataSource.uploadImageProfile(filePath)
-    }
-
     override fun sendImageMessage(fileUri: Uri, receiverId: String, avatarSender: String): Completable {
         return firebaseDataSource.sendImageMessage(fileUri, receiverId, avatarSender)
-    }
-
-    override fun updateFullName(fullname: String): Completable {
-        return firebaseDataSource.updateFullName(fullname)
     }
 
     override fun getInfoReceiver(userId: String): Observable<User> {
@@ -56,5 +44,21 @@ class FirebaseDataRepositoryImp @Inject constructor(
 
     override fun getCurrentUser(): FirebaseUser? {
         return firebaseDataSource.getCurrentUser()
+    }
+
+    override fun searchForUser(str: String): Observable<ArrayList<User>> {
+        return firebaseDataSource.searchForUser(str)
+    }
+
+    override fun updateStatusUser(status: String): Completable {
+        return firebaseDataSource.updateStatusUser(status)
+    }
+
+    override fun updateFullName(fullname: String): Completable {
+        return firebaseDataSource.updateFullName(fullname)
+    }
+
+    override fun uploadImageProfile(filePath: Uri): Completable {
+        return firebaseDataSource.uploadImageProfile(filePath)
     }
 }

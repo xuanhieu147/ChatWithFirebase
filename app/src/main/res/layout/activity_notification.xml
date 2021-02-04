@@ -16,7 +16,7 @@
         tools:context=".ui.setting.notification.NotificationActivity">
 
         <RelativeLayout
-            android:id="@+id/relativeLayout"
+            android:id="@+id/rlLayout"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_130sdp"
             android:background="@drawable/bg_gradient"
@@ -29,7 +29,7 @@
                 android:id="@+id/imgBack"
                 android:layout_width="@dimen/_16sdp"
                 android:layout_height="@dimen/_16sdp"
-                android:src="@drawable/ic_baseline_arrow_back_ios_24" />
+                android:src="@drawable/ic_arrow_back" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tvTitle"
@@ -37,7 +37,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:text="@string/title_notifications"
+                android:text="@string/notifications"
+                android:textAllCaps="true"
                 android:textSize="@dimen/_16sdp" />
 
             <androidx.appcompat.widget.AppCompatImageView
@@ -50,7 +51,7 @@
         </RelativeLayout>
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/tvRemoteNotification"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_32sdp"
@@ -59,15 +60,15 @@
             android:text="@string/on_off"
             android:textSize="@dimen/_14sdp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/relativeLayout" />
+            app:layout_constraintTop_toBottomOf="@+id/rlLayout" />
 
         <androidx.appcompat.widget.SwitchCompat
-            android:id="@+id/swNotification"
+            android:id="@+id/swcNotification"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="@dimen/_16sdp"
-            app:layout_constraintBottom_toBottomOf="@+id/textView"
+            app:layout_constraintBottom_toBottomOf="@+id/tvRemoteNotification"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/textView" />
+            app:layout_constraintTop_toTopOf="@+id/tvRemoteNotification" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

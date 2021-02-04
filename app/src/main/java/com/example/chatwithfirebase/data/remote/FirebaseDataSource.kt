@@ -22,27 +22,22 @@ import io.reactivex.Observable
 import java.util.*
 import kotlin.collections.HashMap
 
-/**
- * Code by Duc Minh
- */
 
+/** Code by Duc Minh */
 class FirebaseDataSource @Inject constructor(
     private val firebaseAuth: FirebaseAuth,
     private val firebaseDatabase: FirebaseDatabase,
-    private val firebaseStorage: FirebaseStorage
-) {
+    private val firebaseStorage: FirebaseStorage) {
 
     private val userList = ArrayList<User>()
     private val messageList = ArrayList<Message>()
 
-    private val notValue = "Not value"
-    private val fileName = "image" + UUID.randomUUID().toString()
+    private val notValue = "Not Value"
+    private val fileName = "Image" + UUID.randomUUID().toString()
 
 
-    // get current user
     fun getCurrentUser(): FirebaseUser? = firebaseAuth.currentUser
 
-    // get current userId
     fun getCurrentUserId(): String {
         if (firebaseAuth.currentUser!!.uid != null) {
             return firebaseAuth.currentUser!!.uid
@@ -56,17 +51,13 @@ class FirebaseDataSource @Inject constructor(
                 .addValueEventListener(object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
                         val user = snapshot.getValue(User::class.java)
-                        user?.let {
-                            emitter.onNext(it)
-                        }
+                        user?.let { emitter.onNext(it) }
                     }
 
                     override fun onCancelled(error: DatabaseError) {
                         emitter.onError(error.toException())
                     }
-
                 })
-
         }
     }
 
@@ -76,21 +67,16 @@ class FirebaseDataSource @Inject constructor(
                 .addValueEventListener(object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
                         val user = snapshot.getValue(User::class.java)
-                        user?.let {
-                            emitter.onNext(it)
-                        }
+                        user?.let { emitter.onNext(it) }
                     }
 
                     override fun onCancelled(error: DatabaseError) {
                         emitter.onError(error.toException())
                     }
-
                 })
-
         }
     }
 
-    // get all user
     fun getAllUser(): Observable<ArrayList<User>> {
         return Observable.create { emitter ->
             firebaseDatabase.reference.child("User")
@@ -115,10 +101,10 @@ class FirebaseDataSource @Inject constructor(
         }
     }
 
-
     fun searchForUser(str: String): Observable<ArrayList<User>> {
         return Observable.create { emitter ->
-            firebaseDatabase.reference.child("User").orderByChild("fullName")
+            firebaseDatabase.reference
+                .child("User").orderByChild("fullName")
                 .startAt(str)
                 .endAt(str + "\uf8ff")
                 .addValueEventListener(object : ValueEventListener {
@@ -142,7 +128,7 @@ class FirebaseDataSource @Inject constructor(
         }
     }
 
-    // get all message follow people chat
+    // Get all message from user and recipients
     fun getAllMessage(receiverId: String): Observable<ArrayList<Message>> {
         return Observable.create { emitter ->
             firebaseDatabase.reference.child("Message")
@@ -173,7 +159,6 @@ class FirebaseDataSource @Inject constructor(
 
     fun sendMessage(receiverId: String, message: String, avatarSender: String): Completable {
         return Completable.create { emitter ->
-            // add chat message
             val hashMap: HashMap<String, String> = HashMap()
             hashMap["senderId"] = getCurrentUserId()
             hashMap["receiverId"] = receiverId
@@ -185,30 +170,27 @@ class FirebaseDataSource @Inject constructor(
 
             firebaseDatabase.reference
                 .child("Message")
-                .push().setValue(hashMap)
+                .push()
+                .setValue(hashMap)
                 .addOnCompleteListener {
                     if (it.isSuccessful) {
                         emitter.onComplete()
                     }
                 }
-                .addOnFailureListener {
-                    emitter.onError(it)
-                }
+                .addOnFailureListener { emitter.onError(it) }
         }
     }
 
     fun sendImageMessage(fileUri: Uri, receiverId: String, avatarSender: String): Completable {
         return Completable.create { emitter ->
-
+            // Upload image
             val uploadTask: StorageTask<*>
-            val storageReference = firebaseStorage.reference.child("Chats Image")
+            val storageReference = firebaseStorage.reference.child("Message Image")
             val filePath = storageReference.child(fileName)
             uploadTask = filePath.putFile(fileUri)
             uploadTask.continueWithTask(Continuation<UploadTask.TaskSnapshot, Task<Uri>> { task ->
                 if (task.isSuccessful) {
-                    task.exception?.let {
-                        throw it
-                    }
+                    task.exception?.let { throw it }
                 }
                 return@Continuation filePath.downloadUrl
 
@@ -216,7 +198,6 @@ class FirebaseDataSource @Inject constructor(
                 if (task.isSuccessful) {
                     val downloadUrl = task.result
                     val url = downloadUrl.toString()
-                    // add chat message
                     val hashMap: HashMap<String, String> = HashMap()
                     hashMap["senderId"] = getCurrentUserId()
                     hashMap["receiverId"] = receiverId
@@ -225,41 +206,32 @@ class FirebaseDataSource @Inject constructor(
                     hashMap["imageUpload"] = url
                     hashMap["date"] = DateUtils.getCurrentDate()!!
                     hashMap["time"] = DateUtils.getCurrentTime()!!
-
+                    // Add message
                     firebaseDatabase.reference
                         .child("Message")
-                        .push().setValue(hashMap)
+                        .push()
+                        .setValue(hashMap)
                         .addOnCompleteListener {
                             if (it.isSuccessful) {
                                 emitter.onComplete()
                             }
                         }
-                        .addOnFailureListener {
-                            emitter.onError(it)
-                        }
+                        .addOnFailureListener { emitter.onError(it) }
                 }
-                emitter.onComplete()
             }
-                .addOnFailureListener {
-                    emitter.onError(it)
-                }
-
-
+                .addOnFailureListener { emitter.onError(it) }
         }
     }
 
     fun uploadImageProfile(fileUri: Uri): Completable {
         return Completable.create { emitter ->
-
             val uploadTask: StorageTask<*>
             val storageReference = firebaseStorage.reference.child("User Image")
             val filePath = storageReference.child(fileName)
             uploadTask = filePath.putFile(fileUri)
             uploadTask.continueWithTask(Continuation<UploadTask.TaskSnapshot, Task<Uri>> { task ->
                 if (task.isSuccessful) {
-                    task.exception?.let {
-                        throw it
-                    }
+                    task.exception?.let { throw it }
                 }
                 return@Continuation filePath.downloadUrl
 
@@ -267,54 +239,44 @@ class FirebaseDataSource @Inject constructor(
                 if (task.isSuccessful) {
                     val downloadUrl = task.result
                     val url = downloadUrl.toString()
-                    // add chat message
-
-                    // update image profile user
                     val hashMap: HashMap<String, String> = HashMap()
                     hashMap["avatarUser"] = url
+                    // update image profile user
                     firebaseDatabase.reference
                         .child("User")
                         .child(getCurrentUserId())
                         .updateChildren(hashMap as Map<String, String>)
-                        .addOnCompleteListener {
-                            emitter.onComplete()
-                        }
-                        .addOnFailureListener {
-                            emitter.onError(it)
-                        }
-
-
+                        .addOnCompleteListener { emitter.onComplete() }
+                        .addOnFailureListener { emitter.onError(it) }
                 }
-                emitter.onComplete()
             }
-                .addOnFailureListener {
-                    emitter.onError(it)
-                }
-
-
+                .addOnFailureListener { emitter.onError(it) }
         }
-
     }
 
     fun updateFullName(fullName: String): Completable {
         return Completable.create { emitter ->
-
-            // update full name
             val hashMap: HashMap<String, String> = HashMap()
             hashMap["fullName"] = fullName
             firebaseDatabase.reference
                 .child("User")
                 .child(getCurrentUserId())
                 .updateChildren(hashMap as Map<String, String>)
-                .addOnCompleteListener {
-                    emitter.onComplete()
-                }
-                .addOnFailureListener {
-                    emitter.onError(it)
-                }
-
-
+                .addOnCompleteListener { emitter.onComplete() }
+                .addOnFailureListener { emitter.onError(it) }
         }
     }
 
+    fun updateStatusUser(status: String): Completable {
+        return Completable.create { emitter ->
+            val hashMap: HashMap<String, String> = HashMap()
+            hashMap["status"] = status
+            firebaseDatabase.reference
+                .child("User")
+                .child(getCurrentUserId())
+                .updateChildren(hashMap as Map<String, String>)
+                .addOnCompleteListener { emitter.onComplete() }
+                .addOnFailureListener { emitter.onError(it) }
+        }
+    }
 }

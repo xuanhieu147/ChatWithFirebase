@@ -11,7 +11,7 @@ import retrofit2.http.POST
 
 interface ApiFirebaseNotification {
 
-    @Headers("Authorization: key=$SERVER_KEY","Content-type:$CONTENT_TYPE")
+    @Headers("Authorization: key=$SERVER_KEY", "Content-type:$CONTENT_TYPE")
     @POST("fcm/send")
     fun sendNotification(@Body pushNotification: PushNotification): Observable<NotificationData>
 }

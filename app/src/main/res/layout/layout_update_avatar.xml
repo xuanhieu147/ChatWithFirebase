@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+<androidx.appcompat.widget.LinearLayoutCompat
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="@dimen/_32sdp"
+    android:gravity="center_horizontal"
+    android:background="@drawable/bg_blue_61">
+
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:layout_width="@dimen/_140sdp"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="@dimen/_16sdp"
+        android:drawableLeft="@drawable/camera"
+        android:text="@string/take_a_photo"
+        android:textAllCaps="false"
+        style="@style/SenRegular.TextColorBlack"
+        android:background="@drawable/bg_gray_ee"
+        android:id="@+id/btnTakePhoto"
+        />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnSelectPicture"
+        android:layout_marginTop="@dimen/_12sdp"
+        android:layout_width="@dimen/_140sdp"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="@dimen/_16sdp"
+        android:drawableLeft="@drawable/ic_library"
+        android:text="@string/select_picture"
+        android:textAllCaps="false"
+        style="@style/SenRegular.TextColorBlack"
+        android:background="@drawable/bg_gray_ee"
+        />
+
+
+
+</androidx.appcompat.widget.LinearLayoutCompat>
+</layout>

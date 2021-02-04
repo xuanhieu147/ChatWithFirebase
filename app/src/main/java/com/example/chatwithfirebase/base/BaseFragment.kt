@@ -16,10 +16,7 @@ import com.example.chatwithfirebase.R
 import dagger.android.support.AndroidSupportInjection
 import com.example.chatwithfirebase.utils.KeyboardUtil
 
-/**
- * Copy by Duc Minh
- */
-
+/** Copy by Duc Minh */
 abstract class BaseFragment<T : ViewDataBinding, V : BaseViewModel> : Fragment(),
     ViewTreeObserver.OnGlobalLayoutListener {
 

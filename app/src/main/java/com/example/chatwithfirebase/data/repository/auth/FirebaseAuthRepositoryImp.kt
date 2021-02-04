@@ -6,7 +6,8 @@ import io.reactivex.Completable
 import javax.inject.Inject
 
 class FirebaseAuthRepositoryImp @Inject constructor(
-    private val firebaseAuthSource: FirebaseAuthSource) : FirebaseAuthRepository {
+    private val firebaseAuthSource: FirebaseAuthSource
+    ) : FirebaseAuthRepository {
 
 
     override fun getCurrentUserId(): String {

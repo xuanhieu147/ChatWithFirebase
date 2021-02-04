@@ -26,7 +26,6 @@ class FirebaseService : FirebaseMessagingService() {
     @Inject
     lateinit var sharedPreferencesManager: SharedPreferencesManager
 
-
     companion object {
         const val CHANNEL_NOTIFICATION_ID = "NOTIFICATION_CHANNEL"
         const val CHANNEL_CHAT_NAME = "CHANNEL_FIREBASE_CHAT"
@@ -43,17 +42,6 @@ class FirebaseService : FirebaseMessagingService() {
             sharedPreferencesManager.saveToken(newToken)
         }
     }
-
-    /** Json notification example */
-//    {
-//        "message":{
-//        "token":"bk3RNwTe3H0:CI2k_HHwgIpoDKCIZvvDMExUdFQ3P1...",
-//        "data":{
-//        "title":"Portugal vs. Denmark",
-//        "body":"great match!"
-//    }
-//    }
-//    }
 
     // handling received messages - data messages - foreground, background
     override fun onMessageReceived(remoteMessage: RemoteMessage) {

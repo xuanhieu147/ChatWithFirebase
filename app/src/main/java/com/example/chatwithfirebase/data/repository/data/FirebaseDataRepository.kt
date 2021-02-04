@@ -12,17 +12,11 @@ interface FirebaseDataRepository {
 
     fun getAllUser(): Observable<ArrayList<User>>
 
-    fun searchForUser(str: String): Observable<ArrayList<User>>
-
     fun getAllMessage(receiverId: String): Observable<ArrayList<Message>>
 
     fun sendMessage(receiverId: String, message: String, avatarSender: String ): Completable
 
     fun sendImageMessage(fileUri: Uri, receiverId: String, avatarSender: String): Completable
-
-    fun uploadImageProfile(filePath: Uri): Completable
-
-    fun updateFullName(fullName: String): Completable
 
     fun getInfoReceiver(userId: String): Observable<User>
 
@@ -31,4 +25,12 @@ interface FirebaseDataRepository {
     fun getCurrentUserId(): String
 
     fun getCurrentUser(): FirebaseUser?
+
+    fun uploadImageProfile(filePath: Uri): Completable
+
+    fun updateFullName(fullName: String): Completable
+
+    fun searchForUser(str: String): Observable<ArrayList<User>>
+
+    fun updateStatusUser(status:String): Completable
 }
