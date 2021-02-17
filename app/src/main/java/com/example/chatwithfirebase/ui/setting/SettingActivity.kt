@@ -4,8 +4,10 @@ import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.Window
+import androidx.core.content.FileProvider
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.example.chatwithfirebase.BR
@@ -20,6 +22,7 @@ import com.example.chatwithfirebase.ui.login.LoginActivity
 import com.example.chatwithfirebase.ui.setting.notification.NotificationActivity
 import com.example.chatwithfirebase.utils.ToastUtils
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import java.io.File
 import javax.inject.Inject
 
 
@@ -90,11 +93,7 @@ class SettingActivity : BaseActivityGradient<ActivitySettingBinding, SettingView
 
     private fun openCamera() {
         checkPermission(android.Manifest.permission.CAMERA, "Camera", Constants.CAMERA)
-        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        startActivityForResult(
-            Intent.createChooser(intent, R.string.pick_image.toString()),
-            438
-        )
+        dispatchTakePictureIntent()
     }
 
     private fun openPhotoLibrary() {
@@ -112,7 +111,10 @@ class SettingActivity : BaseActivityGradient<ActivitySettingBinding, SettingView
             val intent = Intent()
             intent.action = Intent.ACTION_GET_CONTENT
             intent.type = "image/*"
-            startActivityForResult(Intent.createChooser(intent, "Pick Image"), 438)
+            startActivityForResult(
+                Intent.createChooser(intent, "Pick Image"),
+                438
+            )
         }
 
     }
@@ -180,10 +182,24 @@ class SettingActivity : BaseActivityGradient<ActivitySettingBinding, SettingView
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == 438 && resultCode == RESULT_OK && data != null && data!!.data != null) {
-            val fileUri = data.data
-            settingViewModel.updateAvatar(fileUri!!)
+
+        if (resultCode == RESULT_OK) {
+
+            if (requestCode == 438 && data != null && data!!.data != null) {
+                val fileUri = data.data
+                settingViewModel.updateAvatar(fileUri!!)
+
+            } else if (requestCode == 123) {
+                val mCurrentPhotoPath = photoFile.absolutePath;
+                val fileUri = FileProvider.getUriForFile(
+                    this,
+                    "com.example.chatwithfirebase.fileprovider",
+                    File(mCurrentPhotoPath)
+                )
+                settingViewModel.updateAvatar(fileUri!!)
+            }
         }
     }
+
 
 }

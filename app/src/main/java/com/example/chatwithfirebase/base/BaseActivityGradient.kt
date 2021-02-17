@@ -4,14 +4,19 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Environment
+import android.provider.MediaStore
+import android.util.Log
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
@@ -20,6 +25,10 @@ import com.example.chatwithfirebase.base.constants.Constants
 import com.example.chatwithfirebase.utils.ToastUtils
 import dagger.android.AndroidInjection
 import dagger.android.support.DaggerAppCompatActivity
+import java.io.File
+import java.io.IOException
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 /**
@@ -33,7 +42,8 @@ abstract class BaseActivityGradient<T : ViewDataBinding, V : BaseViewModel> :
     lateinit var loading: AlertDialog
     private var isCancelable = false
     var isCheckPermission = false
-
+    lateinit var currentPhotoPath: String
+    lateinit var photoFile: File
     protected abstract fun getViewModel(): V
 
     @LayoutRes
@@ -321,5 +331,44 @@ abstract class BaseActivityGradient<T : ViewDataBinding, V : BaseViewModel> :
             }
         })
     }
+
+    @Throws(IOException::class)
+    private fun createImageFile(): File {
+        // Create an image file name
+        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+        val storageDir: File? = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        return File.createTempFile(
+            "JPEG_${timeStamp}_", /* prefix */
+            ".jpg", /* suffix */
+            storageDir /* directory */
+        ).apply {
+            // Save a file: path for use with ACTION_VIEW intents
+            currentPhotoPath = absolutePath
+        }
+    }
+
+     fun dispatchTakePictureIntent() {
+        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
+            // Ensure that there's a camera activity to handle the intent
+            takePictureIntent.resolveActivity(packageManager)?.also {
+                // Create the File where the photo should go
+                photoFile =
+                    createImageFile()
+
+                // Continue only if the File was successfully created
+                photoFile.also {
+                    val photoURI: Uri = FileProvider.getUriForFile(
+                        this,
+                        "com.example.chatwithfirebase.fileprovider",
+                        it
+                    )
+                    Log.d("AAA", photoURI.toString())
+                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+                    startActivityForResult(takePictureIntent,123)
+                }
+            }
+        }
+    }
+
 
 }
