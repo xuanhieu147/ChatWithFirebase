@@ -3,9 +3,7 @@ package com.example.chatwithfirebase.base.customview
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
-/**
- * Copy by Duc Minh
- */
+
 
 abstract class EndlessRecyclerOnScrollListener(
     private val linearLayoutManager: LinearLayoutManager

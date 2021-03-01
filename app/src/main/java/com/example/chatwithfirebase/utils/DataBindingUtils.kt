@@ -6,9 +6,7 @@ import com.bumptech.glide.Glide
 import com.example.chatwithfirebase.R
 import com.example.chatwithfirebase.base.constants.Constants
 
-/**
- * Created by Duc Minh
- */
+
 
 class DataBindingUtils {
 

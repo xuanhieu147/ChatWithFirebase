@@ -6,9 +6,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import com.example.chatwithfirebase.base.constants.Constants
 
-/**
- * Custom by Duc Minh
- */
+
 
 class SharedPreferencesManager(context: Context) {
 

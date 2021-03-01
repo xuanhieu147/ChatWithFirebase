@@ -20,7 +20,6 @@ import com.google.firebase.messaging.RemoteMessage
 import javax.inject.Inject
 import kotlin.random.Random
 
-/** Code by Duc Minh */
 class FirebaseService : FirebaseMessagingService() {
 
     @Inject

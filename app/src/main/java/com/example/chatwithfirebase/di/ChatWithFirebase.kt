@@ -7,9 +7,7 @@ import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
 import javax.inject.Inject
 
-/**
- * Created by Duc Minh
- */
+
 
 class ChatWithFirebase : MultiDexApplication(), HasAndroidInjector {
 

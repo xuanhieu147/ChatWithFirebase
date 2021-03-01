@@ -107,7 +107,7 @@ class MessageActivity : BaseActivityGradient<ActivityMessageBinding, MessageView
                 "READ_EXTERNAL_STORAGE",
                 Constants.READ_EXTERNAL_STORAGE
             )
-            if (isCheckPermission == true) {
+//            if (isCheckPermission == true) {
                 val intent = Intent()
                 intent.action = Intent.ACTION_GET_CONTENT
                 intent.type = "image/*"
@@ -115,7 +115,7 @@ class MessageActivity : BaseActivityGradient<ActivityMessageBinding, MessageView
                     Intent.createChooser(intent, R.string.pick_image.toString()),
                     438
                 )
-            }
+//            }
         }
 
         // camera

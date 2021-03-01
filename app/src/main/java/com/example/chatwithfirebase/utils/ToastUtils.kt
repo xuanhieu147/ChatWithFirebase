@@ -6,9 +6,7 @@ import androidx.core.content.res.ResourcesCompat
 import com.example.chatwithfirebase.R
 import www.sanju.motiontoast.MotionToast
 
-/**
- * Created by Duc Minh
- */
+
 
 object ToastUtils {
 

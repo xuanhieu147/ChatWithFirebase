@@ -23,7 +23,6 @@ import java.util.*
 import kotlin.collections.HashMap
 
 
-/** Code by Duc Minh */
 class FirebaseDataSource @Inject constructor(
     private val firebaseAuth: FirebaseAuth,
     private val firebaseDatabase: FirebaseDatabase,

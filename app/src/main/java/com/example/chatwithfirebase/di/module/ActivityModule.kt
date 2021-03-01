@@ -12,9 +12,7 @@ import com.example.chatwithfirebase.ui.welcome.WelcomeActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
-/**
- * Created by Duc Minh
- */
+
 
 @Module
 abstract class ActivityModule {

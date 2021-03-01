@@ -31,10 +31,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-/**
- * Custom by Duc Minh
- * Status bar text color white and background gradient :v
- */
+
 abstract class BaseActivityGradient<T : ViewDataBinding, V : BaseViewModel> :
     DaggerAppCompatActivity() {
 

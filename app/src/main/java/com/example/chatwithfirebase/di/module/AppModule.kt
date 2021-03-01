@@ -28,7 +28,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import javax.inject.Named
 import javax.inject.Singleton
 
-/** Custom by Duc Minh */
 @Module
 class AppModule {
 

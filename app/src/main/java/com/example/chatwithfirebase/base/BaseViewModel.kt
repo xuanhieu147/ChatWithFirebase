@@ -10,7 +10,6 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import javax.inject.Inject
 
-/** Custom by Duc Minh */
 abstract class BaseViewModel() : ViewModel() {
 
     companion object{

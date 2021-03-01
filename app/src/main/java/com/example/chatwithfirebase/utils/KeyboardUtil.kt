@@ -5,9 +5,7 @@ import android.content.Context
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 
-/**
- * Copy by Duc Minh
- */
+
 
 object KeyboardUtil {
     fun hideSoftKeyBoard(activity: Activity) {

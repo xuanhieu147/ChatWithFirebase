@@ -28,10 +28,7 @@ import dagger.android.AndroidInjection
 import dagger.android.support.DaggerAppCompatActivity
 
 
-/**
- * Custom by Duc Minh
- * Status bar text color black and background color white :v
- */
+
 abstract class BaseActivity<T : ViewDataBinding, V : BaseViewModel> : DaggerAppCompatActivity() {
 
     lateinit var binding: T

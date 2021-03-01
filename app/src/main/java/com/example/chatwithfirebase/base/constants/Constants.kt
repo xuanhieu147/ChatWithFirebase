@@ -6,7 +6,7 @@ package com.example.chatwithfirebase.base.constants
 
 object Constants {
     // Firebase
-    const val FIREBASE_DATABASE_URL = "https://chatwithfirebase-ee489-default-rtdb.firebaseio.com"
+    const val FIREBASE_DATABASE_URL = "https://android-chat-app-47aee-default-rtdb.firebaseio.com/"
     const val AVATAR_DEFAULT_USER =
         "https://firebasestorage.googleapis.com/v0/b/chatwithfirebase-ee489.appspot.com/o/account.png?alt=media&token=36716229-9aef-4190-bac9-057a3495f3ba"
 
@@ -22,10 +22,11 @@ object Constants {
     const val BASE_URL = "https://fcm.googleapis.com"
     const val CONTENT_TYPE = "application/json"
     const val SERVER_KEY =
-        "AAAAf8bTlOY:APA91bH7eLsVmCjRuLCAJc4rlV-dolwBKnf-UiyYecqrRqQ9PcoWMy42BDp7316NO4oGr6eB8a3co4D6FSsEn16soqyHYCBhha_EGZ6Q_35sq2qbQVhUkMtQ5Kxo8hisKvdC_TBoDkI7"
+        "AAAA4C8RYYg:APA91bGnoNWaZhI1TUfMZ6h0BFXjkrBToCCk-VEo1boDqH-Ea8lloEBkQFUTT18HINqYEvt7surMBjwy2dDl1YzTQrB-4cjU2RC82rOiImY90a2i6Ijg_9JZxzYeE46vRqBxIdgwAvFX"
 
     // Permission
     const val CAMERA = 101
     const val READ_EXTERNAL_STORAGE = 102
     const val WRITE_EXTERNAL_STORAGE = 103
+
 }
